@@ -27,6 +27,38 @@ public class Time {
    *
    * @return
    */
+  public DaysOfTheWeek getStartDay() {
+    return this.startDay;
+  }
+
+  /**
+   *
+   * @return
+   */
+  public DaysOfTheWeek getEndDay() {
+    return this.endDay;
+  }
+
+  /**
+   *
+   * @return
+   */
+  public String getStartTime() {
+    return this.startTime;
+  }
+
+  /**
+   *
+   * @return
+   */
+  public String getEndTime() {
+    return this.endTime;
+  }
+
+  /**
+   *
+   * @return
+   */
   public String getStartAMPM() {
     return this.getAMPM(this.startTime);
   }

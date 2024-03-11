@@ -20,8 +20,9 @@ public class Schedule implements ScheduleSystem {
 
   // modify event
   @Override
-  public void modifyEvent(Event e) {
-
+  public void modifyEvent(Event oldEvent, Event newEvent) {
+    this.removeEvent(oldEvent);
+    this.addEvent(newEvent);
   }
 
   // remove event

@@ -30,6 +30,4 @@ public class Event {
       this.host = this.users.get(0);
     }
   }
-
-  // modify event
 }

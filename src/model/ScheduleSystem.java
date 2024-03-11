@@ -13,7 +13,7 @@ public interface ScheduleSystem {
    *
    * @param e Event to be modified.
    */
-  void modifyEvent(Event e);
+  void modifyEvent(Event oldEvent, Event newEvent);
 
   /**
    * Removes the given event from the current schedule of events if it exists.
