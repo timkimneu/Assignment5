@@ -38,4 +38,16 @@ public class Schedule implements ScheduleSystem {
       }
     }
   }
+
+  // read XML file
+  @Override
+  public void readXML(String filePath) {
+
+  }
+
+  // write to XML file
+  @Override
+  public void writeXML(String filePath) {
+
+  }
 }

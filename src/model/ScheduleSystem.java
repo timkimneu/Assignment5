@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 public interface ScheduleSystem {
   /**
    * Adds the given event to the current schedule of events.
@@ -9,9 +11,10 @@ public interface ScheduleSystem {
   void addEvent(Event e);
 
   /**
-   * ???
    *
-   * @param e Event to be modified.
+   *
+   * @param oldEvent
+   * @param newEvent
    */
   void modifyEvent(Event oldEvent, Event newEvent);
 
@@ -22,4 +25,16 @@ public interface ScheduleSystem {
    * @param e Event to be removed.
    */
   void removeEvent(Event e);
+
+  /**
+   *
+   * @param filePath
+   */
+  void readXML(String filePath);
+
+  /**
+   *
+   * @param filePath
+   */
+  void writeXML(String filePath);
 }
