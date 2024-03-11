@@ -1,7 +1,9 @@
 package model;
 
-import java.util.List;
-
+/**
+ * Represents the model of the Schedule system or collection of events over a calendar. Individual
+ * events can be added, removed, or "modified".
+ */
 public interface ScheduleSystem {
   /**
    * Adds the given event to the current schedule of events.
@@ -11,10 +13,11 @@ public interface ScheduleSystem {
   void addEvent(Event e);
 
   /**
+   * Replaces the old event with the new event by removing the old event and adding the new event
+   * to the event list.
    *
-   *
-   * @param oldEvent
-   * @param newEvent
+   * @param oldEvent event to be removed
+   * @param newEvent event to be added in place of the old event
    */
   void modifyEvent(Event oldEvent, Event newEvent);
 
@@ -27,6 +30,7 @@ public interface ScheduleSystem {
   void removeEvent(Event e);
 
   /**
+   *
    *
    * @param filePath
    */
