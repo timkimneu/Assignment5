@@ -1,7 +1,10 @@
 package model;
 
 /**
- *
+ * Represents the time frame that an event takes place in. Denotes the day and time that an event
+ * begins at and the day and time the event will end on. Starting and ending day are denoted as
+ * days of the week as an enum value. Time also takes in a string for the starting and ending time
+ * of day in the form of a 4 number string using the military time method.
  */
 public class Time {
   private final DaysOfTheWeek startDay;

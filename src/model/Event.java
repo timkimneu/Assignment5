@@ -3,7 +3,8 @@ package model;
 import java.util.List;
 
 /**
- *
+ * Represents a social gathering that has a name, a specified starting and ending time,
+ * a location, and a list of attendees along with the host of the event.
  */
 public class Event {
   private final String name;

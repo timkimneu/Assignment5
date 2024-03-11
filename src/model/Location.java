@@ -1,7 +1,7 @@
 package model;
 
 /**
- *
+ * Represents the location of an Event. A location is denoted by a place but can also be online.
  */
 public class Location {
   private final boolean online;
