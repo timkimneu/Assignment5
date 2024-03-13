@@ -35,39 +35,68 @@ public class Time {
   }
 
   /**
-   * Gets the day of the week that an event begins on.
+   * Observes the day of the week that an event begins on.
    *
    * @return the day of the week enum which the event begins on.
    */
-  public DaysOfTheWeek getStartDay() {
+  public DaysOfTheWeek startDay() {
     return this.startDay;
   }
 
   /**
-   * Gets the day of the week that an event ends on.
+   * Observes the day of the week that an event ends on.
    *
    * @return the day of the week enum which the event ends on.
    */
-  public DaysOfTheWeek getEndDay() {
+  public DaysOfTheWeek endDay() {
     return this.endDay;
   }
 
   /**
-   * Gets the military time that an event begins on as a String.
+   * Observes the military time that an event begins on as a String.
    *
    * @return String that represents the military time of when an event begins.
    */
-  public String getStartTime() {
+  public String startTime() {
     return this.startTime;
   }
 
   /**
-   * Gets the military time that an event ends on as a String.
+   * Observes the military time that an event ends on as a String.
    *
    * @return String that represents the military time of when an event ends.
    */
-  public String getEndTime() {
+  public String endTime() {
     return this.endTime;
+  }
+
+  public boolean hasOverlap(Time t) {
+    return false;
+  }
+
+  // check that time only contains numbers and no other characters
+  // otherwise throw IllegalArgumentException
+  private int checkNumberStringTime(String time) {
+    int timeInt;
+    try {
+      timeInt = Integer.parseInt(time);
+    } catch (NumberFormatException e) {
+      throw new IllegalArgumentException("String must only contain numbers!");
+    }
+    return timeInt;
+  }
+
+  // get the number of minutes for the given String (military) time
+  private int getMinutes(String time) {
+    int timeInt = this.checkNumberStringTime(time);
+    return timeInt % 100;
+  }
+
+  // get the number of hours for the given String time
+  private int getHours(String time) {
+    int timeInt = this.checkNumberStringTime(time);
+    int minutes = this.getMinutes(time);
+    return (timeInt - minutes) / 100;
   }
 
   private void checkHourMinute(String time) throws IllegalArgumentException {
@@ -77,18 +106,11 @@ public class Time {
       throw new IllegalArgumentException("Time must be represented by a 4 digit String!");
     }
 
-    // check that time only contains numbers and no other characters
-    // otherwise throw IllegalArgumentException
-    int timeInt;
-    try {
-      timeInt = Integer.parseInt(time);
-    } catch (NumberFormatException e) {
-      throw new IllegalArgumentException("String must only contain numbers!");
-    }
-
     // split time into hours and minutes
-    int minutes = timeInt % 100;
-    int hours = (timeInt - minutes) / 100;
+    // additionally: check that time only contains numbers and no other characters
+    // otherwise throw IllegalArgumentException
+    int minutes = this.getMinutes(time);
+    int hours = this.getHours(time);
 
     // check that if number of minutes is less than 0 or greater than 59
     // then throw IllegalArgumentException

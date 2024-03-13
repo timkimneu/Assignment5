@@ -83,6 +83,9 @@ public class Schedule {
   }
 
   private void checkForOverlap(Event e1, Event e2) throws IllegalStateException {
-
+    String e1StartTime = e1.time().startTime();
+    String e1EndTime = e1.time().endTime();
+    String e2StartTime = e2.time().startTime();
+    String e2EndTime = e2.time().endTime();
   }
 }

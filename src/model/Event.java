@@ -33,11 +33,12 @@ public class Event {
   }
 
   /**
+   * Observes the Time of the event, which includes the starting and ending day and the starting
+   * and ending time of the event.
    *
-   *
-   * @return
+   * @return Time object that represents beginning and ending time of an event.
    */
-  public Time getTime() {
+  public Time time() {
     return this.time;
   }
 }
