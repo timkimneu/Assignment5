@@ -13,12 +13,4 @@ public class User {
   public User(String name) {
     this.name = name;
   }
-
-  /**
-   *
-   * @return
-   */
-  public String getUID() {
-    return this.name;
-  }
 }

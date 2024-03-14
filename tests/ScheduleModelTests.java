@@ -1,5 +1,10 @@
 import model.DaysOfTheWeek;
+import model.Location;
+import model.Schedule;
 import model.Time;
+import model.Event;
+import model.User;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -9,7 +14,11 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -27,6 +36,25 @@ public class ScheduleModelTests {
   DaysOfTheWeek saturday;
   Time invalidTime;
   Time time1;
+  Time time2;
+  Time time3;
+  Location loc1;
+  Location loc2;
+  Location loc3;
+  User user1;
+  User user2;
+  User user3;
+  User classmate;
+  User friend;
+  User bestFriend;
+  List<User> users1;
+  List<User> users2;
+  List<User> users3;
+  Event church;
+  Event school;
+  Event vacation;
+  List<Event> mtEvents;
+  List<Event> events1;
 
   public void initData() {
     this.sunday = DaysOfTheWeek.SUNDAY;
@@ -36,6 +64,26 @@ public class ScheduleModelTests {
     this.thursday = DaysOfTheWeek.THURSDAY;
     this.friday = DaysOfTheWeek.FRIDAY;
     this.saturday = DaysOfTheWeek.SATURDAY;
+    this.time1 = new Time(this.sunday, "1000", this.sunday, "1300");
+    this.time2 = new Time(this.monday, "0800", this.friday, "1500");
+    this.time3 = new Time(this.thursday, "1700", this.tuesday, "0900");
+    this.loc1 = new Location(false, "Mulberry Street");
+    this.loc2 = new Location(false, "Northeastern University");
+    this.loc3 = new Location(false, "Cancun Resort");
+    this.user1 = new User("Me");
+    this.user2 = new User("Mom");
+    this.user3 = new User("Dad");
+    this.classmate = new User("Classmate");
+    this.friend = new User("Friend");
+    this.bestFriend = new User("Best Friend");
+    this.users1 = new ArrayList<>(Arrays.asList(this.user1, this.user2, this.user3));
+    this.users2 = new ArrayList<>(Arrays.asList(this.user1, this.classmate, this.bestFriend));
+    this.users3 = new ArrayList<>(Arrays.asList(this.user1, this.friend, this.bestFriend));
+    this.church = new Event("Church", this.time1, this.loc1, this.users1);
+    this.school = new Event("Classes", this.time2, this.loc2, this.users2);
+    this.vacation = new Event("Cancun Trip", this.time3, this.loc3, this.users3);
+    this.mtEvents = new ArrayList<>();
+    this.events1 = new ArrayList<>(Arrays.asList(this.church, this.school, this.vacation));
   }
 
   // Test Time constructor for IllegalArgumentException for an invalid input for
@@ -150,6 +198,128 @@ public class ScheduleModelTests {
     }
   }
 
+  // test startDay method for Time class
+  @Test
+  public void testStartDay() {
+    this.initData();
+    Assert.assertEquals(this.sunday, this.time1.startDay());
+    Assert.assertEquals(this.monday, this.time2.startDay());
+    Assert.assertEquals(this.thursday, this.time3.startDay());
+  }
+
+  // test endDay method for Time class
+  @Test
+  public void testEndDay() {
+    this.initData();
+    Assert.assertEquals(this.sunday, this.time1.endDay());
+    Assert.assertEquals(this.friday, this.time2.endDay());
+    Assert.assertEquals(this.tuesday, this.time3.endDay());
+  }
+
+  // test startTime method for Time class
+  @Test
+  public void testStartTime() {
+    this.initData();
+    Assert.assertEquals("1000", this.time1.startTime());
+    Assert.assertEquals("0800", this.time2.startTime());
+    Assert.assertEquals("1700", this.time3.startTime());
+  }
+
+  // test endTime method for Time class
+  @Test
+  public void testEndTime() {
+    this.initData();
+    Assert.assertEquals("1300", this.time1.endTime());
+    Assert.assertEquals("1500", this.time2.endTime());
+    Assert.assertEquals("0900", this.time3.endTime());
+  }
+
+  // test anyOverlap method for Time class
+  @Test
+  public void testAnyOverlap() {
+
+  }
+
+  // test time method for Event class
+  @Test
+  public void testEventTime() {
+    this.initData();
+    Assert.assertEquals(this.time1, this.church.time());
+    Assert.assertEquals(this.time2, this.school.time());
+    Assert.assertEquals(this.time3, this.vacation.time());
+  }
+
+  // test addEvent method in Schedule class for IllegalArgumentException
+  // when Schedule already contains the given event
+  @Test
+  public void testAddEventAlreadyContainsEventError() {
+    this.initData();
+    Schedule sch = new Schedule(this.mtEvents, "Bad Schedule");
+    sch.addEvent(this.school);
+    try {
+      sch.addEvent(this.school);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Schedule already contains given event!", e.getMessage());
+    }
+
+    sch.addEvent(this.church);
+    try {
+      sch.addEvent(this.church);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Schedule already contains given event!", e.getMessage());
+    }
+
+    sch.removeEvent(this.school);
+    sch.addEvent(this.school);
+    try {
+      sch.addEvent(this.school);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Schedule already contains given event!", e.getMessage());
+    }
+  }
+
+  // test addEvent method in Schedule class for IllegalArgumentException
+  // when the given event overlaps with an existing event in the schedule
+  @Test
+  public void testAddEventOverlappingEventsError() {
+    this.initData();
+    Schedule sch = new Schedule(this.mtEvents, "Bad Schedule");
+    sch.addEvent(this.church);
+    try {
+      sch.addEvent(this.vacation);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Added event overlaps with an existing event!" +
+              " Removing added event.", e.getMessage());
+    }
+
+    sch.removeEvent(this.church);
+    sch.addEvent(this.vacation);
+    try {
+      sch.addEvent(this.school);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Added event overlaps with an existing event!" +
+              " Removing added event.", e.getMessage());
+    }
+  }
+
+  // test addEvent method for Schedule class
+
+  // test modifyEvent method in Schedule class for IllegalArgumentException
+  // when Schedule already contains the given event
+
+  // test modifyEvent method in Schedule class for IllegalArgumentException
+  // when the given event overlaps with an existing event in the schedule
+
+  // test modifyEvent method for Schedule class
+
+  // test removeEvent method in Schedule class for IllegalArgumentException
+  // when the given event does not exist in this Schedule
+
   @Test
   public void testExampleXML() {
     Document doc = null;
@@ -248,9 +418,6 @@ public class ScheduleModelTests {
         assertEquals("true", online.getTextContent());
         assertEquals("Home", place.getTextContent());
       }
-
-
-
     }
   }
 

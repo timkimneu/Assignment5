@@ -70,7 +70,64 @@ public class Time {
     return this.endTime;
   }
 
-  public boolean hasOverlap(Time t) {
+  /**
+   * Checks if this time and the given time have any overlap with each other pertaining to the day
+   * of the week and if one starts and the other ends on the same day, check the hours and minutes.
+   * Also is able to check for overlap crossing between the beginning and end of the week.
+   *
+   * @param t Other Time object to be compared to this Time object.
+   * @return True if there exists an overlap between the two Time objects and false otherwise.
+   */
+  public boolean anyOverlap(Time t) {
+    return this.hasOverlapContainedWeek(t)
+            || t.hasOverlapContainedWeek(this)
+            || this.hasOverlapCrossWeek(t);
+  }
+
+  private boolean hasOverlapContainedWeek(Time t) {
+    // check if start day of other Time object is before the ending day of this Time object
+    if (this.startDay().compareTo(t.startDay()) <= 0 && this.endDay().compareTo(t.startDay()) > 0) {
+      return true;
+      // check case when start day of other Time object is
+      // same day as the end day of this Time object.
+    } else if (this.endDay().equals(t.startDay())) {
+      int firstStartHr = this.getHours(this.startTime());
+      int firstEndingHr = this.getHours(this.endTime());
+      int secondStartHr = t.getHours(t.startTime());
+      // check if starting hour of other Time object is before the ending hour of this Time object
+      if (firstStartHr <= secondStartHr && firstEndingHr > secondStartHr) {
+        return true;
+        // check case when start hour of other Time object is
+        // same hour as the end hour of this Time object.
+      } else if (firstEndingHr == secondStartHr) {
+        int firstStartMin = this.getMinutes(this.startTime());
+        int firstEndMin = this.getMinutes(this.endTime());
+        int secondStartMin = this.getMinutes(t.startTime());
+        // check if start minute of other Time object is less
+        // than or equal to end minute of this Time object.
+        return firstStartMin <= secondStartMin && firstEndMin > secondStartMin;
+      }
+    }
+    // otherwise return false
+    return false;
+  }
+
+  // checks for any overlaps that may occur between 2 Time
+  // objects when one or both roll over into a new week
+  private boolean hasOverlapCrossWeek(Time t) {
+    // check that if both time objects roll over to next week (both roll over = overlap)
+    if (this.startDay().compareTo(this.endDay()) > 0 && t.startDay().compareTo(t.endDay()) > 0) {
+      return true;
+      // check that if this Time object rolls over to next week, check the end day of this
+      // Time object to the start day of the other Time object.
+    } else if (this.startDay().compareTo(this.endDay()) > 0) {
+      return this.endDay().compareTo(t.startDay()) > 0;
+      // check that if the other Time object rolls over to next week, check the end day of
+      // the other Time object to the start of this Time object.
+    } else if (t.startDay().compareTo(t.endDay()) > 0) {
+      return t.endDay().compareTo(this.startDay()) > 0;
+    }
+    // Otherwise return false.
     return false;
   }
 

@@ -38,7 +38,7 @@ public class Schedule {
       } catch (IllegalStateException ex) {
         this.removeEvent(e);
         throw new IllegalArgumentException("Added event overlaps with an existing event!" +
-            " Removing new event.");
+            " Removing added event.");
       }
     }
   }
@@ -69,6 +69,7 @@ public class Schedule {
       for (Event event : this.events) {
         if (e.equals(event)) {
           this.events.remove(e);
+          break;
         }
       }
     }
@@ -77,15 +78,18 @@ public class Schedule {
   private void checkAnyOverlap() throws IllegalStateException {
     for (Event e1 : this.events) {
       for (Event e2 : this.events) {
-        checkForOverlap(e1, e2);
+        if (!e1.equals(e2)) {
+          checkForOverlap(e1, e2);
+        }
       }
     }
   }
 
   private void checkForOverlap(Event e1, Event e2) throws IllegalStateException {
-    String e1StartTime = e1.time().startTime();
-    String e1EndTime = e1.time().endTime();
-    String e2StartTime = e2.time().startTime();
-    String e2EndTime = e2.time().endTime();
+    Time e1Time = e1.time();
+    Time e2Time = e2.time();
+    if (e1Time.anyOverlap(e2Time)) {
+      throw new IllegalStateException("Schedule contains overlapping events!");
+    }
   }
 }

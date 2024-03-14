@@ -28,7 +28,7 @@ public class Event {
     if (this.users.isEmpty()) {
       throw new IllegalArgumentException("Must have 1 or more people attending event!");
     } else {
-      this.host = this.users.getFirst();
+      this.host = this.users.get(0);
     }
   }
 
