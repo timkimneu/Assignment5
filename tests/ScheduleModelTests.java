@@ -18,6 +18,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -38,9 +39,11 @@ public class ScheduleModelTests {
   Time time1;
   Time time2;
   Time time3;
+  Time time4;
   Location loc1;
   Location loc2;
   Location loc3;
+  Location loc4;
   User user1;
   User user2;
   User user3;
@@ -53,6 +56,7 @@ public class ScheduleModelTests {
   Event church;
   Event school;
   Event vacation;
+  Event mondayAfternoonJog;
   List<Event> mtEvents;
   List<Event> events1;
 
@@ -67,9 +71,11 @@ public class ScheduleModelTests {
     this.time1 = new Time(this.sunday, "1000", this.sunday, "1300");
     this.time2 = new Time(this.monday, "0800", this.friday, "1500");
     this.time3 = new Time(this.thursday, "1700", this.tuesday, "0900");
+    this.time4 = new Time(this.monday, "1200", this.monday, "1245");
     this.loc1 = new Location(false, "Mulberry Street");
     this.loc2 = new Location(false, "Northeastern University");
     this.loc3 = new Location(false, "Cancun Resort");
+    this.loc4 = new Location(false, "Outside");
     this.user1 = new User("Me");
     this.user2 = new User("Mom");
     this.user3 = new User("Dad");
@@ -82,8 +88,10 @@ public class ScheduleModelTests {
     this.church = new Event("Church", this.time1, this.loc1, this.users1);
     this.school = new Event("Classes", this.time2, this.loc2, this.users2);
     this.vacation = new Event("Cancun Trip", this.time3, this.loc3, this.users3);
+    this.mondayAfternoonJog = new Event("Afternoon Jog", this.time4, this.loc4,
+            new ArrayList<>(Collections.singletonList(this.user1)));
     this.mtEvents = new ArrayList<>();
-    this.events1 = new ArrayList<>(Arrays.asList(this.church, this.school, this.vacation));
+    this.events1 = new ArrayList<>(Arrays.asList(this.church, this.school));
   }
 
   // Test Time constructor for IllegalArgumentException for an invalid input for
@@ -288,6 +296,7 @@ public class ScheduleModelTests {
     this.initData();
     Schedule sch = new Schedule(this.mtEvents, "Bad Schedule");
     sch.addEvent(this.church);
+    Assert.assertEquals(1, sch.events().size());
     try {
       sch.addEvent(this.vacation);
       Assert.fail("Failed to catch error");
@@ -295,9 +304,12 @@ public class ScheduleModelTests {
       Assert.assertEquals("Added event overlaps with an existing event!" +
               " Removing added event.", e.getMessage());
     }
+    // confirm that vacation event has not been added to schedule
+    Assert.assertEquals(1, sch.events().size());
 
     sch.removeEvent(this.church);
     sch.addEvent(this.vacation);
+    Assert.assertEquals(1, sch.events().size());
     try {
       sch.addEvent(this.school);
       Assert.fail("Failed to catch error");
@@ -305,20 +317,168 @@ public class ScheduleModelTests {
       Assert.assertEquals("Added event overlaps with an existing event!" +
               " Removing added event.", e.getMessage());
     }
+    // confirm that school event has not been added to schedule
+    Assert.assertEquals(1, sch.events().size());
   }
 
   // test addEvent method for Schedule class
+  @Test
+  public void testAddEvent() {
+    this.initData();
+    Schedule sch = new Schedule(this.mtEvents, "My Schedule");
+    // check that schedule is empty
+    Assert.assertFalse(sch.events().contains(this.school));
+    Assert.assertTrue(sch.events().isEmpty());
+    Assert.assertEquals(0, sch.events().size());
+    // check that schedule added school event
+    sch.addEvent(this.school);
+    Assert.assertFalse(sch.events().isEmpty());
+    Assert.assertTrue(sch.events().contains(this.school));
+    Assert.assertEquals(new ArrayList<>(Collections.singletonList(this.school)), sch.events());
+    Assert.assertEquals(1, sch.events().size());
+
+    sch.addEvent(this.church);
+    Assert.assertEquals(2, sch.events().size());
+    Assert.assertEquals(new ArrayList<>(Arrays.asList(this.school, this.church)), sch.events());
+  }
 
   // test modifyEvent method in Schedule class for IllegalArgumentException
-  // when Schedule already contains the given event
+  // when attempting to replace old event with itself
+  @Test
+  public void testModifyEventNewSameOldError() {
+    this.initData();
+    Schedule sch = new Schedule(this.mtEvents, "My Schedule");
+    sch.addEvent(this.vacation);
+    try {
+      sch.modifyEvent(this.vacation, this.vacation);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Cannot replace old event with same event!", e.getMessage());
+    }
+  }
 
   // test modifyEvent method in Schedule class for IllegalArgumentException
-  // when the given event overlaps with an existing event in the schedule
+  // when Schedule already contains the given new event
+  @Test
+  public void testModifyEventAlreadyContainsEventError() {
+    this.initData();
+    Schedule sch = new Schedule(this.mtEvents, "My Schedule");
+    sch.addEvent(this.church);
+    sch.addEvent(this.school);
+    try {
+      sch.modifyEvent(this.church, this.school);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Schedule already contains given event!", e.getMessage());
+    }
+  }
+
+  // test modifyEvent method in Schedule class for IllegalArgumentException
+  // when the given new event overlaps with an existing event in the schedule
+  @Test
+  public void testModifyEventOverlappingEventsError() {
+    this.initData();
+    ArrayList<Event> churchSchool = new ArrayList<>(Arrays.asList(this.church, this.school));
+    Schedule sch = new Schedule(churchSchool, "My Schedule");
+    Assert.assertEquals(2, sch.events().size());
+    try {
+      sch.modifyEvent(this.church, this.vacation);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Added event overlaps with an existing event!" +
+              " Removing added event.", e.getMessage());
+    }
+    // confirm that original list of events is not modified
+    Assert.assertEquals(churchSchool, sch.events());
+  }
+
+  // test modifyEvent method in Schedule class for IllegalArgumentException
+  // when the given old event does not exist in the current schedule
+  @Test
+  public void testModifyEventOldDoesNotExistError() {
+    this.initData();
+    Schedule sch = new Schedule(this.mtEvents, "My Schedule");
+    sch.addEvent(this.vacation);
+    try {
+      sch.modifyEvent(this.school, this.church);
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Event to be removed not found!", e.getMessage());
+    }
+  }
 
   // test modifyEvent method for Schedule class
+  @Test
+  public void testModifyEvent() {
+    this.initData();
+    Schedule sch = new Schedule(this.mtEvents, "My Schedule");
+    // confirm that original event is added to list
+    sch.addEvent(this.school);
+    Assert.assertEquals(new ArrayList<>(Collections.singletonList(this.school)), sch.events());
+    // confirm that old event is replaced with new event
+    sch.modifyEvent(this.school, this.vacation);
+    Assert.assertEquals(new ArrayList<>(Collections.singletonList(this.vacation)), sch.events());
+
+    sch.modifyEvent(this.vacation, this.church);
+    Assert.assertEquals(new ArrayList<>(Collections.singletonList(this.church)), sch.events());
+
+    // check modify with multiple events existing prior to modifications. Also check
+    // modify won't throw an error when replaced event overlaps with new event
+    sch.addEvent(this.mondayAfternoonJog);
+    sch.modifyEvent(this.mondayAfternoonJog, this.school);
+    Assert.assertEquals(new ArrayList<>(Arrays.asList(this.church, this.school)), sch.events());
+  }
 
   // test removeEvent method in Schedule class for IllegalArgumentException
   // when the given event does not exist in this Schedule
+  @Test
+  public void testRemoveEventEventDoesNotExist() {
+    this.initData();
+    Schedule sch = new Schedule(this.events1, "My Schedule");
+    Assert.assertEquals(2, sch.events().size());
+    try {
+      sch.removeEvent(this.vacation);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Event to be removed not found!", e.getMessage());
+    }
+
+    // try removing event again after being removed from list
+    sch.removeEvent(this.church);
+    try {
+      sch.removeEvent(this.church);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Event to be removed not found!", e.getMessage());
+    }
+  }
+
+  // test removeEvent method for Schedule class
+  @Test
+  public void testRemoveEvent() {
+    this.initData();
+    Schedule sch = new Schedule(this.events1, "My Schedule");
+    Assert.assertEquals(2, sch.events().size());
+    Assert.assertEquals(new ArrayList<>(Arrays.asList(this.church, this.school)), sch.events());
+
+    sch.removeEvent(this.church);
+    Assert.assertEquals(new ArrayList<>(Collections.singletonList(this.school)), sch.events());
+    Assert.assertEquals(1, sch.events().size());
+
+    sch.removeEvent(this.school);
+    Assert.assertEquals(this.mtEvents, sch.events());
+    Assert.assertTrue(sch.events().isEmpty());
+  }
+
+  // test events method for Schedule class
+  @Test
+  public void testScheduleEventsMethod() {
+    this.initData();
+    Schedule sch = new Schedule(this.events1, "My Schedule");
+    Assert.assertEquals(new ArrayList<>(Arrays.asList(this.church, this.school)), sch.events());
+
+    Schedule sch0 = new Schedule(this.mtEvents, "New Schedule");
+    Assert.assertTrue(sch0.events().isEmpty());
+  }
 
   @Test
   public void testExampleXML() {

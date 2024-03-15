@@ -29,10 +29,10 @@ public class Schedule {
    * @param e Event to be added.
    */
   public void addEvent(Event e) {
-    if (this.events.contains(e)) {
+    if (this.events().contains(e)) {
       throw new IllegalArgumentException("Schedule already contains given event!");
     } else {
-      this.events.add(e);
+      this.events().add(e);
       try {
         this.checkAnyOverlap();
       } catch (IllegalStateException ex) {
@@ -51,6 +51,9 @@ public class Schedule {
    * @param newEvent event to be added in place of the old event
    */
   public void modifyEvent(Event oldEvent, Event newEvent) {
+    if (oldEvent.equals(newEvent)) {
+      throw new IllegalArgumentException("Cannot replace old event with same event!");
+    }
     this.removeEvent(oldEvent);
     this.addEvent(newEvent);
   }
@@ -63,21 +66,31 @@ public class Schedule {
    * @param e Event to be removed.
    */
   public void removeEvent(Event e) {
-    if (!this.events.contains(e)) {
-      throw new IllegalArgumentException("Event not found!");
+    if (!this.events().contains(e)) {
+      throw new IllegalArgumentException("Event to be removed not found!");
     } else {
-      for (Event event : this.events) {
+      for (Event event : this.events()) {
         if (e.equals(event)) {
-          this.events.remove(e);
+          this.events().remove(e);
           break;
         }
       }
     }
   }
 
+  /**
+   * Observer that lists all the events in this schedule in no particular order. Currently used
+   * mostly for testing purposes.
+   *
+   * @return the list of events currently contained in this schedule.
+   */
+  public List<Event> events() {
+    return this.events;
+  }
+
   private void checkAnyOverlap() throws IllegalStateException {
-    for (Event e1 : this.events) {
-      for (Event e2 : this.events) {
+    for (Event e1 : this.events()) {
+      for (Event e2 : this.events()) {
         if (!e1.equals(e2)) {
           checkForOverlap(e1, e2);
         }
