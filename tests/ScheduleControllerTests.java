@@ -277,7 +277,6 @@ public class ScheduleControllerTests {
 
     for (int eventIndx = 0; eventIndx < events.getLength(); eventIndx++) {
       Node name = doc.getElementsByTagName("name").item(eventIndx);
-      //System.out.println(name.getTextContent());
 
       Node users = doc.getElementsByTagName("users").item(eventIndx);
       NodeList indUsers = users.getChildNodes();

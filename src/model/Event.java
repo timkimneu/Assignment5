@@ -14,11 +14,15 @@ public class Event {
   private User host;
 
   /**
+   * Represents a social gathering that has a name, a specified starting and ending time,
+   * a location, and a list of attendees along with the host of the event. Parameters
+   * include the name of the event, and references to the time, location, and user classes
+   * in order to store their corresponding values.
    *
-   * @param name
-   * @param time
-   * @param loc
-   * @param users
+   * @param name String that represents the name of the event
+   * @param time Includes the start time and end time of an event
+   * @param loc Has information of whether the place and whether it is online or not
+   * @param users Includes a list of users that are a part of the event
    */
   public Event(String name, Time time, Location loc, List<User> users) {
     this.name = name;
@@ -33,8 +37,9 @@ public class Event {
   }
 
   /**
+   * Observer in order to observe the name field.
    *
-   * @return
+   * @return a String that has the name of the event
    */
   public String name() {
     return this.name;
@@ -51,16 +56,20 @@ public class Event {
   }
 
   /**
+   * Observer in order to observe the name location. Includes information
+   * of the place and whether the event is online or not.
    *
-   * @return
+   * @return instance of Location field
    */
   public Location location() {
     return this.location;
   }
 
   /**
+   * Observer in order to observe the list of users. Includes information
+   * of the place and whether the event is online or not.
    *
-   * @return
+   * @return instance of list of users field
    */
   public List<User> users() {
     return this.users;

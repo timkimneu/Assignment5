@@ -13,17 +13,31 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- *
+ * Creates a Viewer to view the schedule in a formatted manner, with
+ * each event indented under their corresponding day of the week. This
+ * helps the user keep track of what events have been scheduled throughout
+ * the week.
  */
 public class ScheduleSystemTextView implements ScheduleSystemView {
   private final List<Schedule> schedules;
   private String viewer = "";
 
+  /**
+   * Observes the state of the list of schedules.
+   *
+   * @param schedules List of schedules.
+   */
   public ScheduleSystemTextView(List<Schedule> schedules) {
     this.schedules = schedules;
   }
 
-  // returns the viewer that displays the schedule in a textual view
+  /**
+   * Creates a Viewer to view the schedule in a formatted manner, with
+   * each event indented under their corresponding day of the week. Displays
+   * the schedule as a string textual view.
+   *
+   * @return String that represents the schedule format
+   */
   @Override
   public String schedulesToString() {
     for (int sch = 0; sch < schedules.size(); sch++) {
@@ -52,8 +66,8 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
         viewer += "name: " + listEvents.get(event).name() + "\n\t";
 
         Time time = listEvents.get(event).time();
-        viewer += "time: " + time.startDay().getDay() + ": " + time.startTime() +
-            " -> " + time.endDay().getDay() + ": " + time.endTime() + "\n\t";
+        viewer += "time: " + time.startDay().observeDay() + ": " + time.startTime() +
+            " -> " + time.endDay().observeDay() + ": " + time.endTime() + "\n\t";
 
         Location location = listEvents.get(event).location();
         viewer += "location: " + location.place() + "\n\t";

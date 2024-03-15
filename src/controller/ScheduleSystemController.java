@@ -126,9 +126,9 @@ public class ScheduleSystemController implements ScheduleSystem {
   private void writeTime(Writer file, Time t) {
     try {
       file.write("\t\t<time>\n");
-      file.write("\t\t\t<start-day>" + t.startDay().getDay() + "</start-day>\n");
+      file.write("\t\t\t<start-day>" + t.startDay().observeDay() + "</start-day>\n");
       file.write("\t\t\t<start>" + t.startTime() + "</start>\n");
-      file.write("\t\t\t<end-day>" + t.endDay().getDay() + "</end-day>\n");
+      file.write("\t\t\t<end-day>" + t.endDay().observeDay() + "</end-day>\n");
       file.write("\t\t\t<end>" + t.endTime() + "</end>\n");
       file.write("\t\t</time>\n");
     } catch (IOException ex) {

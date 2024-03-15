@@ -10,9 +10,11 @@ public class Schedule {
   final private String id;
 
   /**
+   * Instantiates the schedule, which includes a list of events, as well
+   * as a unique id identifier.
    *
-   * @param events
-   * @param id
+   * @param events List of events that will form a schedule
+   * @param id String to show the unique id of the event
    */
   public Schedule(List<Event> events, String id) {
     this.events = events;
@@ -21,8 +23,9 @@ public class Schedule {
   }
 
   /**
+   * Observes the state of the id.
    *
-   * @return
+   * @return a String that represents the id of the event.
    */
   public String id() {
     return this.id;
@@ -64,7 +67,6 @@ public class Schedule {
     this.addEvent(newEvent);
   }
 
-  // remove event
   /**
    * Removes the given event from the current schedule of events if it exists.
    * If given event is not in schedule throw IllegalArgumentException.
