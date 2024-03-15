@@ -97,7 +97,7 @@ public class ScheduleSystemController implements ScheduleSystem {
         Writer file = new FileWriter("src/" + sch.id() + ".xml");
         file.write("<?xml version=\"1.0\"?>\n");
         file.write("<schedule id=\"" + sch.id() + "\">\n");
-        for (Event e : sch.findEvents()) {
+        for (Event e : sch.events()) {
           this.writeEvent(file, e);
         }
         file.write("</schedule>");

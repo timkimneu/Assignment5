@@ -29,14 +29,6 @@ public class Schedule {
   }
 
   /**
-   *
-   * @return
-   */
-  public List<Event> findEvents() {
-    return this.events;
-  }
-
-  /**
    * Adds the given event to the current schedule of events. Checks if the new added event
    * overlaps with any existing event in the current list of events.
    *

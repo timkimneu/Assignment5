@@ -30,7 +30,7 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
       viewer += "User: ";
       viewer += schedules.get(sch).id() + "\n";
       Schedule currSch = schedules.get(sch);
-      List<Event> listEvents = currSch.findEvents();
+      List<Event> listEvents = currSch.events();
       addEventsForDay(listEvents, sch);
     }
     return viewer;
@@ -40,7 +40,7 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
   private void getWhichDays(String day, int sch) {
     viewer += day + ": \n";
     Schedule currSch = schedules.get(sch);
-    List<Event> listEvents = currSch.findEvents();
+    List<Event> listEvents = currSch.events();
 
     for (int event = 0; event < listEvents.size(); event++) {
       Event currEvent = listEvents.get(event);

@@ -1,10 +1,3 @@
-import model.DaysOfTheWeek;
-import model.Location;
-import model.Schedule;
-import model.Time;
-import model.Event;
-import model.User;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,8 +6,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import model.DaysOfTheWeek;
+import model.Location;
+import model.Schedule;
+import model.Time;
+import model.User;
+import model.Event;
+
 /**
- * Represents examples and tests of the ScheduleSystem model and all of its relevant supporting classes.
+ * Represents examples and tests of the Schedule model and all of its relevant supporting classes.
  * Examples and tests of classes and methods within the model package.
  */
 public class ScheduleModelTests {
@@ -36,6 +36,7 @@ public class ScheduleModelTests {
   Location loc3;
   Location loc4;
   Location loc5;
+  Location loc6;
   User user1;
   User user2;
   User user3;
@@ -76,6 +77,7 @@ public class ScheduleModelTests {
     this.loc3 = new Location(false, "Cancun Resort");
     this.loc4 = new Location(false, "Outside");
     this.loc5 = new Location(false, "Home");
+    this.loc6 = new Location(true, "Office");
     this.user1 = new User("Me");
     this.user2 = new User("Mom");
     this.user3 = new User("Dad");
@@ -91,14 +93,16 @@ public class ScheduleModelTests {
     this.mondayAfternoonJog = new Event("Afternoon Jog", this.time4, this.loc4,
             new ArrayList<>(Collections.singletonList(this.user1)));
     this.wednesdayDinner = new Event("Wednesday Dinner", this.time5, this.loc5,
-        new ArrayList<>(Collections.singletonList(this.user1)));
+            new ArrayList<>(Collections.singletonList(this.user1)));
     this.mtEvents = new ArrayList<>();
     this.events1 = new ArrayList<>(Arrays.asList(this.church, this.school));
     this.events2 = new ArrayList<>(Arrays.asList(this.vacation, this.mondayAfternoonJog));
     this.sch1 = new Schedule(this.events1, "School Schedule");
     this.sch2 = new Schedule(this.events2, "Summer Schedule");
-    this.sch3 = new Schedule(new ArrayList<>(Arrays.asList(this.church, this.mondayAfternoonJog)), "My Schedule");
-    this.sch4 = new Schedule(new ArrayList<>(Collections.singletonList(this.wednesdayDinner)), "Dinner");
+    this.sch3 = new Schedule(new ArrayList<>(Arrays.asList(this.church, this.mondayAfternoonJog)),
+            "My Schedule");
+    this.sch4 = new Schedule(new ArrayList<>(Collections.singletonList(this.wednesdayDinner)),
+            "Dinner");
   }
 
   // Test Time constructor for IllegalArgumentException for an invalid input for
@@ -256,6 +260,48 @@ public class ScheduleModelTests {
     Assert.assertFalse(this.time1.anyOverlap(this.time2));
   }
 
+  // Test online method for Location class
+  @Test
+  public void testLocationOnline() {
+    this.initData();
+    Assert.assertFalse(this.loc1.online());
+    Assert.assertFalse(this.loc4.online());
+    Assert.assertFalse(this.loc5.online());
+    Assert.assertTrue(this.loc6.online());
+  }
+
+  // Test place method for Location class
+  @Test
+  public void testLocationPlace() {
+    this.initData();
+    Assert.assertEquals("Mulberry Street", this.loc1.place());
+    Assert.assertEquals("Northeastern University", this.loc2.place());
+    Assert.assertEquals("Cancun Resort", this.loc3.place());
+    Assert.assertEquals("Office", this.loc6.place());
+  }
+
+  // Test name method for User class
+  @Test
+  public void testUserName() {
+    this.initData();
+    Assert.assertEquals("Me", this.user1.name());
+    Assert.assertEquals("Mom", this.user2.name());
+    Assert.assertEquals("Dad", this.user3.name());
+    Assert.assertEquals("Classmate", this.classmate.name());
+    Assert.assertEquals("Friend", this.friend.name());
+  }
+
+  // test name method for Event class
+  @Test
+  public void testEventName() {
+    this.initData();
+    Assert.assertEquals("Church", this.church.name());
+    Assert.assertEquals("Classes", this.school.name());
+    Assert.assertEquals("Cancun Trip", this.vacation.name());
+    Assert.assertEquals("Afternoon Jog", this.mondayAfternoonJog.name());
+    Assert.assertEquals("Wednesday Dinner", this.wednesdayDinner.name());
+  }
+
   // test time method for Event class
   @Test
   public void testEventTime() {
@@ -263,6 +309,47 @@ public class ScheduleModelTests {
     Assert.assertEquals(this.time1, this.church.time());
     Assert.assertEquals(this.time2, this.school.time());
     Assert.assertEquals(this.time3, this.vacation.time());
+  }
+
+  // test location method for Event class
+  @Test
+  public void testEventLocation() {
+    this.initData();
+    Assert.assertEquals(this.loc1, this.church.location());
+    Assert.assertEquals(this.loc2, this.school.location());
+    Assert.assertEquals(this.loc3, this.vacation.location());
+    Assert.assertEquals(this.loc4, this.mondayAfternoonJog.location());
+    Assert.assertEquals(this.loc5, this.wednesdayDinner.location());
+  }
+
+  // test users method for Event class
+  @Test
+  public void testEventUsers() {
+    this.initData();
+    Assert.assertEquals(this.users1, this.church.users());
+    Assert.assertEquals(this.users2, this.school.users());
+    Assert.assertEquals(this.users3, this.vacation.users());
+  }
+
+  // test id method for Schedule class
+  @Test
+  public void testScheduleId() {
+    this.initData();
+    Assert.assertEquals("School Schedule", this.sch1.id());
+    Assert.assertEquals("Summer Schedule", this.sch2.id());
+    Assert.assertEquals("My Schedule", this.sch3.id());
+    Assert.assertEquals("Dinner", this.sch4.id());
+  }
+
+  // test events method for Schedule class
+  @Test
+  public void testScheduleEventsMethod() {
+    this.initData();
+    Schedule sch = new Schedule(this.events1, "My Schedule");
+    Assert.assertEquals(new ArrayList<>(Arrays.asList(this.church, this.school)), sch.events());
+
+    Schedule sch0 = new Schedule(this.mtEvents, "New Schedule");
+    Assert.assertTrue(sch0.events().isEmpty());
   }
 
   // test addEvent method in Schedule class for IllegalArgumentException
@@ -475,16 +562,5 @@ public class ScheduleModelTests {
     sch.removeEvent(this.school);
     Assert.assertEquals(this.mtEvents, sch.events());
     Assert.assertTrue(sch.events().isEmpty());
-  }
-
-  // test events method for Schedule class
-  @Test
-  public void testScheduleEventsMethod() {
-    this.initData();
-    Schedule sch = new Schedule(this.events1, "My Schedule");
-    Assert.assertEquals(new ArrayList<>(Arrays.asList(this.church, this.school)), sch.events());
-
-    Schedule sch0 = new Schedule(this.mtEvents, "New Schedule");
-    Assert.assertTrue(sch0.events().isEmpty());
   }
 }

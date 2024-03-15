@@ -25,7 +25,8 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 /**
- *
+ * Represents examples and tests of the ScheduleSystemController class and all of its relevant
+ * supporting classes. Examples and tests of classes and methods within the controller package.
  */
 public class ScheduleSystemControllerTests {
   DaysOfTheWeek sunday;
