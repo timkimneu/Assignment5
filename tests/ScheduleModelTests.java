@@ -7,21 +7,11 @@ import model.User;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Represents examples and tests of the ScheduleSystem model and all of its relevant supporting classes.
@@ -40,10 +30,12 @@ public class ScheduleModelTests {
   Time time2;
   Time time3;
   Time time4;
+  Time time5;
   Location loc1;
   Location loc2;
   Location loc3;
   Location loc4;
+  Location loc5;
   User user1;
   User user2;
   User user3;
@@ -57,8 +49,14 @@ public class ScheduleModelTests {
   Event school;
   Event vacation;
   Event mondayAfternoonJog;
+  Event wednesdayDinner;
   List<Event> mtEvents;
   List<Event> events1;
+  List<Event> events2;
+  Schedule sch1;
+  Schedule sch2;
+  Schedule sch3;
+  Schedule sch4;
 
   public void initData() {
     this.sunday = DaysOfTheWeek.SUNDAY;
@@ -70,12 +68,14 @@ public class ScheduleModelTests {
     this.saturday = DaysOfTheWeek.SATURDAY;
     this.time1 = new Time(this.sunday, "1000", this.sunday, "1300");
     this.time2 = new Time(this.monday, "0800", this.friday, "1500");
-    this.time3 = new Time(this.thursday, "1700", this.tuesday, "0900");
+    this.time3 = new Time(this.thursday, "1700", this.monday, "0900");
     this.time4 = new Time(this.monday, "1200", this.monday, "1245");
+    this.time5 = new Time(this.wednesday, "1800", this.wednesday, "1830");
     this.loc1 = new Location(false, "Mulberry Street");
     this.loc2 = new Location(false, "Northeastern University");
     this.loc3 = new Location(false, "Cancun Resort");
     this.loc4 = new Location(false, "Outside");
+    this.loc5 = new Location(false, "Home");
     this.user1 = new User("Me");
     this.user2 = new User("Mom");
     this.user3 = new User("Dad");
@@ -90,8 +90,15 @@ public class ScheduleModelTests {
     this.vacation = new Event("Cancun Trip", this.time3, this.loc3, this.users3);
     this.mondayAfternoonJog = new Event("Afternoon Jog", this.time4, this.loc4,
             new ArrayList<>(Collections.singletonList(this.user1)));
+    this.wednesdayDinner = new Event("Wednesday Dinner", this.time5, this.loc5,
+        new ArrayList<>(Collections.singletonList(this.user1)));
     this.mtEvents = new ArrayList<>();
     this.events1 = new ArrayList<>(Arrays.asList(this.church, this.school));
+    this.events2 = new ArrayList<>(Arrays.asList(this.vacation, this.mondayAfternoonJog));
+    this.sch1 = new Schedule(this.events1, "School Schedule");
+    this.sch2 = new Schedule(this.events2, "Summer Schedule");
+    this.sch3 = new Schedule(new ArrayList<>(Arrays.asList(this.church, this.mondayAfternoonJog)), "My Schedule");
+    this.sch4 = new Schedule(new ArrayList<>(Collections.singletonList(this.wednesdayDinner)), "Dinner");
   }
 
   // Test Time constructor for IllegalArgumentException for an invalid input for
@@ -221,7 +228,7 @@ public class ScheduleModelTests {
     this.initData();
     Assert.assertEquals(this.sunday, this.time1.endDay());
     Assert.assertEquals(this.friday, this.time2.endDay());
-    Assert.assertEquals(this.tuesday, this.time3.endDay());
+    Assert.assertEquals(this.monday, this.time3.endDay());
   }
 
   // test startTime method for Time class
@@ -245,7 +252,8 @@ public class ScheduleModelTests {
   // test anyOverlap method for Time class
   @Test
   public void testAnyOverlap() {
-
+    this.initData();
+    Assert.assertFalse(this.time1.anyOverlap(this.time2));
   }
 
   // test time method for Event class
@@ -479,106 +487,4 @@ public class ScheduleModelTests {
     Schedule sch0 = new Schedule(this.mtEvents, "New Schedule");
     Assert.assertTrue(sch0.events().isEmpty());
   }
-
-  @Test
-  public void testExampleXML() {
-    Document doc = null;
-    try {
-      DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-      doc = builder.parse(new File("src/tutorial.xml"));
-      doc.getDocumentElement().normalize();
-    } catch (Exception ignored) {
-    }
-
-    NodeList nodeList = doc.getElementsByTagName("tutorial");
-    Node first = nodeList.item(0);
-
-    assertEquals(1, nodeList.getLength());
-    assertEquals(Node.ELEMENT_NODE, first.getNodeType());
-    assertEquals("tutorial", first.getNodeName());
-  }
-
-  @Test
-  public void whenGetFirstElementAttributes_thenSuccess() {
-    Document doc = null;
-    try {
-      DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-      doc = builder.parse(new File("src/tutorial.xml"));
-      doc.getDocumentElement().normalize();
-    } catch (Exception ignored) {
-    }
-
-    Node first = doc.getElementsByTagName("tutorial").item(0);
-    NamedNodeMap attrList = first.getAttributes();
-
-    assertEquals(2, attrList.getLength());
-
-    assertEquals("tutId", attrList.item(0).getNodeName());
-    assertEquals("01", attrList.item(0).getNodeValue());
-
-    assertEquals("type", attrList.item(1).getNodeName());
-    assertEquals("java", attrList.item(1).getNodeValue());
-  }
-
-
-  @Test
-  public void getEvents() {
-    Document doc = null;
-    try {
-      DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-      doc = builder.parse(new File("src/prof.xml"));
-      doc.getDocumentElement().normalize();
-    } catch (Exception ignored) {
-    }
-
-    // get all the events
-    NodeList events = doc.getElementsByTagName("event");
-    assertEquals(3, events.getLength());
-
-    for (int eventIndx = 0; eventIndx < events.getLength(); eventIndx++) {
-      Node name = doc.getElementsByTagName("name").item(eventIndx);
-      if (eventIndx == 0) {
-        assertEquals("CS3500 Morning Lecture", name.getTextContent().replaceAll("\"", ""));
-      }
-      if (eventIndx == 1) {
-        assertEquals("CS3500 Afternoon Lecture", name.getTextContent().replaceAll("\"", ""));
-      }
-      if (eventIndx == 2) {
-        assertEquals("Sleep", name.getTextContent().replaceAll("\"", ""));
-      }
-
-      Node time = doc.getElementsByTagName("time").item(eventIndx);
-
-      Node startDay = doc.getElementsByTagName("start-day").item(eventIndx);
-      Node start = doc.getElementsByTagName("start").item(eventIndx);
-      Node endDay = doc.getElementsByTagName("end-day").item(eventIndx);
-      Node end = doc.getElementsByTagName("end").item(eventIndx);
-
-      if (eventIndx == 0) {
-        assertEquals("Tuesday", startDay.getTextContent());
-        assertEquals("0950", start.getTextContent());
-        assertEquals("Tuesday", endDay.getTextContent());
-        assertEquals("1130", end.getTextContent());
-      }
-      if (eventIndx == 1) {
-        assertEquals("Tuesday", startDay.getTextContent());
-        assertEquals("1335", start.getTextContent());
-        assertEquals("Tuesday", endDay.getTextContent());
-        assertEquals("1515", end.getTextContent());
-      }
-
-      Node online = doc.getElementsByTagName("online").item(eventIndx);
-      Node place = doc.getElementsByTagName("place").item(eventIndx);
-
-      if (eventIndx == 0 | eventIndx == 1) {
-        assertEquals("false", online.getTextContent());
-        assertEquals("Churchill Hall 101", place.getTextContent().replaceAll("\"", ""));
-      }
-      if (eventIndx == 2) {
-        assertEquals("true", online.getTextContent());
-        assertEquals("Home", place.getTextContent());
-      }
-    }
-  }
-
 }

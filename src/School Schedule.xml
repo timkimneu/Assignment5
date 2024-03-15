@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<schedule id="School Schedule">
+	<event>
+		<name>"Church"</name>
+		<time>
+			<start-day>Sunday</start-day>
+			<start>1000</start>
+			<end-day>Sunday</end-day>
+			<end>1300</end>
+		</time>
+		<time>
+			<online>false</online>
+			<place>Mulberry Street</place>
+		</time>
+		<users>
+			<uid>"Me"</uid>
+			<uid>"Mom"</uid>
+			<uid>"Dad"</uid>
+		</users>
+	</event>
+	<event>
+		<name>"Classes"</name>
+		<time>
+			<start-day>Monday</start-day>
+			<start>0800</start>
+			<end-day>Friday</end-day>
+			<end>1500</end>
+		</time>
+		<time>
+			<online>false</online>
+			<place>Northeastern University</place>
+		</time>
+		<users>
+			<uid>"Me"</uid>
+			<uid>"Classmate"</uid>
+			<uid>"Best Friend"</uid>
+		</users>
+	</event>
+</schedule>

@@ -33,6 +33,14 @@ public class Event {
   }
 
   /**
+   *
+   * @return
+   */
+  public String name() {
+    return this.name;
+  }
+
+  /**
    * Observes the Time of the event, which includes the starting and ending day and the starting
    * and ending time of the event.
    *
@@ -40,5 +48,21 @@ public class Event {
    */
   public Time time() {
     return this.time;
+  }
+
+  /**
+   *
+   * @return
+   */
+  public Location location() {
+    return this.location;
+  }
+
+  /**
+   *
+   * @return
+   */
+  public List<User> users() {
+    return this.users;
   }
 }

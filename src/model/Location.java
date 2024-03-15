@@ -16,4 +16,12 @@ public class Location {
     this.online = online;
     this.place = place;
   }
+
+  public boolean online() {
+    return this.online;
+  }
+
+  public String place() {
+    return this.place;
+  }
 }

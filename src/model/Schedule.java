@@ -1,25 +1,39 @@
 package model;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.File;
 import java.util.List;
 
 /**
- *
+ * Represents a list of events for a single user with an identification number.
  */
 public class Schedule {
   final private List<Event> events;
   final private String id;
 
+  /**
+   *
+   * @param events
+   * @param id
+   */
   public Schedule(List<Event> events, String id) {
     this.events = events;
     this.id = id;
     this.checkAnyOverlap();
+  }
+
+  /**
+   *
+   * @return
+   */
+  public String id() {
+    return this.id;
+  }
+
+  /**
+   *
+   * @return
+   */
+  public List<Event> findEvents() {
+    return this.events;
   }
 
   /**
