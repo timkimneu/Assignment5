@@ -27,7 +27,7 @@ public class Schedule {
    *
    * @return a String that represents the id of the event.
    */
-  public String id() {
+  public String scheduleID() {
     return this.id;
   }
 

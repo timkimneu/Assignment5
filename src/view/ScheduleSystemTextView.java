@@ -42,7 +42,7 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
   public String schedulesToString() {
     for (int sch = 0; sch < schedules.size(); sch++) {
       viewer += "User: ";
-      viewer += schedules.get(sch).id() + "\n";
+      viewer += schedules.get(sch).scheduleID() + "\n";
       Schedule currSch = schedules.get(sch);
       List<Event> listEvents = currSch.events();
       addEventsForDay(listEvents, sch);
@@ -76,10 +76,9 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
         viewer += "invitees: ";
         List<User> users = listEvents.get(event).users();
         for (int user = 0; user < users.size(); user++) {
-          if (user != users.size()-1) {
+          if (user != users.size() - 1) {
             viewer += users.get(user).name().replaceAll("\"", "") + "\n\t";
-          }
-          else {
+          } else {
             viewer += users.get(user).name().replaceAll("\"", "") + "\n";
           }
         }
@@ -89,7 +88,7 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
 
   // determines which days have one or more events
   private void addEventsForDay(List<Event> listEvents, int sch) {
-    Dictionary<String, Integer> dict= new Hashtable<>();
+    Dictionary<String, Integer> dict = new Hashtable<>();
     dict.put("SUNDAY", 0);
     dict.put("MONDAY", 0);
     dict.put("TUESDAY", 0);

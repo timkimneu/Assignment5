@@ -1,7 +1,8 @@
 package model;
 
 /**
- *
+ * Represents a User or individual attending an event. Only details a name with no other
+ * information.
  */
 public class User {
   private final String name;

@@ -69,7 +69,7 @@ public class ScheduleSystemControllerTests {
   Schedule sch4;
   ScheduleSystemController schSysMod;
 
-  public void initData() {
+  private void initData() {
     this.sunday = DaysOfTheWeek.SUNDAY;
     this.monday = DaysOfTheWeek.MONDAY;
     this.tuesday = DaysOfTheWeek.TUESDAY;
@@ -108,9 +108,12 @@ public class ScheduleSystemControllerTests {
     this.events2 = new ArrayList<>(Arrays.asList(this.vacation, this.mondayAfternoonJog));
     this.sch1 = new Schedule(this.events1, "School Schedule");
     this.sch2 = new Schedule(this.events2, "Summer Schedule");
-    this.sch3 = new Schedule(new ArrayList<>(Arrays.asList(this.church, this.mondayAfternoonJog)), "My Schedule");
-    this.sch4 = new Schedule(new ArrayList<>(Collections.singletonList(this.wednesdayDinner)), "Dinner");
-    this.schSysMod = new ScheduleSystemController(new ArrayList<>(Arrays.asList(this.sch1, this.sch2)));
+    this.sch3 = new Schedule(new ArrayList<>(Arrays.asList(this.church, this.mondayAfternoonJog)),
+            "My Schedule");
+    this.sch4 = new Schedule(new ArrayList<>(Collections.singletonList(this.wednesdayDinner)),
+            "Dinner");
+    this.schSysMod = new ScheduleSystemController(new ArrayList<>(Arrays.asList(this.sch1,
+            this.sch2)));
   }
 
   @Test
@@ -271,7 +274,7 @@ public class ScheduleSystemControllerTests {
 
     Node first = doc.getElementsByTagName("schedule").item(0);
     NamedNodeMap attrList = first.getAttributes();
-    if (attrList.item(0).getNodeName() == "id") {
+    if (attrList.item(0).getNodeName().equals("id")) {
       System.out.println(attrList.item(0).getNodeValue());
     }
 

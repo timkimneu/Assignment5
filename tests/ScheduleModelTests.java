@@ -59,7 +59,7 @@ public class ScheduleModelTests {
   Schedule sch3;
   Schedule sch4;
 
-  public void initData() {
+  private void initData() {
     this.sunday = DaysOfTheWeek.SUNDAY;
     this.monday = DaysOfTheWeek.MONDAY;
     this.tuesday = DaysOfTheWeek.TUESDAY;
@@ -335,10 +335,10 @@ public class ScheduleModelTests {
   @Test
   public void testScheduleId() {
     this.initData();
-    Assert.assertEquals("School Schedule", this.sch1.id());
-    Assert.assertEquals("Summer Schedule", this.sch2.id());
-    Assert.assertEquals("My Schedule", this.sch3.id());
-    Assert.assertEquals("Dinner", this.sch4.id());
+    Assert.assertEquals("School Schedule", this.sch1.scheduleID());
+    Assert.assertEquals("Summer Schedule", this.sch2.scheduleID());
+    Assert.assertEquals("My Schedule", this.sch3.scheduleID());
+    Assert.assertEquals("Dinner", this.sch4.scheduleID());
   }
 
   // test events method for Schedule class

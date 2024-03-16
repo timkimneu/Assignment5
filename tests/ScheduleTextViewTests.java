@@ -58,7 +58,7 @@ public class ScheduleTextViewTests {
   Schedule sch3;
   Schedule sch4;
 
-  public void initData() {
+  private void initData() {
     this.sunday = DaysOfTheWeek.SUNDAY;
     this.monday = DaysOfTheWeek.MONDAY;
     this.tuesday = DaysOfTheWeek.TUESDAY;
@@ -97,8 +97,10 @@ public class ScheduleTextViewTests {
     this.events2 = new ArrayList<>(Arrays.asList(this.vacation, this.mondayAfternoonJog));
     this.sch1 = new Schedule(this.events1, "School Schedule");
     this.sch2 = new Schedule(this.events2, "Summer Schedule");
-    this.sch3 = new Schedule(new ArrayList<>(Arrays.asList(this.church, this.mondayAfternoonJog)), "My Schedule");
-    this.sch4 = new Schedule(new ArrayList<>(Collections.singletonList(this.wednesdayDinner)), "Dinner");
+    this.sch3 = new Schedule(new ArrayList<>(Arrays.asList(this.church, this.mondayAfternoonJog)),
+            "My Schedule");
+    this.sch4 = new Schedule(new ArrayList<>(Collections.singletonList(this.wednesdayDinner)),
+            "Dinner");
   }
 
   // test schedulesToString method in ScheduleSystemTextView class

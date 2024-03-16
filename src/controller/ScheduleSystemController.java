@@ -21,15 +21,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Represents the model of the Schedule system or collection of events over a calendar.
+ * When provided with an appropriate file path, users can read an XML file to create a new schedule
+ * and add the schedule into the system (list of schedules). When provided with a schedule, users
+ * can also write/create a new XML file to write a new schedule into the system. System also can
+ * provide the current list of schedules contained in the system.
  */
 public class ScheduleSystemController implements ScheduleSystem {
-  private List<Schedule> schedules;
+  private final List<Schedule> schedules;
 
   /**
+   * Represents the model of the Schedule system or collection of events over a calendar.
+   * When provided with an appropriate file path, users can read an XML file to create a new
+   * schedule and add the schedule into the system (list of schedules). When provided with a
+   * schedule, users can also write/create a new XML file to write a new schedule into the system.
+   * System also can provide the current list of schedules contained in the system.
    *
-   *
-   * @param schedules
+   * @param schedules List of schedules belonging to this particular system.
    */
   public ScheduleSystemController(List<Schedule> schedules) {
     this.schedules = schedules;
@@ -61,12 +69,14 @@ public class ScheduleSystemController implements ScheduleSystem {
       Node start = doc.getElementsByTagName("start").item(eventIndx);
       Node endDay = doc.getElementsByTagName("end-day").item(eventIndx);
       Node end = doc.getElementsByTagName("end").item(eventIndx);
-      Time time = new Time(DaysOfTheWeek.valueOf(startDay.getTextContent().toUpperCase()), start.getTextContent(),
-          DaysOfTheWeek.valueOf(endDay.getTextContent().toUpperCase()), end.getTextContent());
+      Time time = new Time(DaysOfTheWeek.valueOf(startDay.getTextContent().toUpperCase()),
+              start.getTextContent(), DaysOfTheWeek.valueOf(endDay.getTextContent().toUpperCase()),
+              end.getTextContent());
 
       Node online = doc.getElementsByTagName("online").item(eventIndx);
       Node place = doc.getElementsByTagName("place").item(eventIndx);
-      Location loc = new Location(Boolean.parseBoolean(online.getTextContent()), place.getTextContent());
+      Location loc = new Location(Boolean.parseBoolean(online.getTextContent()),
+              place.getTextContent());
 
       List<User> listUsers = new ArrayList<>();
       Node users = doc.getElementsByTagName("users").item(eventIndx);
@@ -94,9 +104,9 @@ public class ScheduleSystemController implements ScheduleSystem {
       throw new IllegalArgumentException("Schedule system does not contain given schedule!");
     } else {
       try {
-        Writer file = new FileWriter("src/" + sch.id() + ".xml");
+        Writer file = new FileWriter("src/" + sch.scheduleID() + ".xml");
         file.write("<?xml version=\"1.0\"?>\n");
-        file.write("<schedule id=\"" + sch.id() + "\">\n");
+        file.write("<schedule id=\"" + sch.scheduleID() + "\">\n");
         for (Event e : sch.events()) {
           this.writeEvent(file, e);
         }

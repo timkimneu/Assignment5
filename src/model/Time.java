@@ -4,10 +4,10 @@ package model;
  * Represents the time frame that an event takes place in. Denotes the day and time that an event
  * begins at and the day and time the event will end on. Starting and ending day are denoted as
  * days of the week as an enum value. Time also takes in a string for the starting and ending time
- * of day in the form of a 4 number string using the military time method. The current Time class does
- * not allow for the creation of time frames extending for a time period greater than or equal to 1
- * full week. Any time that is intended to be interpreted as being a week long or longer will be
- * interpreted in being in a time span less than 7 days.
+ * of day in the form of a 4 number string using the military time method. The current Time class
+ * does not allow for the creation of time frames extending for a time period greater than or equal
+ * to 1 full week. Any time that is intended to be interpreted as being a week long or longer will
+ * be interpreted in being in a time span less than 7 days.
  */
 public class Time {
   private final DaysOfTheWeek startDay;
