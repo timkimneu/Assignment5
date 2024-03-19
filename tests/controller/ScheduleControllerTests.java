@@ -1,5 +1,7 @@
 package controller;
 
+import controller.ScheduleSystem;
+import controller.ScheduleSystemController;
 import model.DaysOfTheWeek;
 import model.Event;
 import model.Location;
@@ -28,7 +30,7 @@ import static org.junit.Assert.assertEquals;
  * Represents examples and tests of the ScheduleSystemController class and all of its relevant
  * supporting classes. Examples and tests of classes and methods within the controller package.
  */
-public class ScheduleSystemControllerTests {
+public class ScheduleControllerTests {
   DaysOfTheWeek sunday;
   DaysOfTheWeek monday;
   DaysOfTheWeek tuesday;
@@ -280,7 +282,6 @@ public class ScheduleSystemControllerTests {
 
     for (int eventIndx = 0; eventIndx < events.getLength(); eventIndx++) {
       Node name = doc.getElementsByTagName("name").item(eventIndx);
-      //System.out.println(name.getTextContent());
 
       Node users = doc.getElementsByTagName("users").item(eventIndx);
       NodeList indUsers = users.getChildNodes();
@@ -288,13 +289,16 @@ public class ScheduleSystemControllerTests {
       for (int user = 0; user < indUsers.getLength(); user++) {
         Node currNode = indUsers.item(user);
         if (currNode.getNodeName().equals("uid")) {
-          //System.out.println(currNode.getTextContent());
-
+          if (user == 0) {
+            assertEquals("\"Prof. Lucia\"", currNode.getTextContent());
+          }
+          if (user == 1) {
+            assertEquals("\"Prof. Lucia\"", currNode.getTextContent());
+          }
+          if (user == 2) {
+            assertEquals("\"Student Anon\"", currNode.getTextContent());
+          }
         }
-      }
-
-      if (eventIndx == 0 | eventIndx == 1) {
-        assertEquals("", users.getTextContent());
       }
     }
   }
@@ -470,4 +474,3 @@ public class ScheduleSystemControllerTests {
         "Saturday:\n", schView.schedulesToString());
   }
 }
-

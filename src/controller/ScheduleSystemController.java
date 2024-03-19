@@ -3,6 +3,7 @@ package controller;
 import model.DaysOfTheWeek;
 import model.Event;
 import model.Location;
+import model.NUPlannerModel;
 import model.Schedule;
 import model.Time;
 import model.User;
@@ -28,7 +29,7 @@ import java.util.List;
  * provide the current list of schedules contained in the system.
  */
 public class ScheduleSystemController implements ScheduleSystem {
-  private final List<Schedule> schedules;
+  private final NUPlannerModel model;
 
   /**
    * Represents the model of the Schedule system or collection of events over a calendar.
@@ -37,10 +38,10 @@ public class ScheduleSystemController implements ScheduleSystem {
    * schedule, users can also write/create a new XML file to write a new schedule into the system.
    * System also can provide the current list of schedules contained in the system.
    *
-   * @param schedules List of schedules belonging to this particular system.
+   * @param model
    */
-  public ScheduleSystemController(List<Schedule> schedules) {
-    this.schedules = schedules;
+  public ScheduleSystemController(NUPlannerModel model) {
+    this.model = model;
   }
 
   // read XML file
@@ -92,15 +93,15 @@ public class ScheduleSystemController implements ScheduleSystem {
       listOfEvents.add(currEvent);
     }
     Schedule currSch = new Schedule(listOfEvents, id);
-    if (!this.schedules.contains(currSch)) {
-      this.schedules.add(currSch);
+    if (!this.model.schedules().contains(currSch)) {
+      this.model.schedules().add(currSch);
     }
   }
 
   // write to XML file
   @Override
   public void writeXML(Schedule sch) {
-    if (!this.schedules.contains(sch)) {
+    if (!this.model.schedules().contains(sch)) {
       throw new IllegalArgumentException("Schedule system does not contain given schedule!");
     } else {
       try {
@@ -180,7 +181,7 @@ public class ScheduleSystemController implements ScheduleSystem {
   @Override
   public List<Schedule> returnSchedule() {
     List<Schedule> copySch = new ArrayList<>();
-    copySch.addAll(schedules);
+    copySch.addAll(this.model.schedules());
     return copySch;
   }
 
