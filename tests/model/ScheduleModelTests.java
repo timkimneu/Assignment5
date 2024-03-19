@@ -8,13 +8,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import model.DaysOfTheWeek;
-import model.Location;
-import model.Schedule;
-import model.Time;
-import model.User;
-import model.Event;
-
 /**
  * Represents examples and tests of the Schedule model and all of its relevant supporting classes.
  * Examples and tests of classes and methods within the model package.
@@ -39,6 +32,7 @@ public class ScheduleModelTests {
   Location loc4;
   Location loc5;
   Location loc6;
+  User newUser;
   User user1;
   User user2;
   User user3;
@@ -56,10 +50,17 @@ public class ScheduleModelTests {
   List<Event> mtEvents;
   List<Event> events1;
   List<Event> events2;
+  Schedule mtSch;
   Schedule sch1;
   Schedule sch2;
   Schedule sch3;
   Schedule sch4;
+  List<Schedule> schedules1;
+  List<Schedule> schedules2;
+  NUPlannerModel mtModel;
+  NUPlannerModel model1;
+  NUPlannerModel model2;
+  NUPlannerModel model3;
 
   private void initData() {
     this.sunday = DaysOfTheWeek.SUNDAY;
@@ -80,6 +81,7 @@ public class ScheduleModelTests {
     this.loc4 = new Location(false, "Outside");
     this.loc5 = new Location(false, "Home");
     this.loc6 = new Location(true, "Office");
+    this.newUser = new User("New User");
     this.user1 = new User("Me");
     this.user2 = new User("Mom");
     this.user3 = new User("Dad");
@@ -99,12 +101,19 @@ public class ScheduleModelTests {
     this.mtEvents = new ArrayList<>();
     this.events1 = new ArrayList<>(Arrays.asList(this.church, this.school));
     this.events2 = new ArrayList<>(Arrays.asList(this.vacation, this.mondayAfternoonJog));
-    this.sch1 = new Schedule(this.events1, "School Schedule");
-    this.sch2 = new Schedule(this.events2, "Summer Schedule");
+    this.mtSch = new Schedule(this.mtEvents, "New User");
+    this.sch1 = new Schedule(this.events1, "Me");
+    this.sch2 = new Schedule(this.events2, "Friend");
     this.sch3 = new Schedule(new ArrayList<>(Arrays.asList(this.church, this.mondayAfternoonJog)),
-            "My Schedule");
+            "Best Friend");
     this.sch4 = new Schedule(new ArrayList<>(Collections.singletonList(this.wednesdayDinner)),
-            "Dinner");
+            "DinnerDude");
+    this.schedules1 = new ArrayList<>(Arrays.asList(this.sch1, this.sch2));
+    this.schedules2 = new ArrayList<>(Arrays.asList(this.sch3, this.sch4));
+    this.mtModel = new NUPlannerModel(new ArrayList<>());
+    this.model1 = new NUPlannerModel(new ArrayList<>(Collections.singletonList(this.mtSch)));
+    this.model2 = new NUPlannerModel(this.schedules1);
+    this.model3 = new NUPlannerModel(this.schedules2);
   }
 
   // Test Time constructor for IllegalArgumentException for an invalid input for
@@ -337,8 +346,8 @@ public class ScheduleModelTests {
   @Test
   public void testScheduleId() {
     this.initData();
-    Assert.assertEquals("School Schedule", this.sch1.scheduleID());
-    Assert.assertEquals("Summer Schedule", this.sch2.scheduleID());
+    Assert.assertEquals("Me", this.sch1.scheduleID());
+    Assert.assertEquals("Friend", this.sch2.scheduleID());
     Assert.assertEquals("My Schedule", this.sch3.scheduleID());
     Assert.assertEquals("Dinner", this.sch4.scheduleID());
   }
@@ -439,92 +448,6 @@ public class ScheduleModelTests {
     Assert.assertEquals(new ArrayList<>(Arrays.asList(this.school, this.church)), sch.events());
   }
 
-  // test modifyEvent method in Schedule class for IllegalArgumentException
-  // when attempting to replace old event with itself
-  @Test
-  public void testModifyEventNewSameOldError() {
-    this.initData();
-    Schedule sch = new Schedule(this.mtEvents, "My Schedule");
-    sch.addEvent(this.vacation);
-    try {
-      //sch.modifyEvent(this.vacation, this.vacation);
-      Assert.fail("Failed to catch error");
-    } catch (IllegalArgumentException e) {
-      Assert.assertEquals("Cannot replace old event with same event!", e.getMessage());
-    }
-  }
-
-  // test modifyEvent method in Schedule class for IllegalArgumentException
-  // when Schedule already contains the given new event
-  @Test
-  public void testModifyEventAlreadyContainsEventError() {
-    this.initData();
-    Schedule sch = new Schedule(this.mtEvents, "My Schedule");
-    sch.addEvent(this.church);
-    sch.addEvent(this.school);
-    try {
-      //sch.modifyEvent(this.church, this.school);
-      Assert.fail("Failed to catch error");
-    } catch (IllegalArgumentException e) {
-      Assert.assertEquals("Schedule already contains given event!", e.getMessage());
-    }
-  }
-
-  // test modifyEvent method in Schedule class for IllegalArgumentException
-  // when the given new event overlaps with an existing event in the schedule
-  @Test
-  public void testModifyEventOverlappingEventsError() {
-    this.initData();
-    ArrayList<Event> churchSchool = new ArrayList<>(Arrays.asList(this.church, this.school));
-    Schedule sch = new Schedule(churchSchool, "My Schedule");
-    Assert.assertEquals(2, sch.events().size());
-    try {
-      //sch.modifyEvent(this.church, this.vacation);
-      Assert.fail("Failed to catch error");
-    } catch (IllegalArgumentException e) {
-      Assert.assertEquals("Added event overlaps with an existing event!" +
-              " Removing added event.", e.getMessage());
-    }
-    // confirm that original list of events is not modified
-    Assert.assertEquals(churchSchool, sch.events());
-  }
-
-  // test modifyEvent method in Schedule class for IllegalArgumentException
-  // when the given old event does not exist in the current schedule
-  @Test
-  public void testModifyEventOldDoesNotExistError() {
-    this.initData();
-    Schedule sch = new Schedule(this.mtEvents, "My Schedule");
-    sch.addEvent(this.vacation);
-    try {
-      //sch.modifyEvent(this.school, this.church);
-    } catch (IllegalArgumentException e) {
-      Assert.assertEquals("Event to be removed not found!", e.getMessage());
-    }
-  }
-
-  // test modifyEvent method for Schedule class
-  @Test
-  public void testModifyEvent() {
-    this.initData();
-    Schedule sch = new Schedule(this.mtEvents, "My Schedule");
-    // confirm that original event is added to list
-    sch.addEvent(this.school);
-    Assert.assertEquals(new ArrayList<>(Collections.singletonList(this.school)), sch.events());
-    // confirm that old event is replaced with new event
-    //sch.modifyEvent(this.school, this.vacation);
-    Assert.assertEquals(new ArrayList<>(Collections.singletonList(this.vacation)), sch.events());
-
-    //sch.modifyEvent(this.vacation, this.church);
-    Assert.assertEquals(new ArrayList<>(Collections.singletonList(this.church)), sch.events());
-
-    // check modify with multiple events existing prior to modifications. Also check
-    // modify won't throw an error when replaced event overlaps with new event
-    sch.addEvent(this.mondayAfternoonJog);
-    //sch.modifyEvent(this.mondayAfternoonJog, this.school);
-    Assert.assertEquals(new ArrayList<>(Arrays.asList(this.church, this.school)), sch.events());
-  }
-
   // test removeEvent method in Schedule class for IllegalArgumentException
   // when the given event does not exist in this Schedule
   @Test
@@ -565,4 +488,86 @@ public class ScheduleModelTests {
     Assert.assertEquals(this.mtEvents, sch.events());
     Assert.assertTrue(sch.events().isEmpty());
   }
+
+  // test schedules method for NUPlannerModel class
+  @Test
+  public void testPlannerSchedules() {
+    this.initData();
+    List<Schedule> schedules0 =  new ArrayList<>(Collections.singletonList(this.mtSch));
+    List<Schedule> schedules1 = new ArrayList<>(Arrays.asList(this.sch1, this.sch2));
+    Assert.assertEquals(new ArrayList<>(), this.mtModel.schedules());
+    Assert.assertEquals(schedules0, this.model1.schedules());
+    Assert.assertEquals(schedules1, this.model2.schedules());
+  }
+
+  // test addEvent method in NUPlannerModel class for IllegalArgumentException
+  // when Schedule already contains the given event
+  @Test
+  public void testPlannerAddEventAlreadyContainsError() {
+    this.initData();
+    try {
+      this.model2.addEvent(this.school);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Schedule already contains given event!", e.getMessage());
+    }
+
+    try {
+      this.model2.addEvent(this.church);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Schedule already contains given event!", e.getMessage());
+    }
+
+    try {
+      this.model3.addEvent(this.wednesdayDinner);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Schedule already contains given event!", e.getMessage());
+    }
+  }
+
+  // test addEvent method in NUPlannerModel class for IllegalArgumentException
+  // when the given event overlaps with an existing event in the schedule
+  @Test
+  public void testPlannerAddEventOverlapError() {
+    this.initData();
+    try {
+      this.model3.addEvent(this.vacation);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Added event overlaps with an existing event!" +
+              " Removing added event.", e.getMessage());
+    }
+
+    try {
+      this.model3.addEvent(this.school);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Added event overlaps with an existing event!" +
+              " Removing added event.", e.getMessage());
+    }
+  }
+
+  // test modifyEvent method in NUPlannerModel class for IllegalArgumentException
+  // when attempting to replace old event with itself
+
+  // test modifyEvent method in NUPlannerModel class for IllegalArgumentException
+  // when Schedule already contains the given new event
+
+  // test modifyEvent method in NUPlannerModel class for IllegalArgumentException
+  // when the given new event overlaps with an existing event in the schedule
+
+  // test modifyEvent method in NUPlannerModel class for IllegalArgumentException
+  // when the given old event does not exist in the current schedule
+
+  // test modifyEvent method in NUPlannerModel class for IllegalArgumentException
+  // when Schedule already contains the given new event
+
+  // test modifyEvent method for NUPlannerModel class
+
+  // test removeEvent method in NUPlannerModel class for IllegalArgumentException
+  // when the given event does not exist in this Schedule
+
+  // test removeEvent method for NUPlannerModel class
 }

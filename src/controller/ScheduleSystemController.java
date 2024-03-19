@@ -38,7 +38,7 @@ public class ScheduleSystemController implements ScheduleSystem {
    * schedule, users can also write/create a new XML file to write a new schedule into the system.
    * System also can provide the current list of schedules contained in the system.
    *
-   * @param model
+   * @param model Model that represents a list of schedules and allows for schedule modification.
    */
   public ScheduleSystemController(NUPlannerModel model) {
     this.model = model;

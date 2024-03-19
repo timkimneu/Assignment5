@@ -53,21 +53,6 @@ public class Schedule {
   }
 
   /**
-   * Replaces the old event with the new event by removing the old event and adding the new event
-   * to the event list.
-   *
-   * @param oldEvent event to be removed
-   * @param newEvent event to be added in place of the old event
-   */
-//  public void modifyEvent(Event oldEvent, Event newEvent) {
-//    if (oldEvent.equals(newEvent)) {
-//      throw new IllegalArgumentException("Cannot replace old event with same event!");
-//    }
-//    this.removeEvent(oldEvent);
-//    this.addEvent(newEvent);
-//  }
-
-  /**
    * Removes the given event from the current schedule of events if it exists.
    * If given event is not in schedule throw IllegalArgumentException.
    *

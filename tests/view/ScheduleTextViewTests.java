@@ -14,7 +14,6 @@ import model.Location;
 import model.Schedule;
 import model.Time;
 import model.User;
-import view.ScheduleSystemTextView;
 
 /**
  * Represents examples and tests of the ScheduleSystemTextView and all of its relevant supporting
