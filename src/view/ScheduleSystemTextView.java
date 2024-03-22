@@ -3,7 +3,7 @@ package view;
 import model.DaysOfTheWeek;
 import model.Event;
 import model.Location;
-import model.Schedule;
+import model.SchedulePlanner;
 import model.Time;
 import model.User;
 
@@ -19,7 +19,7 @@ import java.util.Objects;
  * the week.
  */
 public class ScheduleSystemTextView implements ScheduleSystemView {
-  private final List<Schedule> schedules;
+  private final List<SchedulePlanner> schedules;
   private String viewer = "";
 
   /**
@@ -27,7 +27,7 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
    *
    * @param schedules List of schedules.
    */
-  public ScheduleSystemTextView(List<Schedule> schedules) {
+  public ScheduleSystemTextView(List<SchedulePlanner> schedules) {
     this.schedules = schedules;
   }
 
@@ -43,7 +43,7 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
     for (int sch = 0; sch < schedules.size(); sch++) {
       viewer += "User: ";
       viewer += schedules.get(sch).scheduleID() + "\n";
-      Schedule currSch = schedules.get(sch);
+      SchedulePlanner currSch = schedules.get(sch);
       List<Event> listEvents = currSch.events();
       addEventsForDay(listEvents, sch);
     }
@@ -53,7 +53,7 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
   // add events to viewer if it is associated with the day
   private void getWhichDays(String day, int sch) {
     viewer += day + ": \n";
-    Schedule currSch = schedules.get(sch);
+    SchedulePlanner currSch = schedules.get(sch);
     List<Event> listEvents = currSch.events();
 
     for (int event = 0; event < listEvents.size(); event++) {

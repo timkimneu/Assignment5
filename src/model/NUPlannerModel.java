@@ -6,28 +6,24 @@ import java.util.List;
  *
  */
 public class NUPlannerModel implements PlannerModel {
-  private final List<Schedule> schedules;
+  private final List<SchedulePlanner> schedules;
 
-  public NUPlannerModel(List<Schedule> schedules) {
+  public NUPlannerModel(List<SchedulePlanner> schedules) {
     this.schedules = schedules;
   }
 
   @Override
-  public List<Schedule> schedules() {
+  public List<SchedulePlanner> schedules() {
     return this.schedules;
   }
 
   @Override
   public void addEvent(Event event) {
     for (User u : event.users()) {
-      for (Schedule sch : this.schedules) {
+      for (SchedulePlanner sch : this.schedules) {
         String scheduleID = sch.scheduleID();
         if (u.name().equals(scheduleID)) {
-          try {
-            sch.addEvent(event);
-          } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(e.getMessage());
-          }
+          sch.addEvent(event);
         }
       }
     }
@@ -45,14 +41,10 @@ public class NUPlannerModel implements PlannerModel {
   @Override
   public void removeEvent(Event event) {
     for (User u : event.users()) {
-      for (Schedule sch : this.schedules) {
+      for (SchedulePlanner sch : this.schedules) {
         String scheduleID = sch.scheduleID();
         if (u.name().equals(scheduleID)) {
-          try {
-            sch.removeEvent(event);
-          } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(e.getMessage());
-          }
+          sch.removeEvent(event);
         }
       }
     }

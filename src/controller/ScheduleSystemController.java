@@ -4,7 +4,7 @@ import model.DaysOfTheWeek;
 import model.Event;
 import model.Location;
 import model.NUPlannerModel;
-import model.Schedule;
+import model.SchedulePlanner;
 import model.Time;
 import model.User;
 import org.w3c.dom.Document;
@@ -92,7 +92,7 @@ public class ScheduleSystemController implements ScheduleSystem {
       Event currEvent = new Event(name.getTextContent(), time, loc, listUsers);
       listOfEvents.add(currEvent);
     }
-    Schedule currSch = new Schedule(listOfEvents, id);
+    SchedulePlanner currSch = new SchedulePlanner(listOfEvents, id);
     if (!this.model.schedules().contains(currSch)) {
       this.model.schedules().add(currSch);
     }
@@ -100,7 +100,7 @@ public class ScheduleSystemController implements ScheduleSystem {
 
   // write to XML file
   @Override
-  public void writeXML(Schedule sch) {
+  public void writeXML(SchedulePlanner sch) {
     if (!this.model.schedules().contains(sch)) {
       throw new IllegalArgumentException("Schedule system does not contain given schedule!");
     } else {
@@ -179,8 +179,8 @@ public class ScheduleSystemController implements ScheduleSystem {
   }
 
   @Override
-  public List<Schedule> returnSchedule() {
-    List<Schedule> copySch = new ArrayList<>();
+  public List<SchedulePlanner> returnSchedule() {
+    List<SchedulePlanner> copySch = new ArrayList<>();
     copySch.addAll(this.model.schedules());
     return copySch;
   }

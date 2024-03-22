@@ -1,6 +1,6 @@
 package controller;
 
-import model.Schedule;
+import model.SchedulePlanner;
 
 import java.util.List;
 
@@ -28,12 +28,12 @@ public interface ScheduleSystem {
    *
    * @param sch Schedule to be written into a new/overwritten XML file
    */
-  void writeXML(Schedule sch);
+  void writeXML(SchedulePlanner sch);
 
   /**
    * Provides a representation of the current list of Schedule objects contained in the system.
    *
    * @return List of schedules pertaining to this system.
    */
-  List<Schedule> returnSchedule();
+  List<SchedulePlanner> returnSchedule();
 }
