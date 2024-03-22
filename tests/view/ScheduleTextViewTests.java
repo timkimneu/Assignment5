@@ -11,7 +11,7 @@ import java.util.List;
 import model.DaysOfTheWeek;
 import model.Event;
 import model.Location;
-import model.Schedule;
+import model.SchedulePlanner;
 import model.Time;
 import model.User;
 
@@ -27,7 +27,7 @@ public class ScheduleTextViewTests {
   List<User> users1, users2, users3;
   Event church, school, vacation, mondayAfternoonJog, wednesdayDinner;
   List<Event> mtEvents, events1, events2;
-  Schedule sch1, sch2, sch3, sch4;
+  SchedulePlanner sch1, sch2, sch3, sch4;
 
   private void initData() {
     this.sunday = DaysOfTheWeek.SUNDAY;
@@ -66,12 +66,12 @@ public class ScheduleTextViewTests {
     this.mtEvents = new ArrayList<>();
     this.events1 = new ArrayList<>(Arrays.asList(this.church, this.school));
     this.events2 = new ArrayList<>(Arrays.asList(this.vacation, this.mondayAfternoonJog));
-    this.sch1 = new Schedule(this.events1, "School Schedule");
-    this.sch2 = new Schedule(this.events2, "Summer Schedule");
-    this.sch3 = new Schedule(new ArrayList<>(Arrays.asList(this.church, this.mondayAfternoonJog)),
-            "My Schedule");
-    this.sch4 = new Schedule(new ArrayList<>(Collections.singletonList(this.wednesdayDinner)),
-            "Dinner");
+    this.sch1 = new SchedulePlanner(this.events1, "School Schedule");
+    this.sch2 = new SchedulePlanner(this.events2, "Summer Schedule");
+    this.sch3 = new SchedulePlanner(new ArrayList<>(Arrays.asList(this.church,
+            this.mondayAfternoonJog)), "My Schedule");
+    this.sch4 = new SchedulePlanner(new ArrayList<>(Collections.singletonList(
+            this.wednesdayDinner)), "Dinner");
   }
 
   // test schedulesToString method in ScheduleSystemTextView class
@@ -79,7 +79,7 @@ public class ScheduleTextViewTests {
   public void testSchedulesToString() {
     this.initData();
     // test with only one schedule with one event
-    List<Schedule> scheduleList1 = new ArrayList<>(Collections.singletonList(this.sch4));
+    List<SchedulePlanner> scheduleList1 = new ArrayList<>(Collections.singletonList(this.sch4));
     ScheduleSystemTextView sstv1 = new ScheduleSystemTextView(scheduleList1);
     Assert.assertEquals("User: Dinner\nSunday:\nMonday:\nTuesday:\nWednesday: \n" +
             "\tname: Wednesday Dinner\n" +
@@ -90,7 +90,7 @@ public class ScheduleTextViewTests {
             "Thursday:\nFriday:\nSaturday:\n", sstv1.schedulesToString());
 
     // test with 2 schedules with 2 events each
-    List<Schedule> scheduleList2 = new ArrayList<>(Arrays.asList(this.sch1, this.sch2));
+    List<SchedulePlanner> scheduleList2 = new ArrayList<>(Arrays.asList(this.sch1, this.sch2));
     ScheduleSystemTextView sstv2 = new ScheduleSystemTextView(scheduleList2);
     Assert.assertEquals("User: School Schedule\n" +
             "Sunday: \n" +

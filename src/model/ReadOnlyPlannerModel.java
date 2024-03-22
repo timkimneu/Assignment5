@@ -8,6 +8,6 @@ public interface ReadOnlyPlannerModel {
    *
    * @return
    */
-  List<Schedule> schedules();
+  List<SchedulePlanner> schedules();
 
 }

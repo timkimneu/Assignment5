@@ -180,9 +180,7 @@ public class ScheduleSystemController implements ScheduleSystem {
 
   @Override
   public List<SchedulePlanner> returnSchedule() {
-    List<SchedulePlanner> copySch = new ArrayList<>();
-    copySch.addAll(this.model.schedules());
-    return copySch;
+    return new ArrayList<>(this.model.schedules());
   }
 
 }

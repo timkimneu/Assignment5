@@ -34,8 +34,22 @@ public class NUPlannerModel implements PlannerModel {
     if (event.equals(newEvent)) {
       throw new IllegalArgumentException("Cannot replace old event with same event!");
     }
-    this.removeEvent(event);
-    this.addEvent(newEvent);
+//    this.removeEvent(event);
+//    try {
+//      this.addEvent(newEvent);
+//    } catch (IllegalArgumentException e) {
+//      this.addEvent(event);
+//      throw new IllegalArgumentException(e.getMessage());
+//    }
+    for (User u : event.users()) {
+      for (SchedulePlanner sch : this.schedules) {
+        String scheduleID = sch.scheduleID();
+        if (u.name().equals(scheduleID)) {
+          sch.removeEvent(event);
+          sch.addEvent(newEvent);
+        }
+      }
+    }
   }
 
   @Override

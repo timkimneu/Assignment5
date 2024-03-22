@@ -20,8 +20,8 @@ public class ScheduleModelTests {
   List<User> users1, users2, users3;
   Event church, school, vacation, mondayAfternoonJog, wednesdayDinner;
   List<Event> mtEvents, events1, events2;
-  Schedule mtSch, sch1, sch2, sch3, sch4;
-  List<Schedule> schedules1, schedules2, schedules3;
+  SchedulePlanner mtSch, sch1, sch2, sch3, sch4;
+  List<SchedulePlanner> schedules1, schedules2, schedules3;
   NUPlannerModel mtModel, model1, model2, model3, model4;
 
   private void initData() {
@@ -51,29 +51,31 @@ public class ScheduleModelTests {
     this.friend = new User("Friend");
     this.bestFriend = new User("Best Friend");
     this.dinnerDude = new User("Dinner Dude");
-    this.users1 = new ArrayList<>(Arrays.asList(this.user1, this.user2, this.user3, this.newUser));
-    this.users2 = new ArrayList<>(Arrays.asList(this.user1, this.classmate, this.bestFriend, this.newUser));
-    this.users3 = new ArrayList<>(Arrays.asList(this.user1, this.friend, this.bestFriend, this.newUser));
+    this.users1 = new ArrayList<>(Arrays.asList(this.user1, this.user2, this.user3, this.newUser, this.friend));
+    this.users2 = new ArrayList<>(Arrays.asList(this.user1, this.classmate, this.bestFriend,
+            this.newUser));
+    this.users3 = new ArrayList<>(Arrays.asList(this.user1, this.friend, this.bestFriend,
+            this.newUser));
     this.church = new Event("Church", this.time1, this.loc1, this.users1);
     this.school = new Event("Classes", this.time2, this.loc2, this.users2);
     this.vacation = new Event("Cancun Trip", this.time3, this.loc3, this.users3);
     this.mondayAfternoonJog = new Event("Afternoon Jog", this.time4, this.loc4,
-            new ArrayList<>(Collections.singletonList(this.user1)));
+            new ArrayList<>(Collections.singletonList(this.friend)));
     this.wednesdayDinner = new Event("Wednesday Dinner", this.time5, this.loc5,
             new ArrayList<>(Collections.singletonList(this.dinnerDude)));
     this.mtEvents = new ArrayList<>();
     this.events1 = new ArrayList<>(Arrays.asList(this.church, this.school));
     this.events2 = new ArrayList<>(Arrays.asList(this.vacation, this.mondayAfternoonJog));
-    this.mtSch = new Schedule(this.mtEvents, "New User");
-    this.sch1 = new Schedule(this.events1, "Me");
-    this.sch2 = new Schedule(this.events2, "Friend");
-    this.sch3 = new Schedule(new ArrayList<>(Arrays.asList(this.church, this.mondayAfternoonJog)),
-            "Best Friend");
-    this.sch4 = new Schedule(new ArrayList<>(Collections.singletonList(this.wednesdayDinner)),
-            "Dinner Dude");
+    this.mtSch = new SchedulePlanner(this.mtEvents, "New User");
+    this.sch1 = new SchedulePlanner(this.events1, "Me");
+    this.sch2 = new SchedulePlanner(this.events2, "Friend");
+    this.sch3 = new SchedulePlanner(new ArrayList<>(Arrays.asList(this.church,
+            this.mondayAfternoonJog)), "Best Friend");
+    this.sch4 = new SchedulePlanner(new ArrayList<>(Collections.singletonList(
+            this.wednesdayDinner)), "Dinner Dude");
     this.schedules1 = new ArrayList<>(Arrays.asList(this.sch1, this.sch2));
     this.schedules2 = new ArrayList<>(Arrays.asList(this.sch3, this.sch4));
-    this.schedules3 = new ArrayList<>(Collections.singletonList(this.sch1));
+    this.schedules3 = new ArrayList<>(Collections.singletonList(this.sch2));
     this.mtModel = new NUPlannerModel(new ArrayList<>());
     this.model1 = new NUPlannerModel(new ArrayList<>(Collections.singletonList(this.mtSch)));
     this.model2 = new NUPlannerModel(this.schedules1);
@@ -321,10 +323,10 @@ public class ScheduleModelTests {
   @Test
   public void testScheduleEventsMethod() {
     this.initData();
-    Schedule sch = new Schedule(this.events1, "My Schedule");
+    Schedule sch = new SchedulePlanner(this.events1, "My Schedule");
     Assert.assertEquals(new ArrayList<>(Arrays.asList(this.church, this.school)), sch.events());
 
-    Schedule sch0 = new Schedule(this.mtEvents, "New Schedule");
+    Schedule sch0 = new SchedulePlanner(this.mtEvents, "New Schedule");
     Assert.assertTrue(sch0.events().isEmpty());
   }
 
@@ -333,7 +335,7 @@ public class ScheduleModelTests {
   @Test
   public void testAddEventAlreadyContainsEventError() {
     this.initData();
-    Schedule sch = new Schedule(this.mtEvents, "Bad Schedule");
+    Schedule sch = new SchedulePlanner(this.mtEvents, "Bad Schedule");
     sch.addEvent(this.school);
     try {
       sch.addEvent(this.school);
@@ -365,7 +367,7 @@ public class ScheduleModelTests {
   @Test
   public void testAddEventOverlappingEventsError() {
     this.initData();
-    Schedule sch = new Schedule(this.mtEvents, "Bad Schedule");
+    Schedule sch = new SchedulePlanner(this.mtEvents, "Bad Schedule");
     sch.addEvent(this.church);
     Assert.assertEquals(1, sch.events().size());
     try {
@@ -396,7 +398,7 @@ public class ScheduleModelTests {
   @Test
   public void testAddEvent() {
     this.initData();
-    Schedule sch = new Schedule(this.mtEvents, "My Schedule");
+    Schedule sch = new SchedulePlanner(this.mtEvents, "My Schedule");
     // check that schedule is empty
     Assert.assertFalse(sch.events().contains(this.school));
     Assert.assertTrue(sch.events().isEmpty());
@@ -418,7 +420,7 @@ public class ScheduleModelTests {
   @Test
   public void testRemoveEventEventDoesNotExist() {
     this.initData();
-    Schedule sch = new Schedule(this.events1, "My Schedule");
+    Schedule sch = new SchedulePlanner(this.events1, "My Schedule");
     Assert.assertEquals(2, sch.events().size());
     try {
       sch.removeEvent(this.vacation);
@@ -441,7 +443,7 @@ public class ScheduleModelTests {
   @Test
   public void testRemoveEvent() {
     this.initData();
-    Schedule sch = new Schedule(this.events1, "My Schedule");
+    Schedule sch = new SchedulePlanner(this.events1, "My Schedule");
     Assert.assertEquals(2, sch.events().size());
     Assert.assertEquals(new ArrayList<>(Arrays.asList(this.church, this.school)), sch.events());
 
@@ -514,7 +516,7 @@ public class ScheduleModelTests {
     }
 
     try {
-      this.model4.addEvent(this.vacation);
+      this.model4.addEvent(this.church);
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Added event overlaps with an existing event!" +
@@ -535,24 +537,100 @@ public class ScheduleModelTests {
   @Test
   public void testPlannerModifyEventSelfReplaceError() {
     this.initData();
+    try {
+      this.model2.modifyEvent(this.vacation, this.vacation);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Cannot replace old event with same event!", e.getMessage());
+    }
+
+    try {
+      this.model3.modifyEvent(this.mondayAfternoonJog, this.mondayAfternoonJog);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Cannot replace old event with same event!", e.getMessage());
+    }
+
+    try {
+      this.model2.modifyEvent(this.wednesdayDinner, this.wednesdayDinner);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Cannot replace old event with same event!", e.getMessage());
+    }
   }
 
   // test modifyEvent method in NUPlannerModel class for IllegalArgumentException
   // when Schedule already contains the given new event
+  @Test
+  public void testPlannerModifyEventAlreadyContainsError() {
+    this.initData();
+    try {
+      this.model2.modifyEvent(this.church, this.school);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Schedule already contains given event!", e.getMessage());
+    }
+
+    try {
+      this.model2.modifyEvent(this.school, this.church);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Schedule already contains given event!", e.getMessage());
+    }
+
+    try {
+      this.model3.modifyEvent(this.mondayAfternoonJog, this.wednesdayDinner);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Schedule already contains given event!", e.getMessage());
+    }
+  }
 
   // test modifyEvent method in NUPlannerModel class for IllegalArgumentException
   // when the given new event overlaps with an existing event in the schedule
+  @Test
+  public void testPlannerModifyEventOverlapsError() {
+    this.initData();
+    try {
+      this.model2.modifyEvent(this.church, this.vacation);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Added event overlaps with an existing event!" +
+              " Removing added event.", e.getMessage());
+    }
+
+    try {
+      this.model2.modifyEvent(this.mondayAfternoonJog, this.school);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Added event overlaps with an existing event!" +
+              " Removing added event.", e.getMessage());
+    }
+  }
 
   // test modifyEvent method in NUPlannerModel class for IllegalArgumentException
   // when the given old event does not exist in the current schedule
-
-  // test modifyEvent method in NUPlannerModel class for IllegalArgumentException
-  // when Schedule already contains the given new event
+  @Test
+  public void testPlannerModifyEventNoSuchEventError() {
+    this.initData();
+  }
 
   // test modifyEvent method for NUPlannerModel class
+  @Test
+  public void testPlannerModifyEvent() {
+    this.initData();
+  }
 
   // test removeEvent method in NUPlannerModel class for IllegalArgumentException
   // when the given event does not exist in this Schedule
+  @Test
+  public void testPlannerRemoveEventNoSuchEventError() {
+    this.initData();
+  }
 
   // test removeEvent method for NUPlannerModel class
+  @Test
+  public void testPlannerRemoveEvent() {
+    this.initData();
+  }
 }

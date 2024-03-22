@@ -4,6 +4,7 @@ import model.DaysOfTheWeek;
 import model.Event;
 import model.Location;
 import model.Schedule;
+import model.SchedulePlanner;
 import model.Time;
 import model.User;
 import org.junit.Assert;
@@ -36,7 +37,7 @@ public class ScheduleControllerTests {
   List<User> users1, users2, users3;
   Event church, school, vacation, mondayAfternoonJog, wednesdayDinner;
   List<Event> mtEvents, events1, events2;
-  Schedule sch1, sch2, sch3, sch4;
+  SchedulePlanner sch1, sch2, sch3, sch4;
   ScheduleSystemController schSysMod;
 
   private void initData() {
@@ -76,14 +77,12 @@ public class ScheduleControllerTests {
     this.mtEvents = new ArrayList<>();
     this.events1 = new ArrayList<>(Arrays.asList(this.church, this.school));
     this.events2 = new ArrayList<>(Arrays.asList(this.vacation, this.mondayAfternoonJog));
-    this.sch1 = new Schedule(this.events1, "School Schedule");
-    this.sch2 = new Schedule(this.events2, "Summer Schedule");
-    this.sch3 = new Schedule(new ArrayList<>(Arrays.asList(this.church, this.mondayAfternoonJog)),
-            "My Schedule");
-    this.sch4 = new Schedule(new ArrayList<>(Collections.singletonList(this.wednesdayDinner)),
-            "Dinner");
-//    this.schSysMod = new ScheduleSystemController(new ArrayList<>(Arrays.asList(this.sch1,
-//            this.sch2)));
+    this.sch1 = new SchedulePlanner(this.events1, "School Schedule");
+    this.sch2 = new SchedulePlanner(this.events2, "Summer Schedule");
+    this.sch3 = new SchedulePlanner(new ArrayList<>(Arrays.asList(this.church,
+            this.mondayAfternoonJog)), "My Schedule");
+    this.sch4 = new SchedulePlanner(new ArrayList<>(Collections.singletonList(
+            this.wednesdayDinner)), "Dinner");
   }
 
   @Test
@@ -395,7 +394,7 @@ public class ScheduleControllerTests {
   public void testWriteXML() {
     this.initData();
     this.schSysMod.writeXML(this.sch1);
-    List<Schedule> listSchedules = this.schSysMod.returnSchedule();
+    List<SchedulePlanner> listSchedules = this.schSysMod.returnSchedule();
     ScheduleSystemTextView schView = new ScheduleSystemTextView(listSchedules);
 
     assertEquals("User: School Schedule\n" +
