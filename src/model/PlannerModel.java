@@ -5,22 +5,16 @@ import java.util.List;
 public interface PlannerModel extends ReadOnlyPlannerModel {
   /**
    *
-   * @return
    */
-  public List<Schedule> schedules();
+  void addEvent(Event event);
 
   /**
    *
    */
-  public void addEvent(Event event);
+  void modifyEvent(Event event, Event newEvent);
 
   /**
    *
    */
-  public void modifyEvent(Event event, Event newEvent);
-
-  /**
-   *
-   */
-  public void removeEvent(Event event);
+  void removeEvent(Event event);
 }

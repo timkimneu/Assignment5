@@ -29,44 +29,14 @@ import static org.junit.Assert.assertEquals;
  * supporting classes. Examples and tests of classes and methods within the controller package.
  */
 public class ScheduleControllerTests {
-  DaysOfTheWeek sunday;
-  DaysOfTheWeek monday;
-  DaysOfTheWeek tuesday;
-  DaysOfTheWeek wednesday;
-  DaysOfTheWeek thursday;
-  DaysOfTheWeek friday;
-  DaysOfTheWeek saturday;
-  Time time1;
-  Time time2;
-  Time time3;
-  Time time4;
-  Time time5;
-  Location loc1;
-  Location loc2;
-  Location loc3;
-  Location loc4;
-  Location loc5;
-  User user1;
-  User user2;
-  User user3;
-  User classmate;
-  User friend;
-  User bestFriend;
-  List<User> users1;
-  List<User> users2;
-  List<User> users3;
-  Event church;
-  Event school;
-  Event vacation;
-  Event mondayAfternoonJog;
-  Event wednesdayDinner;
-  List<Event> mtEvents;
-  List<Event> events1;
-  List<Event> events2;
-  Schedule sch1;
-  Schedule sch2;
-  Schedule sch3;
-  Schedule sch4;
+  DaysOfTheWeek sunday, monday, tuesday, wednesday, thursday, friday, saturday;
+  Time time1, time2, time3, time4, time5;
+  Location loc1, loc2, loc3, loc4, loc5;
+  User user1, user2, user3, classmate, friend, bestFriend;
+  List<User> users1, users2, users3;
+  Event church, school, vacation, mondayAfternoonJog, wednesdayDinner;
+  List<Event> mtEvents, events1, events2;
+  Schedule sch1, sch2, sch3, sch4;
   ScheduleSystemController schSysMod;
 
   private void initData() {

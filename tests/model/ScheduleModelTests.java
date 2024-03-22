@@ -13,54 +13,16 @@ import java.util.List;
  * Examples and tests of classes and methods within the model package.
  */
 public class ScheduleModelTests {
-  DaysOfTheWeek sunday;
-  DaysOfTheWeek monday;
-  DaysOfTheWeek tuesday;
-  DaysOfTheWeek wednesday;
-  DaysOfTheWeek thursday;
-  DaysOfTheWeek friday;
-  DaysOfTheWeek saturday;
-  Time invalidTime;
-  Time time1;
-  Time time2;
-  Time time3;
-  Time time4;
-  Time time5;
-  Location loc1;
-  Location loc2;
-  Location loc3;
-  Location loc4;
-  Location loc5;
-  Location loc6;
-  User newUser;
-  User user1;
-  User user2;
-  User user3;
-  User classmate;
-  User friend;
-  User bestFriend;
-  List<User> users1;
-  List<User> users2;
-  List<User> users3;
-  Event church;
-  Event school;
-  Event vacation;
-  Event mondayAfternoonJog;
-  Event wednesdayDinner;
-  List<Event> mtEvents;
-  List<Event> events1;
-  List<Event> events2;
-  Schedule mtSch;
-  Schedule sch1;
-  Schedule sch2;
-  Schedule sch3;
-  Schedule sch4;
-  List<Schedule> schedules1;
-  List<Schedule> schedules2;
-  NUPlannerModel mtModel;
-  NUPlannerModel model1;
-  NUPlannerModel model2;
-  NUPlannerModel model3;
+  DaysOfTheWeek sunday, monday, tuesday, wednesday, thursday, friday, saturday;
+  Time invalidTime, time1, time2, time3, time4, time5;
+  Location loc1, loc2, loc3, loc4, loc5, loc6;
+  User newUser, user1, user2, user3, classmate, friend, bestFriend, dinnerDude;
+  List<User> users1, users2, users3;
+  Event church, school, vacation, mondayAfternoonJog, wednesdayDinner;
+  List<Event> mtEvents, events1, events2;
+  Schedule mtSch, sch1, sch2, sch3, sch4;
+  List<Schedule> schedules1, schedules2, schedules3;
+  NUPlannerModel mtModel, model1, model2, model3, model4;
 
   private void initData() {
     this.sunday = DaysOfTheWeek.SUNDAY;
@@ -88,16 +50,17 @@ public class ScheduleModelTests {
     this.classmate = new User("Classmate");
     this.friend = new User("Friend");
     this.bestFriend = new User("Best Friend");
-    this.users1 = new ArrayList<>(Arrays.asList(this.user1, this.user2, this.user3));
-    this.users2 = new ArrayList<>(Arrays.asList(this.user1, this.classmate, this.bestFriend));
-    this.users3 = new ArrayList<>(Arrays.asList(this.user1, this.friend, this.bestFriend));
+    this.dinnerDude = new User("Dinner Dude");
+    this.users1 = new ArrayList<>(Arrays.asList(this.user1, this.user2, this.user3, this.newUser));
+    this.users2 = new ArrayList<>(Arrays.asList(this.user1, this.classmate, this.bestFriend, this.newUser));
+    this.users3 = new ArrayList<>(Arrays.asList(this.user1, this.friend, this.bestFriend, this.newUser));
     this.church = new Event("Church", this.time1, this.loc1, this.users1);
     this.school = new Event("Classes", this.time2, this.loc2, this.users2);
     this.vacation = new Event("Cancun Trip", this.time3, this.loc3, this.users3);
     this.mondayAfternoonJog = new Event("Afternoon Jog", this.time4, this.loc4,
             new ArrayList<>(Collections.singletonList(this.user1)));
     this.wednesdayDinner = new Event("Wednesday Dinner", this.time5, this.loc5,
-            new ArrayList<>(Collections.singletonList(this.user1)));
+            new ArrayList<>(Collections.singletonList(this.dinnerDude)));
     this.mtEvents = new ArrayList<>();
     this.events1 = new ArrayList<>(Arrays.asList(this.church, this.school));
     this.events2 = new ArrayList<>(Arrays.asList(this.vacation, this.mondayAfternoonJog));
@@ -107,13 +70,15 @@ public class ScheduleModelTests {
     this.sch3 = new Schedule(new ArrayList<>(Arrays.asList(this.church, this.mondayAfternoonJog)),
             "Best Friend");
     this.sch4 = new Schedule(new ArrayList<>(Collections.singletonList(this.wednesdayDinner)),
-            "DinnerDude");
+            "Dinner Dude");
     this.schedules1 = new ArrayList<>(Arrays.asList(this.sch1, this.sch2));
     this.schedules2 = new ArrayList<>(Arrays.asList(this.sch3, this.sch4));
+    this.schedules3 = new ArrayList<>(Collections.singletonList(this.sch1));
     this.mtModel = new NUPlannerModel(new ArrayList<>());
     this.model1 = new NUPlannerModel(new ArrayList<>(Collections.singletonList(this.mtSch)));
     this.model2 = new NUPlannerModel(this.schedules1);
     this.model3 = new NUPlannerModel(this.schedules2);
+    this.model4 = new NUPlannerModel(this.schedules3);
   }
 
   // Test Time constructor for IllegalArgumentException for an invalid input for
@@ -348,8 +313,8 @@ public class ScheduleModelTests {
     this.initData();
     Assert.assertEquals("Me", this.sch1.scheduleID());
     Assert.assertEquals("Friend", this.sch2.scheduleID());
-    Assert.assertEquals("My Schedule", this.sch3.scheduleID());
-    Assert.assertEquals("Dinner", this.sch4.scheduleID());
+    Assert.assertEquals("Best Friend", this.sch3.scheduleID());
+    Assert.assertEquals("Dinner Dude", this.sch4.scheduleID());
   }
 
   // test events method for Schedule class
@@ -547,10 +512,30 @@ public class ScheduleModelTests {
       Assert.assertEquals("Added event overlaps with an existing event!" +
               " Removing added event.", e.getMessage());
     }
+
+    try {
+      this.model4.addEvent(this.vacation);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Added event overlaps with an existing event!" +
+          " Removing added event.", e.getMessage());
+    }
+
+    try {
+      this.model4.addEvent(this.mondayAfternoonJog);
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Added event overlaps with an existing event!" +
+          " Removing added event.", e.getMessage());
+    }
   }
 
   // test modifyEvent method in NUPlannerModel class for IllegalArgumentException
   // when attempting to replace old event with itself
+  @Test
+  public void testPlannerModifyEventSelfReplaceError() {
+    this.initData();
+  }
 
   // test modifyEvent method in NUPlannerModel class for IllegalArgumentException
   // when Schedule already contains the given new event
