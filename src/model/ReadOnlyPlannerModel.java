@@ -13,6 +13,7 @@ public interface ReadOnlyPlannerModel {
 
   /**
    *
+   *
    * @return
    */
   List<SchedulePlanner> schedules();
@@ -24,4 +25,10 @@ public interface ReadOnlyPlannerModel {
    * @return
    */
   List<Event> events(String name);
+
+  /**
+   *
+   * @return
+   */
+  List<String> users();
 }

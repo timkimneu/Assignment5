@@ -47,6 +47,15 @@ public class NUPlannerModel implements PlannerModel {
   }
 
   @Override
+  public List<String> users() {
+    List<String> allUsers = new ArrayList<>();
+    for (Schedule sch : this.schedules()) {
+      allUsers.add(sch.scheduleID());
+    }
+    return allUsers;
+  }
+
+  @Override
   public void addEvent(Event event) {
     for (User u : event.users()) {
       for (SchedulePlanner sch : this.schedules()) {

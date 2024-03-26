@@ -1,36 +1,56 @@
 package view;
 
 import javax.swing.*;
+import java.awt.*;
+import java.util.List;
 
+/**
+ *
+ */
 public class EventFrame extends JFrame implements ScheduleSystemView {
 
   private JPasswordField pfield;
   private JPanel mainPanel;
   private JScrollPane mainScrollPane;
 
+  /**
+   *
+   */
   public EventFrame() {
     super();
 
-    setSize(400, 400);
+    setSize(300, 400);
     mainPanel = new JPanel();
     //for elements to be arranged vertically within this panel
-    mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
-    //scroll bars around this main panel
-    mainScrollPane = new JScrollPane(mainPanel);
-    add(mainScrollPane);
+    mainPanel.setLayout(new GridLayout(0, 1));
 
-    //text area
-    JTextArea textArea = new JTextArea(2, 2);
-    textArea.setBorder(BorderFactory.createTitledBorder("Event name:"));
-    mainPanel.add(textArea);
+    JLabel event = new JLabel(" Event name: ");
+    mainPanel.add(event);
+    JTextField eventText = new JTextField();
+    mainPanel.add(eventText);
+    mainPanel.add(new JLabel(" Location: "));
 
-    JPanel pPanel = new JPanel();
-    pPanel.setBorder(BorderFactory.createTitledBorder("Using Password fields"));
-    mainPanel.add(pPanel);
+    onlinePanel();
 
-    pPanel.setLayout(new BoxLayout(pPanel, BoxLayout.PAGE_AXIS));
-    pfield = new JPasswordField(5);
-    pPanel.add(pfield);
+    JPanel startDay = new JPanel();
+    startDay.add(new JLabel("Starting Day: "));
+    JTextField startText = new JTextField();
+    startDay.add(startText);
+    mainPanel.add(startDay);
+
+//    JPanel endDay = new JPanel();
+//    endDay.add(new JLabel("Ending Day: "));
+//    endDay.add(startText);
+//    endDay.setLayout(new BoxLayout(endDay, BoxLayout.PAGE_AXIS));
+//    String[] options = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+//    JComboBox<String> onlineBox = new JComboBox<>();
+//    for (int option = 0; option < options.length; option++) {
+//      onlineBox.addItem(options[option]);
+//    }
+//    endDay.add(onlineBox);
+//    mainPanel.add(endDay);
+
+    add(mainPanel);
 
   }
 
@@ -38,4 +58,29 @@ public class EventFrame extends JFrame implements ScheduleSystemView {
   public String schedulesToString() {
     return null;
   }
+
+  @Override
+  public void makeVisible() {
+    setVisible(true);
+  }
+
+  private void onlinePanel() {
+    JPanel online = new JPanel();
+    online.setLayout(new BoxLayout(online, BoxLayout.PAGE_AXIS));
+    String[] options = {"Is online", "Is not online"};
+
+    JComboBox<String> onlineBox = new JComboBox<>();
+    for (int option = 0; option < options.length; option++) {
+      onlineBox.addItem(options[option]);
+    }
+    online.add(onlineBox);
+
+    JPanel loc = new JPanel();
+    loc.setLayout(new GridLayout(1, 5));
+    loc.add(online);
+    JTextField place = new JTextField();
+    loc.add(place);
+    mainPanel.add(loc);
+  }
+
 }

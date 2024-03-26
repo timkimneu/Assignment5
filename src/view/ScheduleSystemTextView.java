@@ -50,6 +50,11 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
     return viewer;
   }
 
+  @Override
+  public void makeVisible() {
+
+  }
+
   // add events to viewer if it is associated with the day
   private void getWhichDays(String day, int sch) {
     viewer += day + ": \n";

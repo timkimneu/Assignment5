@@ -519,6 +519,16 @@ public class ScheduleModelTests {
     Assert.assertEquals(this.events2, this.model2.events("Friend"));
   }
 
+  // test users method for NUPlanner class
+  @Test
+  public void testPlannerUsers() {
+    this.initData();
+    ArrayList<String> model2Users = new ArrayList<>(Arrays.asList("Me", "Friend"));
+    ArrayList<String> model3Users = new ArrayList<>(Arrays.asList("Best Friend", "Dinner Dude"));
+    Assert.assertEquals(model2Users, this.model2.users());
+    Assert.assertEquals(model3Users, this.model3.users());
+  }
+
   // test addEvent method in NUPlannerModel class for IllegalArgumentException
   // when Schedule already contains the given event
   @Test

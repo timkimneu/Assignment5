@@ -3,7 +3,7 @@ package controller;
 import model.DaysOfTheWeek;
 import model.Event;
 import model.Location;
-import model.Schedule;
+import model.NUPlannerModel;
 import model.SchedulePlanner;
 import model.Time;
 import model.User;
@@ -39,6 +39,7 @@ public class ScheduleControllerTests {
   List<Event> mtEvents, events1, events2;
   SchedulePlanner sch1, sch2, sch3, sch4;
   ScheduleSystemController schSysMod;
+  NUPlannerModel model1;
 
   private void initData() {
     this.sunday = DaysOfTheWeek.SUNDAY;
@@ -83,6 +84,8 @@ public class ScheduleControllerTests {
             this.mondayAfternoonJog)), "My Schedule");
     this.sch4 = new SchedulePlanner(new ArrayList<>(Collections.singletonList(
             this.wednesdayDinner)), "Dinner");
+    this.model1 = new NUPlannerModel(Arrays.asList(this.sch1, this.sch2));
+    this.schSysMod = new ScheduleSystemController(this.model1);
   }
 
   @Test
@@ -270,104 +273,106 @@ public class ScheduleControllerTests {
     }
   }
 
-//  @Test
-//  public void testScheduleMode() {
-//    List<Schedule> emptyList = new ArrayList<>();
-//    ScheduleSystem schModel = new ScheduleSystemController(emptyList);
-//    schModel.readXML("src/prof.xml");
-//    List<Schedule> listSchedules = schModel.returnSchedule();
-//    ScheduleSystemTextView schView = new ScheduleSystemTextView(listSchedules);
-//
-//    assertEquals("User: Prof. Lucia\n" +
-//        "Sunday:\n" +
-//        "Monday:\n" +
-//        "Tuesday: \n" +
-//        "\tname: \"CS3500 Morning Lecture\"\n" +
-//        "\ttime: Tuesday: 0950 -> Tuesday: 1130\n" +
-//        "\tlocation: \"Churchill Hall 101\"\n" +
-//        "\tonline: false\n" +
-//        "\tinvitees: Prof. Lucia\n" +
-//        "\tStudent Anon\n" +
-//        "\tChat\n" +
-//        "\tname: \"CS3500 Afternoon Lecture\"\n" +
-//        "\ttime: Tuesday: 1335 -> Tuesday: 1515\n" +
-//        "\tlocation: \"Churchill Hall 101\"\n" +
-//        "\tonline: false\n" +
-//        "\tinvitees: Prof. Lucia\n" +
-//        "\tChat\n" +
-//        "Wednesday:\n" +
-//        "Thursday:\n" +
-//        "Friday: \n" +
-//        "\tname: Sleep\n" +
-//        "\ttime: Friday: 1800 -> Sunday: 1200\n" +
-//        "\tlocation: Home\n" +
-//        "\tonline: true\n" +
-//        "\tinvitees: Prof. Lucia\n" +
-//        "Saturday:\n", schView.schedulesToString());
-//  }
+  @Test
+  public void testScheduleMode() {
+    List<SchedulePlanner> emptyList = new ArrayList<>();
+    NUPlannerModel mtModel = new NUPlannerModel(emptyList);
+    ScheduleSystem schModel = new ScheduleSystemController(mtModel);
+    schModel.readXML("src/prof.xml");
+    List<SchedulePlanner> listSchedules = schModel.returnSchedule();
+    ScheduleSystemTextView schView = new ScheduleSystemTextView(listSchedules);
 
-//  @Test
-//  public void testScheduleMultipleUsers() {
-//    List<Schedule> emptyList = new ArrayList<>();
-//    ScheduleSystem schModel = new ScheduleSystemController(emptyList);
-//    schModel.readXML("src/prof.xml");
-//    schModel.readXML("src/prof.xml");
-//    List<Schedule> listSchedules = schModel.returnSchedule();
-//    ScheduleSystemTextView schView = new ScheduleSystemTextView(listSchedules);
-//
-//    assertEquals("User: Prof. Lucia\n" +
-//        "Sunday:\n" +
-//        "Monday:\n" +
-//        "Tuesday: \n" +
-//        "\tname: \"CS3500 Morning Lecture\"\n" +
-//        "\ttime: Tuesday: 0950 -> Tuesday: 1130\n" +
-//        "\tlocation: \"Churchill Hall 101\"\n" +
-//        "\tonline: false\n" +
-//        "\tinvitees: Prof. Lucia\n" +
-//        "\tStudent Anon\n" +
-//        "\tChat\n" +
-//        "\tname: \"CS3500 Afternoon Lecture\"\n" +
-//        "\ttime: Tuesday: 1335 -> Tuesday: 1515\n" +
-//        "\tlocation: \"Churchill Hall 101\"\n" +
-//        "\tonline: false\n" +
-//        "\tinvitees: Prof. Lucia\n" +
-//        "\tChat\n" +
-//        "Wednesday:\n" +
-//        "Thursday:\n" +
-//        "Friday: \n" +
-//        "\tname: Sleep\n" +
-//        "\ttime: Friday: 1800 -> Sunday: 1200\n" +
-//        "\tlocation: Home\n" +
-//        "\tonline: true\n" +
-//        "\tinvitees: Prof. Lucia\n" +
-//        "Saturday:\n" +
-//        "User: Prof. Lucia\n" +
-//        "Sunday:\n" +
-//        "Monday:\n" +
-//        "Tuesday: \n" +
-//        "\tname: \"CS3500 Morning Lecture\"\n" +
-//        "\ttime: Tuesday: 0950 -> Tuesday: 1130\n" +
-//        "\tlocation: \"Churchill Hall 101\"\n" +
-//        "\tonline: false\n" +
-//        "\tinvitees: Prof. Lucia\n" +
-//        "\tStudent Anon\n" +
-//        "\tChat\n" +
-//        "\tname: \"CS3500 Afternoon Lecture\"\n" +
-//        "\ttime: Tuesday: 1335 -> Tuesday: 1515\n" +
-//        "\tlocation: \"Churchill Hall 101\"\n" +
-//        "\tonline: false\n" +
-//        "\tinvitees: Prof. Lucia\n" +
-//        "\tChat\n" +
-//        "Wednesday:\n" +
-//        "Thursday:\n" +
-//        "Friday: \n" +
-//        "\tname: Sleep\n" +
-//        "\ttime: Friday: 1800 -> Sunday: 1200\n" +
-//        "\tlocation: Home\n" +
-//        "\tonline: true\n" +
-//        "\tinvitees: Prof. Lucia\n" +
-//        "Saturday:\n", schView.schedulesToString());
-//  }
+    assertEquals("User: Prof. Lucia\n" +
+        "Sunday:\n" +
+        "Monday:\n" +
+        "Tuesday: \n" +
+        "\tname: \"CS3500 Morning Lecture\"\n" +
+        "\ttime: Tuesday: 0950 -> Tuesday: 1130\n" +
+        "\tlocation: \"Churchill Hall 101\"\n" +
+        "\tonline: false\n" +
+        "\tinvitees: Prof. Lucia\n" +
+        "\tStudent Anon\n" +
+        "\tChat\n" +
+        "\tname: \"CS3500 Afternoon Lecture\"\n" +
+        "\ttime: Tuesday: 1335 -> Tuesday: 1515\n" +
+        "\tlocation: \"Churchill Hall 101\"\n" +
+        "\tonline: false\n" +
+        "\tinvitees: Prof. Lucia\n" +
+        "\tChat\n" +
+        "Wednesday:\n" +
+        "Thursday:\n" +
+        "Friday: \n" +
+        "\tname: Sleep\n" +
+        "\ttime: Friday: 1800 -> Sunday: 1200\n" +
+        "\tlocation: Home\n" +
+        "\tonline: true\n" +
+        "\tinvitees: Prof. Lucia\n" +
+        "Saturday:\n", schView.schedulesToString());
+  }
+
+  @Test
+  public void testScheduleMultipleUsers() {
+    List<SchedulePlanner> emptyList = new ArrayList<>();
+    NUPlannerModel mtModel = new NUPlannerModel(emptyList);
+    ScheduleSystem schModel = new ScheduleSystemController(mtModel);
+    schModel.readXML("src/prof.xml");
+    schModel.readXML("src/prof.xml");
+    List<SchedulePlanner> listSchedules = schModel.returnSchedule();
+    ScheduleSystemTextView schView = new ScheduleSystemTextView(listSchedules);
+
+    assertEquals("User: Prof. Lucia\n" +
+        "Sunday:\n" +
+        "Monday:\n" +
+        "Tuesday: \n" +
+        "\tname: \"CS3500 Morning Lecture\"\n" +
+        "\ttime: Tuesday: 0950 -> Tuesday: 1130\n" +
+        "\tlocation: \"Churchill Hall 101\"\n" +
+        "\tonline: false\n" +
+        "\tinvitees: Prof. Lucia\n" +
+        "\tStudent Anon\n" +
+        "\tChat\n" +
+        "\tname: \"CS3500 Afternoon Lecture\"\n" +
+        "\ttime: Tuesday: 1335 -> Tuesday: 1515\n" +
+        "\tlocation: \"Churchill Hall 101\"\n" +
+        "\tonline: false\n" +
+        "\tinvitees: Prof. Lucia\n" +
+        "\tChat\n" +
+        "Wednesday:\n" +
+        "Thursday:\n" +
+        "Friday: \n" +
+        "\tname: Sleep\n" +
+        "\ttime: Friday: 1800 -> Sunday: 1200\n" +
+        "\tlocation: Home\n" +
+        "\tonline: true\n" +
+        "\tinvitees: Prof. Lucia\n" +
+        "Saturday:\n" +
+        "User: Prof. Lucia\n" +
+        "Sunday:\n" +
+        "Monday:\n" +
+        "Tuesday: \n" +
+        "\tname: \"CS3500 Morning Lecture\"\n" +
+        "\ttime: Tuesday: 0950 -> Tuesday: 1130\n" +
+        "\tlocation: \"Churchill Hall 101\"\n" +
+        "\tonline: false\n" +
+        "\tinvitees: Prof. Lucia\n" +
+        "\tStudent Anon\n" +
+        "\tChat\n" +
+        "\tname: \"CS3500 Afternoon Lecture\"\n" +
+        "\ttime: Tuesday: 1335 -> Tuesday: 1515\n" +
+        "\tlocation: \"Churchill Hall 101\"\n" +
+        "\tonline: false\n" +
+        "\tinvitees: Prof. Lucia\n" +
+        "\tChat\n" +
+        "Wednesday:\n" +
+        "Thursday:\n" +
+        "Friday: \n" +
+        "\tname: Sleep\n" +
+        "\ttime: Friday: 1800 -> Sunday: 1200\n" +
+        "\tlocation: Home\n" +
+        "\tonline: true\n" +
+        "\tinvitees: Prof. Lucia\n" +
+        "Saturday:\n", schView.schedulesToString());
+  }
 
   // test writeXML method in ScheduleSystemModel class for IllegalArgumentException
   // when the current list of schedules does not contain the given Schedule
