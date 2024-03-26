@@ -10,4 +10,11 @@ public interface ReadOnlyPlannerModel {
    */
   List<SchedulePlanner> schedules();
 
+  /**
+   *
+   *
+   * @param name
+   * @return
+   */
+  List<Event> events(String name);
 }

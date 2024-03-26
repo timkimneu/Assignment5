@@ -29,14 +29,14 @@ files. Current visual representation is a text view that is simply a String repr
 schedule with indentation for clarity.
 
 Key Subcomponents:
-Main subcomponents of the model package is the Event class as the Schedule class is essentially a
+PlannerRunner subcomponents of the model package is the Event class as the Schedule class is essentially a
 list of Event objects with a name. As described in the purpose, an event holds the name of the
 event, the time, the location, and the list of users attending the event. The Time class is also
 significant as the time checks for any overlaps between events.
-Main subcomponents of the controller package is the ScheduleSystem interface as it contains much of
+PlannerRunner subcomponents of the controller package is the ScheduleSystem interface as it contains much of
 the documentation on the Controller implementation of the model. The class provides depth and
 explains functionality of XML functions and its purpose.
-Main subcomponents of the view package is the ScheduleSystemView as similar to our controller
+PlannerRunner subcomponents of the view package is the ScheduleSystemView as similar to our controller
 subcomponent, contains documentation of the implementation of the text view on the model. The class
 provides depth and explains functionality of the text view method and its purpose.
 

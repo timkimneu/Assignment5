@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,6 +9,17 @@ import java.util.List;
 public class NUPlannerModel implements PlannerModel {
   private final List<SchedulePlanner> schedules;
 
+  /**
+   *
+   */
+  public NUPlannerModel() {
+    this.schedules = new ArrayList<>();
+  }
+
+  /**
+   *
+   * @param schedules
+   */
   public NUPlannerModel(List<SchedulePlanner> schedules) {
     this.schedules = schedules;
   }
@@ -18,9 +30,18 @@ public class NUPlannerModel implements PlannerModel {
   }
 
   @Override
+  public List<Event> events(String id) {
+    for (Schedule sch : this.schedules()) {
+      if (sch.scheduleID().equals(id)) {
+        return sch.events();
+      }
+    }
+  }
+
+  @Override
   public void addEvent(Event event) {
     for (User u : event.users()) {
-      for (SchedulePlanner sch : this.schedules) {
+      for (SchedulePlanner sch : this.schedules()) {
         String scheduleID = sch.scheduleID();
         if (u.name().equals(scheduleID)) {
           sch.addEvent(event);
@@ -34,17 +55,10 @@ public class NUPlannerModel implements PlannerModel {
     if (event.equals(newEvent)) {
       throw new IllegalArgumentException("Cannot replace old event with same event!");
     }
-//    this.removeEvent(event);
-//    try {
-//      this.addEvent(newEvent);
-//    } catch (IllegalArgumentException e) {
-//      this.addEvent(event);
-//      throw new IllegalArgumentException(e.getMessage());
-//    }
     for (User u : event.users()) {
       for (SchedulePlanner sch : this.schedules) {
-        String scheduleID = sch.scheduleID();
-        if (u.name().equals(scheduleID)) {
+        String schID = sch.scheduleID();
+        if (u.name().equals(schID)) {
           sch.removeEvent(event);
           sch.addEvent(newEvent);
         }
