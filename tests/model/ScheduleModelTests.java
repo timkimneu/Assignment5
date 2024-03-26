@@ -3,7 +3,6 @@ package model;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -56,7 +55,8 @@ public class ScheduleModelTests {
     this.friend = new User("Friend");
     this.bestFriend = new User("Best Friend");
     this.dinnerDude = new User("Dinner Dude");
-    this.users1 = new ArrayList<>(Arrays.asList(this.user1, this.user2, this.user3, this.newUser, this.friend));
+    this.users1 = new ArrayList<>(Arrays.asList(this.user1, this.user2, this.user3, this.newUser,
+            this.friend));
     this.users2 = new ArrayList<>(Arrays.asList(this.user1, this.classmate, this.bestFriend,
             this.newUser));
     this.users3 = new ArrayList<>(Arrays.asList(this.user1, this.friend, this.bestFriend,
@@ -498,6 +498,27 @@ public class ScheduleModelTests {
     Assert.assertEquals(schedules1, this.model2.schedules());
   }
 
+  // test events method in NUPlannerModel class for IllegalArgumentException
+  // when the given schedule id does not exist in this list of schedules
+  @Test
+  public void testPlannerEventsNoSuchSchedule() {
+    this.initData();
+    try {
+      this.model1.events("User User");
+      Assert.fail("Failed to catch error");
+    } catch (IllegalArgumentException e) {
+      Assert.assertEquals("Could not find events for given schedule id!", e.getMessage());
+    }
+  }
+
+  // test events method for NUPlannerModel class
+  @Test
+  public void testPlannerEvents() {
+    this.initData();
+    Assert.assertEquals(this.events1, this.model2.events("Me"));
+    Assert.assertEquals(this.events2, this.model2.events("Friend"));
+  }
+
   // test addEvent method in NUPlannerModel class for IllegalArgumentException
   // when Schedule already contains the given event
   @Test
@@ -534,7 +555,8 @@ public class ScheduleModelTests {
       this.model1.addEvent(this.school);
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
-      Assert.assertEquals("Added event overlaps with an existing event! Removing added event.", e.getMessage());
+      Assert.assertEquals("Added event overlaps with an existing event!" +
+              " Removing added event.", e.getMessage());
     }
   }
 
@@ -617,11 +639,11 @@ public class ScheduleModelTests {
   @Test
   public void testPlannerModifyEvent() {
     this.initData1();
-    Assert.assertEquals(2, this.model1.schedules().getFirst().events().size());
+    Assert.assertEquals(2, this.model1.events("User 1").size());
     this.model1.modifyEvent(this.vacation, this.church);
-    Assert.assertEquals(2, this.model1.schedules().getFirst().events().size());
+    Assert.assertEquals(2, this.model1.events("User 1").size());
     this.model1.modifyEvent(this.church, this.school);
-    Assert.assertEquals(2, this.model1.schedules().getFirst().events().size());
+    Assert.assertEquals(2, this.model1.events("User 1").size());
   }
 
   // test removeEvent method in NUPlannerModel class for IllegalArgumentException
@@ -641,10 +663,10 @@ public class ScheduleModelTests {
   @Test
   public void testPlannerRemoveEvent() {
     this.initData1();
-    Assert.assertEquals(2, this.model1.schedules().getFirst().events().size());
+    Assert.assertEquals(2, this.model1.events("User 1").size());
     this.model1.removeEvent(this.vacation);
-    Assert.assertEquals(1, this.model1.schedules().getFirst().events().size());
+    Assert.assertEquals(1, this.model1.events("User 1").size());
     this.model1.removeEvent(this.wednesdayDinner);
-    Assert.assertEquals(0, this.model1.schedules().getFirst().events().size());
+    Assert.assertEquals(0, this.model1.events("User 1").size());
   }
 }
