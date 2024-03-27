@@ -12,16 +12,17 @@ import java.util.List;
 public interface ReadOnlyPlannerModel {
 
   /**
+   * Observes all the schedules contained in the planner.
    *
-   *
-   * @return
+   * @return a list of all the schedules in the planner.
    */
   List<SchedulePlanner> schedules();
 
   /**
+   * Observes all the events for a provided user's id. Throws an IllegalArgumentException if
+   * there is no such schedule with the given id.
    *
-   *
-   * @param name
+   * @param name Name of
    * @return
    */
   List<Event> events(String name);
