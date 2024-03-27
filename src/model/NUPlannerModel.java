@@ -17,15 +17,17 @@ public class NUPlannerModel implements PlannerModel {
   private final List<SchedulePlanner> schedules;
 
   /**
-   *
+   * Planner model that is initialized without a given list of schedules.
    */
   public NUPlannerModel() {
     this.schedules = new ArrayList<>();
   }
 
   /**
-   *
-   * @param schedules
+   * Planner model that takes in an initial list of schedules and creates
+   * a new planner with this list of schedules.
+   * 
+   * @param schedules a list of schedules to be initialized with a new planner model.
    */
   public NUPlannerModel(List<SchedulePlanner> schedules) {
     this.schedules = schedules;

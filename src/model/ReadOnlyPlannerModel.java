@@ -22,14 +22,15 @@ public interface ReadOnlyPlannerModel {
    * Observes all the events for a provided user's id. Throws an IllegalArgumentException if
    * there is no such schedule with the given id.
    *
-   * @param name Name of
-   * @return
+   * @param name Name or id of the owner of a schedule in the planner system.
+   * @return a list of Event objects that belong to the given user's schedule.
    */
   List<Event> events(String name);
 
   /**
+   * Returns the names of all the users who have a schedule in the planner system.
    *
-   * @return
+   * @return a list of String objects representing all of the users in the planner system.
    */
   List<String> users();
 }

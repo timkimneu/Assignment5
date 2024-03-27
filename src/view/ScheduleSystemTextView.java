@@ -52,7 +52,7 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
 
   @Override
   public void makeVisible() {
-
+    // ignore, not implemented for text view.
   }
 
   // add events to viewer if it is associated with the day

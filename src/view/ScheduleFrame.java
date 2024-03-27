@@ -56,6 +56,7 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, ActionL
     listUsers.setLayout(new BoxLayout(listUsers, BoxLayout.PAGE_AXIS));
     List<String> users = model.users();
     JComboBox<String> userBox = new JComboBox<>();
+    userBox.addItem("<none>");
     for (int i = 0; i < users.size(); i++) {
       userBox.addItem(users.get(i));
     }
@@ -97,9 +98,10 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, ActionL
       case "Add calendar":
         int retvalue = fchooser.showOpenDialog(ScheduleFrame.this);
         if (retvalue == JFileChooser.APPROVE_OPTION) {
-        File f = fchooser.getSelectedFile();
-        System.out.println(f);
+          File f = fchooser.getSelectedFile();
+          System.out.println(f);
         }
+        break;
       case "Save calendar":
         //final JFileChooser schooser = new JFileChooser(".");
         int retvalue2 = fchooser.showOpenDialog(ScheduleFrame.this);
@@ -107,36 +109,23 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, ActionL
           File f = fchooser.getSelectedFile();
           System.out.println(f);
         }
+        break;
       case "Create event":
         //EventFrame frame = new EventFrame();
         eventFrame.setVisible(true);
+        break;
       case "Schedule event":
         //EventFrame eventFrame = new EventFrame();
         eventFrame.setVisible(true);
+        break;
       case "User schedule":
         if (e.getSource() instanceof JComboBox) {
           JComboBox<String> user = (JComboBox<String>) e.getSource();
-          //System.out.println((String) user.getSelectedItem());
-          List<SchedulePlanner> listSch = model.schedules();
-
-          for (int sch = 0; sch < listSch.size(); sch++) {
-            SchedulePlanner currSch = listSch.get(sch);
-            List<model.Event> listEvents = currSch.events();
-            for (int event = 0; event < listEvents.size(); event++) {
-              Event currEvent = listEvents.get(event);
-              Time currTime = currEvent.time();
-
             String userStr = (String) user.getSelectedItem();
-            User selectedUser = new User(userStr);
             panel.drawDates(userStr);
-           // panel.drawDates((String) user.getSelectedItem());
-              //panel.fillDates(currTime.startTime(), currTime.endTime(),
-               //  currTime.startDay(), currTime.endDay());
-
             }
+        break;
           }
         }
-    }
-  }
 
 }

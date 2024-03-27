@@ -17,6 +17,8 @@ public interface ScheduleSystemView {
    */
   String schedulesToString();
 
+  /**
+   *
+   */
   void makeVisible();
-
 }
