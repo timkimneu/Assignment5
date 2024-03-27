@@ -1,6 +1,5 @@
 package view;
 
-import controller.ScheduleSystemController;
 import model.ReadOnlyPlannerModel;
 
 import javax.swing.*;
@@ -16,7 +15,7 @@ import java.util.List;
 public class ScheduleFrame extends JFrame implements ScheduleSystemView, ActionListener {
 
   private final SchedulePanel panel;
-  private EventFrame eventFrame = new EventFrame();
+  private EventFrame eventFrame;
   private JFileChooser fchooser = new JFileChooser(".");
 
   /**
@@ -25,6 +24,7 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, ActionL
    */
   public ScheduleFrame(ReadOnlyPlannerModel model) {
     super();
+    this.eventFrame  = new EventFrame(model);
     this.setSize(550, 610);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.panel = new SchedulePanel(model);

@@ -1,5 +1,3 @@
-import controller.ScheduleSystem;
-import controller.ScheduleSystemController;
 import model.DaysOfTheWeek;
 import model.Event;
 import model.Location;
@@ -8,7 +6,6 @@ import model.SchedulePlanner;
 import model.Time;
 import model.User;
 import view.ScheduleFrame;
-import view.ScheduleSystemTextView;
 import view.ScheduleSystemView;
 
 import java.util.ArrayList;
@@ -49,7 +46,7 @@ public final class PlannerRunner {
 //    List<SchedulePlanner> emptyList = new ArrayList<>();
 //    NUPlannerModel mtModel = new NUPlannerModel(emptyList);
 //    ScheduleSystem schModel = new ScheduleSystemController(mtModel);
-//    schModel.readXML("src/prof.xml");
+//    schModel.readXML("Assignment5/src/prof.xml");
 //    List<SchedulePlanner> listSchedules = schModel.returnSchedule();
     //ScheduleSystemTextView schView = new ScheduleSystemTextView(listSchedules);
 
