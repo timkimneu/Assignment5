@@ -1,6 +1,10 @@
 package view;
 
+import model.Event;
 import model.ReadOnlyPlannerModel;
+import model.SchedulePlanner;
+import model.Time;
+import model.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +18,7 @@ import java.util.List;
  */
 public class ScheduleFrame extends JFrame implements ScheduleSystemView, ActionListener {
 
+  private final ReadOnlyPlannerModel model;
   private final SchedulePanel panel;
   private EventFrame eventFrame;
   private JFileChooser fchooser = new JFileChooser(".");
@@ -24,6 +29,7 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, ActionL
    */
   public ScheduleFrame(ReadOnlyPlannerModel model) {
     super();
+    this.model = model;
     this.eventFrame  = new EventFrame(model);
     this.setSize(550, 610);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -54,6 +60,8 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, ActionL
       userBox.addItem(users.get(i));
     }
     listUsers.add(userBox);
+    userBox.setActionCommand("User schedule");
+    userBox.addActionListener(this);
 
     JPanel bottomButtons = new JPanel();
     bottomButtons.setLayout(new GridLayout(1, 5));
@@ -87,22 +95,17 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, ActionL
   public void actionPerformed(ActionEvent e) {
     switch(e.getActionCommand()) {
       case "Add calendar":
-        //final JFileChooser fchooser = new JFileChooser(".");
-//        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-//            "JPG & GIF Images", "jpg", "gif");
-//        fchooser.setFileFilter(filter);
         int retvalue = fchooser.showOpenDialog(ScheduleFrame.this);
         if (retvalue == JFileChooser.APPROVE_OPTION) {
         File f = fchooser.getSelectedFile();
-//        System.out.println(f);
-          //fileOpenDisplay.setText(f.getAbsolutePath());
+        System.out.println(f);
         }
       case "Save calendar":
         //final JFileChooser schooser = new JFileChooser(".");
         int retvalue2 = fchooser.showOpenDialog(ScheduleFrame.this);
         if (retvalue2 == JFileChooser.APPROVE_OPTION) {
           File f = fchooser.getSelectedFile();
-          String filePath = f.getAbsolutePath();
+          System.out.println(f);
         }
       case "Create event":
         //EventFrame frame = new EventFrame();
@@ -110,6 +113,29 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, ActionL
       case "Schedule event":
         //EventFrame eventFrame = new EventFrame();
         eventFrame.setVisible(true);
+      case "User schedule":
+        if (e.getSource() instanceof JComboBox) {
+          JComboBox<String> user = (JComboBox<String>) e.getSource();
+          //System.out.println((String) user.getSelectedItem());
+          List<SchedulePlanner> listSch = model.schedules();
+
+          for (int sch = 0; sch < listSch.size(); sch++) {
+            SchedulePlanner currSch = listSch.get(sch);
+            List<model.Event> listEvents = currSch.events();
+            for (int event = 0; event < listEvents.size(); event++) {
+              Event currEvent = listEvents.get(event);
+              Time currTime = currEvent.time();
+
+            String userStr = (String) user.getSelectedItem();
+            User selectedUser = new User(userStr);
+            panel.drawDates(userStr);
+           // panel.drawDates((String) user.getSelectedItem());
+              //panel.fillDates(currTime.startTime(), currTime.endTime(),
+               //  currTime.startDay(), currTime.endDay());
+
+            }
+          }
+        }
     }
   }
 

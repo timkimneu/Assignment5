@@ -1,3 +1,5 @@
+import controller.ScheduleSystem;
+import controller.ScheduleSystemController;
 import model.DaysOfTheWeek;
 import model.Event;
 import model.Location;
@@ -43,15 +45,38 @@ public final class PlannerRunner {
     SchedulePlanner sch2 = new SchedulePlanner(events2, "User 2");
     List<SchedulePlanner> schedules1 = new ArrayList<>(Arrays.asList(sch1, sch2));
     NUPlannerModel model1 = new NUPlannerModel(schedules1);
-//    List<SchedulePlanner> emptyList = new ArrayList<>();
-//    NUPlannerModel mtModel = new NUPlannerModel(emptyList);
-//    ScheduleSystem schModel = new ScheduleSystemController(mtModel);
-//    schModel.readXML("Assignment5/src/prof.xml");
-//    List<SchedulePlanner> listSchedules = schModel.returnSchedule();
-    //ScheduleSystemTextView schView = new ScheduleSystemTextView(listSchedules);
 
-    NUPlannerModel model = new NUPlannerModel();
-    ScheduleSystemView view = new ScheduleFrame(model1);
+    List<SchedulePlanner> emptyList = new ArrayList<>();
+    NUPlannerModel mtModel = new NUPlannerModel(emptyList);
+    ScheduleSystem schModel = new ScheduleSystemController(mtModel);
+    schModel.readXML("Assignment5/src/prof.xml");
+    List<SchedulePlanner> listSchedules = schModel.returnSchedule();
+
+    NUPlannerModel mtModel2 = new NUPlannerModel(emptyList);
+    ScheduleSystem model2 = new ScheduleSystemController(mtModel2);
+    schModel.readXML("Assignment5/src/School Schedule.xml");
+    List<SchedulePlanner> listSchedules2 = model2.returnSchedule();
+
+    List<SchedulePlanner> newList = new ArrayList<>();
+    newList.addAll(listSchedules);
+    newList.addAll(listSchedules2);
+    newList.addAll(schedules1);
+
+//    for (int i = 0; i < listSchedules.size(); i++) {
+//      SchedulePlanner currSch = listSchedules.get(i);
+//      List<Event> listEvents = currSch.events();
+//      for (int y = 0; y < listEvents.size(); y++) {
+//        Event currEvent = listEvents.get(y);
+//        Time currTime = currEvent.time();
+//        System.out.println(currTime.startDay());
+//        System.out.println(currTime.endDay());
+//        System.out.println(currTime.startTime());
+//        System.out.println(currTime.endTime());
+//      }
+//    }
+
+    NUPlannerModel model = new NUPlannerModel(newList);
+    ScheduleSystemView view = new ScheduleFrame(model);
     view.makeVisible();
 
   }
