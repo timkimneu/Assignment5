@@ -11,9 +11,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -46,7 +49,7 @@ public class ScheduleSystemController implements ScheduleSystem {
 
   // read XML file
   @Override
-  public void readXML(String filePath) {
+  public void readXML(String filePath)  {
     List<Event> listOfEvents = new ArrayList<>();
     String id = null;
     Document doc = null;
@@ -54,7 +57,8 @@ public class ScheduleSystemController implements ScheduleSystem {
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
       doc = builder.parse(new File(filePath));
       doc.getDocumentElement().normalize();
-    } catch (Exception ignored) {
+    } catch (IOException | SAXException | ParserConfigurationException ignored) {
+      System.out.println(ignored.getMessage());
     }
     NodeList events = doc.getElementsByTagName("event");
     Node first = doc.getElementsByTagName("schedule").item(0);

@@ -10,8 +10,6 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.geom.Line2D;
@@ -22,7 +20,7 @@ import java.util.List;
 /**
  *
  */
-public class SchedulePanel extends JPanel implements ActionListener, ItemListener, ListSelectionListener {
+public class SchedulePanel extends JPanel implements ItemListener, ListSelectionListener {
 
   private final ReadOnlyPlannerModel model;
 
@@ -215,11 +213,6 @@ public class SchedulePanel extends JPanel implements ActionListener, ItemListene
     Rectangle2D rect = new Rectangle2D.Double((double) (endInd * this.getWidth()) / 7, 0,
         (double) this.getWidth() / 7, (double) this.getHeight() / 24 * mult);
       g2d.fill(rect);
-  }
-
-  @Override
-  public void actionPerformed(ActionEvent e) {
-
   }
 
   @Override

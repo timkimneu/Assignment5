@@ -1,18 +1,23 @@
 package view;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
-
+import java.awt.GridLayout;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.BoxLayout;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 import model.ReadOnlyPlannerModel;
 
 /**
  * JFrame class extension that represents the screen that pops up when a user wants to
  * add, modify, or remove an event to a selected schedule in the planner. The window
  * asks a user to input the name of the event, a location, starting day, starting time,
- * ending day, and a list of users.
+ * ending day, ending time, and a list of users.
  */
 public class EventFrame extends JFrame implements ScheduleSystemView {
 
@@ -22,13 +27,15 @@ public class EventFrame extends JFrame implements ScheduleSystemView {
   private JTextField place, eventText, startTimeTxt, endTimeTxt;
 
   /**
-   * Constructor of the event frame
+   * Constructor of the event frame. Sets the dimension of the frame and asks user for the
+   * name, the location, starting day, starting time, ending day, ending time, and the list of
+   * attendees for an event to be added, modified, or removed from the schedule.
    */
   public EventFrame(ReadOnlyPlannerModel model) {
     super();
     this.model = model;
 
-    setSize(300, 400);
+    setSize(300, 500);
     mainPanel = new JPanel();
     //for elements to be arranged vertically within this panel
     mainPanel.setLayout(new GridLayout(0, 1));
@@ -117,13 +124,11 @@ public class EventFrame extends JFrame implements ScheduleSystemView {
 
   private void dayOfTheWeekPanel(String d, JComboBox<String> result) {
     JPanel startDay = new JPanel();
-//    startDay.setLayout(new GridLayout(0, 1));
     startDay.add(new JLabel("\t" + d));
 
     String[] allDOTW = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
             "Saturday"};
 
-//    dotwBox.setLayout(new GridLayout(2, 5));
     for (String aDOTW: allDOTW) {
       result.addItem(aDOTW);
     }
@@ -152,13 +157,14 @@ public class EventFrame extends JFrame implements ScheduleSystemView {
 
     mainPanel.add(usersTag);
 
-    List<String> allUsers = this.model.users();
+    String[] allUsers = this.model.users().toArray(new String[0]);
 
-    JComboBox<String> usersBox = new JComboBox<>();
-    for (String u: allUsers) {
-      usersBox.addItem(u);
-    }
-    mainPanel.add(usersBox);
+    JList<String> usersBox = new JList<>(allUsers);
+//    usersBox.setLayout(new GridLayout(2000, 1000));
+    JScrollPane scrollPane = new JScrollPane();
+    scrollPane.setViewportView(usersBox);
+    usersBox.setLayoutOrientation(JList.VERTICAL);
+
+    mainPanel.add(scrollPane);
   }
-
 }
