@@ -66,4 +66,17 @@ described functionality inside our NUPlannerModel class. From our last assignmen
 of interfaces to better describe the functionality in our model so, we created and implemented the appropriate
 interfaces with abundant text to describe the functionality of our code.
 
+In order to visualize the GUI, we added classes ScheduleFrame, SchedulePanel, EventFrame, along with their
+respective interfaces SchFrame, SchPanel, and EvtFrame. The interfaces SchFrame and EvtFrame are currently
+empty, since their implemented class already extends either JavaFrame or JavaPanel and does not need any extra
+methods. ScheduleFrame handles the button clicks and user interaction. SchedulePanel paints the components of
+GUI by illustrating red blocks that represent the events of the schedule, and the grid lines. The red blocks that
+appear on the main frame are activated once a user is selected. The options should be preloaded. The EventFrame
+represents the way a user would be able to create or modify an event. This is shown once either the buttons
+"Create event" or "Schedule event" are pressed on the main frame.
+
+Another class that was added was PlannerRunner, which runs the main program to visualize the GUI. This initializes
+preloaded users' schedules that read from prof.xml and School Schedule.xml. It also takes in a new schedule that
+was initialized, called schedules1.
+
 Screenshots and jar file is in the main folder (Outside of src)
