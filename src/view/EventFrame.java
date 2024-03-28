@@ -21,8 +21,8 @@ import model.ReadOnlyPlannerModel;
  */
 public class EventFrame extends JFrame implements ScheduleSystemView {
 
-  private JPanel mainPanel;
-  private ReadOnlyPlannerModel model;
+  private final JPanel mainPanel;
+  private final ReadOnlyPlannerModel model;
   private JComboBox<String> onlineBox, startDOTW, endDOTW;
   private JTextField place, eventText, startTimeTxt, endTimeTxt;
 
