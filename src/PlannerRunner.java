@@ -10,6 +10,7 @@ import model.User;
 import view.ScheduleFrame;
 import view.ScheduleSystemView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +23,7 @@ public final class PlannerRunner {
     DaysOfTheWeek monday = DaysOfTheWeek.MONDAY;
     DaysOfTheWeek tuesday = DaysOfTheWeek.TUESDAY;
     DaysOfTheWeek wednesday = DaysOfTheWeek.WEDNESDAY;
-    DaysOfTheWeek sunday = DaysOfTheWeek.SATURDAY;
+    DaysOfTheWeek sunday = DaysOfTheWeek.SUNDAY;
     Time time1 = new Time(monday, "1300", tuesday, "1500");
     Time time2 = new Time(monday, "1200", monday, "1600");
     Time time3 = new Time(wednesday, "1800", wednesday, "1830");
@@ -44,18 +45,17 @@ public final class PlannerRunner {
     SchedulePlanner sch1 = new SchedulePlanner(events1, "User 1");
     SchedulePlanner sch2 = new SchedulePlanner(events2, "User 2");
     List<SchedulePlanner> schedules1 = new ArrayList<>(Arrays.asList(sch1, sch2));
-    NUPlannerModel model1 = new NUPlannerModel(schedules1);
 
     List<SchedulePlanner> emptyList = new ArrayList<>();
     NUPlannerModel mtModel = new NUPlannerModel(emptyList);
     ScheduleSystem schModel = new ScheduleSystemController(mtModel);
-    schModel.readXML("src/prof.xml");
+    schModel.readXML("Assignment5/src/prof.xml");
     List<SchedulePlanner> listSchedules = schModel.returnSchedule();
 
     emptyList = new ArrayList<>();
     NUPlannerModel mtModel2 = new NUPlannerModel(emptyList);
     ScheduleSystem model2 = new ScheduleSystemController(mtModel2);
-    model2.readXML("src/School Schedule.xml");
+    model2.readXML("Assignment5/src/School Schedule.xml");
     List<SchedulePlanner> listSchedules2 = model2.returnSchedule();
 
     List<SchedulePlanner> newList = new ArrayList<>();
@@ -67,5 +67,4 @@ public final class PlannerRunner {
     ScheduleSystemView view = new ScheduleFrame(model);
     view.makeVisible();
   }
-
 }
