@@ -62,6 +62,7 @@ public class SchedulePlanner implements Schedule {
     }
   }
 
+  // method to check if the events have any overlap
   private void checkAnyOverlap() throws IllegalStateException {
     for (Event e1 : this.events()) {
       for (Event e2 : this.events()) {
@@ -72,6 +73,7 @@ public class SchedulePlanner implements Schedule {
     }
   }
 
+  // checks to see if two given events overlap each other
   private void checkForOverlap(Event e1, Event e2) throws IllegalStateException {
     Time e1Time = e1.time();
     Time e2Time = e2.time();

@@ -18,7 +18,7 @@ public interface ScheduleSystemView {
   String schedulesToString();
 
   /**
-   *
+   * Sets the visibility of the component.
    */
   void makeVisible();
 }

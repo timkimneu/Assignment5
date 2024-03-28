@@ -2,8 +2,17 @@ package view;
 
 import model.ReadOnlyPlannerModel;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JFileChooser;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JComboBox;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.io.File;
 import java.util.List;
 
@@ -11,7 +20,7 @@ import java.util.List;
  * Represents the GUI for the schedule of a single user, but allowing for the selection of
  * different users to view the appropriate schedule pertaining to that user.
  */
-public class ScheduleFrame extends JFrame implements ScheduleSystemView {
+public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFrame {
 
   private final ReadOnlyPlannerModel model;
   private final SchedulePanel panel;
@@ -47,14 +56,19 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView {
       if (retvalue == JFileChooser.APPROVE_OPTION) {
         File f = fchooser.getSelectedFile();
         System.out.println(f);
-      }});
+      }
+    }
+    );
 
     saveCalendar.setActionCommand("Save calendar");
-    saveCalendar.addActionListener(e -> {int retvalue2 = fchooser.showOpenDialog(ScheduleFrame.this);
+    saveCalendar.addActionListener(e -> {
+      int retvalue2 = fchooser.showOpenDialog(ScheduleFrame.this);
       if (retvalue2 == JFileChooser.APPROVE_OPTION) {
         File f = fchooser.getSelectedFile();
         System.out.println(f);
-      }});
+      }
+    }
+    );
 
     bar.add(fileMenu);
     this.setJMenuBar(bar);
@@ -62,6 +76,8 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView {
     eventButtonListener();
   }
 
+  // Adds event listeners for the buttons on the schedule. Uses lambda
+  // functionality to implement these commands.
   private void eventButtonListener() {
     JPanel listUsers = new JPanel();
     listUsers.setLayout(new BoxLayout(listUsers, BoxLayout.PAGE_AXIS));
@@ -78,7 +94,9 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView {
         JComboBox<String> user = (JComboBox<String>) e.getSource();
         String userStr = (String) user.getSelectedItem();
         panel.drawDates(userStr);
-      }});
+      }
+    }
+    );
 
     JPanel bottomButtons = new JPanel();
     bottomButtons.setLayout(new GridLayout(1, 5));
@@ -97,11 +115,13 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView {
     this.add(bottomButtons, BorderLayout.PAGE_END);
   }
 
+  // doesn't need to use this method, so returns null
   @Override
   public String schedulesToString() {
     return null;
   }
 
+  // allows the schedule frame to be visible
   @Override
   public void makeVisible() {
     setVisible(true);

@@ -47,3 +47,23 @@ consist of dependencies of the Schedule class. Controller contains everything pe
 with reading and writing to XML files along with appropriate documentation on this functionality.
 View contains the visual representation of the model, currently being a String representation along
 with appropriate documentation on this functionality.
+
+Things forgotten to include in last README edit:
+Invariants:
+Our invariant is found in the Time class. The time fields of Time (startTime and endTime) are invariant
+with startTime and endTime being strings that are exactly 4 characters long represented by numbers where
+the first 2 numbers represent the number of hours ranging from 00 to 23 and the last 2 numbers ranging
+from 00 to 59. In other words the first number in the 4 number string can only hold values from 0 to 2,
+the second number from 0 to 9 when the first number is 0 or 1 and from 0 to 3 when the first number is 2.
+The third number ranges from 0 to 5 and the fourth number ranges from 0 to 9.
+
+Changes since HW 5 (changes for part 2):
+One implementation for the model that was absent for our previous assignment was a full planner system
+that held a list of schedules and was able to add, modify, or remove an event to all applicable users
+or schedules in the system. Previously our model only accounted for individual schedules that would need
+to be modified for each and every applicable schedule, but now currently we are able to perform the above
+described functionality inside our NUPlannerModel class. From our last assignment we also had a noted lack
+of interfaces to better describe the functionality in our model so, we created and implemented the appropriate
+interfaces with abundant text to describe the functionality of our code.
+
+Screenshots and jar file is in the main folder (Outside of src)

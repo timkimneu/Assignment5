@@ -123,7 +123,7 @@ public class ScheduleSystemController implements ScheduleSystem {
     }
   }
 
-  //
+  // writes an event to the XML file
   private void writeEvent(Writer file, Event e) {
     try {
       file.write("\t<event>\n");
@@ -137,7 +137,7 @@ public class ScheduleSystemController implements ScheduleSystem {
     }
   }
 
-  //
+  // writes the time to the XML file
   private void writeTime(Writer file, Time t) {
     try {
       file.write("\t\t<time>\n");
@@ -151,7 +151,7 @@ public class ScheduleSystemController implements ScheduleSystem {
     }
   }
 
-  //
+  // writes the location to the XML file
   private void writeLocation(Writer file, Location loc) {
     String locOnlineStr;
     if (loc.online()) {
@@ -169,7 +169,7 @@ public class ScheduleSystemController implements ScheduleSystem {
     }
   }
 
-  //
+  // writes the users to the XML file
   private void writeUsers(Writer file, List<User> users) {
     try {
       file.write("\t\t<users>\n");

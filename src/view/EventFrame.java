@@ -19,12 +19,18 @@ import model.ReadOnlyPlannerModel;
  * asks a user to input the name of the event, a location, starting day, starting time,
  * ending day, ending time, and a list of users.
  */
-public class EventFrame extends JFrame implements ScheduleSystemView {
+public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
 
   private final JPanel mainPanel;
   private final ReadOnlyPlannerModel model;
-  private JComboBox<String> onlineBox, startDOTW, endDOTW;
-  private JTextField place, eventText, startTimeTxt, endTimeTxt;
+  private JComboBox<String> onlineBox;
+  private JComboBox<String> startDOTW;
+  private JComboBox<String> endDOTW;
+  private JTextField place;
+  private JTextField eventText;
+  private JTextField startTimeTxt;
+  private JTextField endTimeTxt;
+  private JList<String> usersBox;
 
   /**
    * Constructor of the event frame. Sets the dimension of the frame and asks user for the
@@ -58,36 +64,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView {
     timePanel("Ending Time: ", endTimeTxt);
     availableUsersPanel();
 
-    JPanel bottomButtons = new JPanel();
-    bottomButtons.setLayout(new GridLayout(1, 5));
-
-    JButton modEvent = new JButton("Modify event");
-    modEvent.setActionCommand("Modify event");
-    modEvent.addActionListener((e -> System.out.println(
-        "Event Name: " + (String) eventText.getText() + "\n"
-            + "Online: " + (String) onlineBox.getSelectedItem() + "\n"
-            + "Place: " + (String) place.getText() + "\n"
-            + "Starting Day: " + (String) startDOTW.getSelectedItem() + "\n"
-            + "Starting Time: " + (String) startTimeTxt.getText() + "\n"
-            + "Ending Day: " + (String) endDOTW.getSelectedItem() + "\n"
-            + "Ending Time: " + (String) endTimeTxt.getText() + "\n"
-    )));
-
-    JButton removeEvent = new JButton("Remove event");
-    removeEvent.setActionCommand("Remove event");
-    removeEvent.addActionListener(e -> System.out.println(
-        "Event Name: " + (String) eventText.getText() + "\n"
-            + "Online: " + (String) onlineBox.getSelectedItem() + "\n"
-            + "Place: " + (String) place.getText() + "\n"
-            + "Starting Day: " + (String) startDOTW.getSelectedItem() + "\n"
-            + "Starting Time: " + (String) startTimeTxt.getText() + "\n"
-            + "Ending Day: " + (String) endDOTW.getSelectedItem() + "\n"
-            + "Ending Time: " + (String) endTimeTxt.getText() + "\n"
-    ));
-
-    bottomButtons.add(modEvent);
-    bottomButtons.add(removeEvent);
-    this.add(bottomButtons, BorderLayout.PAGE_END);
+    buttonsPanel();
 
     add(mainPanel);
   }
@@ -100,6 +77,41 @@ public class EventFrame extends JFrame implements ScheduleSystemView {
   @Override
   public void makeVisible() {
     setVisible(true);
+  }
+
+  private void buttonsPanel() {
+    JPanel bottomButtons = new JPanel();
+    bottomButtons.setLayout(new GridLayout(1, 5));
+
+    JButton modEvent = new JButton("Modify event");
+    modEvent.setActionCommand("Modify event");
+    modEvent.addActionListener((e -> System.out.println(
+        "Event Name: " + eventText.getText() + "\n"
+            + "Online: " + onlineBox.getSelectedItem() + "\n"
+            + "Place: " + place.getText() + "\n"
+            + "Starting Day: " + startDOTW.getSelectedItem() + "\n"
+            + "Starting Time: " + startTimeTxt.getText() + "\n"
+            + "Ending Day: " + endDOTW.getSelectedItem() + "\n"
+            + "Ending Time: " + endTimeTxt.getText() + "\n"
+            + "Users: " + usersBox.getSelectedValuesList()
+    )));
+
+    JButton removeEvent = new JButton("Remove event");
+    removeEvent.setActionCommand("Remove event");
+    removeEvent.addActionListener(e -> System.out.println(
+        "Event Name: " + eventText.getText() + "\n"
+            + "Online: " + onlineBox.getSelectedItem() + "\n"
+            + "Place: " + place.getText() + "\n"
+            + "Starting Day: " + startDOTW.getSelectedItem() + "\n"
+            + "Starting Time: " + startTimeTxt.getText() + "\n"
+            + "Ending Day: " + endDOTW.getSelectedItem() + "\n"
+            + "Ending Time: " + endTimeTxt.getText() + "\n"
+            + "Users: " + usersBox.getSelectedValuesList()
+    ));
+
+    bottomButtons.add(modEvent);
+    bottomButtons.add(removeEvent);
+    this.add(bottomButtons, BorderLayout.PAGE_END);
   }
 
   private void onlinePanel() {
@@ -127,7 +139,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView {
     startDay.add(new JLabel("\t" + d));
 
     String[] allDOTW = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
-            "Saturday"};
+        "Saturday"};
 
     for (String aDOTW: allDOTW) {
       result.addItem(aDOTW);
@@ -159,8 +171,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView {
 
     String[] allUsers = this.model.users().toArray(new String[0]);
 
-    JList<String> usersBox = new JList<>(allUsers);
-//    usersBox.setLayout(new GridLayout(2000, 1000));
+    usersBox = new JList<>(allUsers);
     JScrollPane scrollPane = new JScrollPane();
     scrollPane.setViewportView(usersBox);
     usersBox.setLayoutOrientation(JList.VERTICAL);

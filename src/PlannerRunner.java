@@ -10,15 +10,26 @@ import model.User;
 import view.ScheduleFrame;
 import view.ScheduleSystemView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
- *
+ * Main class to run planner GUI. Allows events to be added, modified, and removed
+ * and can import schedules via XML to create new schedules. GUI currently has no
+ * real functionality in modifying the model and will instead just print all input
+ * into the console when attempting to add/modify/remove an event as well as when
+ * opening an XML and returning the file path of the XML file.
  */
 public final class PlannerRunner {
+
+  /**
+   * Main class to run planner GUI. Allows events to be added, modified, and removed
+   * and can import schedules via XML to create new schedules. GUI currently has no
+   * real functionality in modifying the model and will instead just print all input
+   * into the console when attempting to add/modify/remove an event as well as when
+   * opening an XML and returning the file path of the XML file.
+   */
   public static void main(String[] args) {
     DaysOfTheWeek monday = DaysOfTheWeek.MONDAY;
     DaysOfTheWeek tuesday = DaysOfTheWeek.TUESDAY;
@@ -49,13 +60,13 @@ public final class PlannerRunner {
     List<SchedulePlanner> emptyList = new ArrayList<>();
     NUPlannerModel mtModel = new NUPlannerModel(emptyList);
     ScheduleSystem schModel = new ScheduleSystemController(mtModel);
-    schModel.readXML("Assignment5/src/prof.xml");
+    schModel.readXML("src/prof.xml");
     List<SchedulePlanner> listSchedules = schModel.returnSchedule();
 
     emptyList = new ArrayList<>();
     NUPlannerModel mtModel2 = new NUPlannerModel(emptyList);
     ScheduleSystem model2 = new ScheduleSystemController(mtModel2);
-    model2.readXML("Assignment5/src/School Schedule.xml");
+    model2.readXML("src/School Schedule.xml");
     List<SchedulePlanner> listSchedules2 = model2.returnSchedule();
 
     List<SchedulePlanner> newList = new ArrayList<>();
