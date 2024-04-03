@@ -60,13 +60,13 @@ public final class PlannerRunner {
     List<SchedulePlanner> emptyList = new ArrayList<>();
     NUPlannerModel mtModel = new NUPlannerModel(emptyList);
     ScheduleSystem schModel = new ScheduleSystemController(mtModel);
-    schModel.readXML("src/prof.xml");
+    schModel.readXML("Assignment5/src/prof.xml");
     List<SchedulePlanner> listSchedules = schModel.returnSchedule();
 
     emptyList = new ArrayList<>();
     NUPlannerModel mtModel2 = new NUPlannerModel(emptyList);
     ScheduleSystem model2 = new ScheduleSystemController(mtModel2);
-    model2.readXML("src/School Schedule.xml");
+    model2.readXML("Assignment5/src/School Schedule.xml");
     List<SchedulePlanner> listSchedules2 = model2.returnSchedule();
 
     List<SchedulePlanner> newList = new ArrayList<>();

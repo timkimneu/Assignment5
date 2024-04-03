@@ -10,4 +10,6 @@ public interface SchPanel {
 
   void drawDates(String user);
 
+  void addClickListener();
+
 }

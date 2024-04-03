@@ -98,7 +98,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
   // searches through the start days and calls helper methods in order
   private void fillSquares(Graphics2D g2d, String startTime, String endTime,
                            DaysOfTheWeek startDay, DaysOfTheWeek endDay) {
-    g2d.setColor(Color.red);
+    g2d.setColor(Color.pink);
     switch (startDay) {
       case SUNDAY:
         fillRemainingDays(g2d, 0, startTime, endTime, startDay, endDay);
@@ -149,7 +149,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
     }
     List<String> days = Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
         "Friday", "Saturday");
-    g2d.setColor(Color.red);
+    g2d.setColor(Color.pink);
     int startInd = days.indexOf(startDay.observeDay());
     int endInd = days.indexOf(endDay.observeDay());
     if (endInd < startInd) {
@@ -189,5 +189,10 @@ public class SchedulePanel extends JPanel implements SchPanel {
     this.userSelected = true;
     this.id = user;
     repaint();
+  }
+
+  @Override
+  public void addClickListener() {
+
   }
 }

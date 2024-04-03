@@ -43,7 +43,7 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
     this.panel = new SchedulePanel(model);
     this.setLayout(new BorderLayout());
     this.add(panel);
-    this.setResizable(false);
+    //this.setResizable(false);
 
     JMenuBar bar = new JMenuBar();
     JMenu fileMenu = new JMenu("File");

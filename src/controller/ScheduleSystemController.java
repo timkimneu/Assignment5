@@ -3,7 +3,7 @@ package controller;
 import model.DaysOfTheWeek;
 import model.Event;
 import model.Location;
-import model.NUPlannerModel;
+import model.PlannerModel;
 import model.SchedulePlanner;
 import model.Time;
 import model.User;
@@ -32,7 +32,7 @@ import java.util.List;
  * provide the current list of schedules contained in the system.
  */
 public class ScheduleSystemController implements ScheduleSystem {
-  private final NUPlannerModel model;
+  private final PlannerModel model;
 
   /**
    * Represents the model of the Schedule system or collection of events over a calendar.
@@ -43,7 +43,7 @@ public class ScheduleSystemController implements ScheduleSystem {
    *
    * @param model Model that represents a list of schedules and allows for schedule modification.
    */
-  public ScheduleSystemController(NUPlannerModel model) {
+  public ScheduleSystemController(PlannerModel model) {
     this.model = model;
   }
 
