@@ -1,5 +1,6 @@
 package view;
 
+import controller.ScheduleSystem;
 import model.DaysOfTheWeek;
 import model.Event;
 import model.Location;
@@ -52,6 +53,16 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
 
   @Override
   public void makeVisible() {
+    // ignore, not implemented for text view.
+  }
+
+  @Override
+  public void hidePanel() {
+    // ignore, not implemented for text view.
+  }
+
+  @Override
+  public void addListener(ScheduleSystem listener) {
     // ignore, not implemented for text view.
   }
 

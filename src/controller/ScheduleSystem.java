@@ -1,5 +1,7 @@
 package controller;
 
+import model.Event;
+import model.PlannerModel;
 import model.SchedulePlanner;
 
 import java.util.List;
@@ -27,8 +29,10 @@ public interface ScheduleSystem {
    * attending the event.
    *
    * @param sch Schedule to be written into a new/overwritten XML file
+   * @param beginPath Should always be "" (empty string), is otherwise only used to access
+   *                  parent folder in testing file.
    */
-  void writeXML(SchedulePlanner sch);
+  void writeXML(SchedulePlanner sch, String beginPath);
 
   /**
    * Provides a representation of the current list of Schedule objects contained in the system.
@@ -36,4 +40,29 @@ public interface ScheduleSystem {
    * @return List of schedules pertaining to this system.
    */
   List<SchedulePlanner> returnSchedule();
+
+  /**
+   *
+   * @param model
+   */
+  void launch(PlannerModel model);
+
+  /**
+   *
+   * @param e
+   */
+  void addEvent(Event e);
+
+  /**
+   *
+   * @param oldEvent
+   * @param newEvent
+   */
+  void modifyEvent(Event oldEvent, Event newEvent);
+
+  /**
+   *
+   * @param e
+   */
+  void removeEvent(Event e);
 }

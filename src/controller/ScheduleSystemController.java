@@ -7,6 +7,8 @@ import model.PlannerModel;
 import model.SchedulePlanner;
 import model.Time;
 import model.User;
+import view.ScheduleSystemView;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -32,7 +34,8 @@ import java.util.List;
  * provide the current list of schedules contained in the system.
  */
 public class ScheduleSystemController implements ScheduleSystem {
-  private final PlannerModel model;
+  private PlannerModel model;
+  private final ScheduleSystemView view;
 
   /**
    * Represents the model of the Schedule system or collection of events over a calendar.
@@ -41,10 +44,17 @@ public class ScheduleSystemController implements ScheduleSystem {
    * schedule, users can also write/create a new XML file to write a new schedule into the system.
    * System also can provide the current list of schedules contained in the system.
    *
-   * @param model Model that represents a list of schedules and allows for schedule modification.
+   * @param view
    */
-  public ScheduleSystemController(PlannerModel model) {
+  public ScheduleSystemController(ScheduleSystemView view) {
+    this.view = view;
+  }
+
+  @Override
+  public void launch(PlannerModel model) {
     this.model = model;
+    this.view.addListener(this);
+    this.view.makeVisible();
   }
 
   // read XML file
@@ -104,12 +114,12 @@ public class ScheduleSystemController implements ScheduleSystem {
 
   // write to XML file
   @Override
-  public void writeXML(SchedulePlanner sch) {
+  public void writeXML(SchedulePlanner sch, String beginPath) {
     if (!this.model.schedules().contains(sch)) {
       throw new IllegalArgumentException("Schedule system does not contain given schedule!");
     } else {
       try {
-        Writer file = new FileWriter("src/" + sch.scheduleID() + ".xml");
+        Writer file = new FileWriter(beginPath + "src/" + sch.scheduleID() + ".xml");
         file.write("<?xml version=\"1.0\"?>\n");
         file.write("<schedule id=\"" + sch.scheduleID() + "\">\n");
         for (Event e : sch.events()) {
@@ -185,6 +195,21 @@ public class ScheduleSystemController implements ScheduleSystem {
   @Override
   public List<SchedulePlanner> returnSchedule() {
     return new ArrayList<>(this.model.schedules());
+  }
+
+  @Override
+  public void addEvent(Event e) {
+
+  }
+
+  @Override
+  public void modifyEvent(Event oldEvent, Event newEvent) {
+
+  }
+
+  @Override
+  public void removeEvent(Event e) {
+
   }
 
 }

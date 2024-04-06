@@ -59,14 +59,20 @@ public final class PlannerRunner {
 
     List<SchedulePlanner> emptyList = new ArrayList<>();
     NUPlannerModel mtModel = new NUPlannerModel(emptyList);
-    ScheduleSystem schModel = new ScheduleSystemController(mtModel);
-    schModel.readXML("Assignment5/src/prof.xml");
+    ScheduleSystemView view1 = new ScheduleFrame(mtModel);
+    ScheduleSystem schModel = new ScheduleSystemController(view1);
+    schModel.launch(mtModel);
+    view1.hidePanel();
+    schModel.readXML("src/prof.xml");
     List<SchedulePlanner> listSchedules = schModel.returnSchedule();
 
     emptyList = new ArrayList<>();
     NUPlannerModel mtModel2 = new NUPlannerModel(emptyList);
-    ScheduleSystem model2 = new ScheduleSystemController(mtModel2);
-    model2.readXML("Assignment5/src/School Schedule.xml");
+    ScheduleSystemView view2 = new ScheduleFrame(mtModel2);
+    ScheduleSystem model2 = new ScheduleSystemController(view2);
+    model2.launch(mtModel2);
+    view2.hidePanel();
+    model2.readXML("src/School Schedule.xml");
     List<SchedulePlanner> listSchedules2 = model2.returnSchedule();
 
     List<SchedulePlanner> newList = new ArrayList<>();
@@ -76,6 +82,7 @@ public final class PlannerRunner {
 
     NUPlannerModel model = new NUPlannerModel(newList);
     ScheduleSystemView view = new ScheduleFrame(model);
-    view.makeVisible();
+    ScheduleSystem controller = new ScheduleSystemController(view);
+    controller.launch(model);
   }
 }

@@ -1,5 +1,6 @@
 package view;
 
+import controller.ScheduleSystem;
 import model.DaysOfTheWeek;
 import model.Event;
 import model.ReadOnlyPlannerModel;
@@ -192,7 +193,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
   }
 
   @Override
-  public void addClickListener() {
+  public void addListener(ScheduleSystem controller) {
 
   }
 }

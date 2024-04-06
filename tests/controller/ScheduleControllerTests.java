@@ -4,6 +4,7 @@ import model.DaysOfTheWeek;
 import model.Event;
 import model.Location;
 import model.NUPlannerModel;
+import model.PlannerModel;
 import model.SchedulePlanner;
 import model.Time;
 import model.User;
@@ -13,7 +14,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import view.ScheduleFrame;
 import view.ScheduleSystemTextView;
+import view.ScheduleSystemView;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -69,7 +73,7 @@ public class ScheduleControllerTests {
   SchedulePlanner sch3;
   SchedulePlanner sch4;
   ScheduleSystemController schSysMod;
-  NUPlannerModel model1;
+  PlannerModel model1;
 
   private void initData() {
     this.sunday = DaysOfTheWeek.SUNDAY;
@@ -115,7 +119,9 @@ public class ScheduleControllerTests {
     this.sch4 = new SchedulePlanner(new ArrayList<>(Collections.singletonList(
             this.wednesdayDinner)), "Dinner");
     this.model1 = new NUPlannerModel(Arrays.asList(this.sch1, this.sch2));
-    this.schSysMod = new ScheduleSystemController(this.model1);
+    ScheduleSystemView view = new ScheduleFrame(this.model1);
+    this.schSysMod = new ScheduleSystemController(view);
+    this.schSysMod.launch(model1);
   }
 
   @Test
@@ -123,7 +129,7 @@ public class ScheduleControllerTests {
     Document doc = null;
     try {
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-      doc = builder.parse(new File("src/tutorial.xml"));
+      doc = builder.parse(new File("../src/tutorial.xml"));
       doc.getDocumentElement().normalize();
     } catch (Exception ignored) {
     }
@@ -142,7 +148,7 @@ public class ScheduleControllerTests {
     Document doc = null;
     try {
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-      doc = builder.parse(new File("src/tutorial.xml"));
+      doc = builder.parse(new File("../src/tutorial.xml"));
       doc.getDocumentElement().normalize();
     } catch (Exception ignored) {
     }
@@ -165,7 +171,7 @@ public class ScheduleControllerTests {
     Document doc = null;
     try {
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-      doc = builder.parse(new File("src/prof.xml"));
+      doc = builder.parse(new File("../src/prof.xml"));
       doc.getDocumentElement().normalize();
     } catch (Exception ignored) {
     }
@@ -194,7 +200,7 @@ public class ScheduleControllerTests {
     Document doc = null;
     try {
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-      doc = builder.parse(new File("src/prof.xml"));
+      doc = builder.parse(new File("../src/prof.xml"));
       doc.getDocumentElement().normalize();
     } catch (Exception ignored) {
     }
@@ -233,7 +239,7 @@ public class ScheduleControllerTests {
     Document doc = null;
     try {
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-      doc = builder.parse(new File("src/prof.xml"));
+      doc = builder.parse(new File("../src/prof.xml"));
       doc.getDocumentElement().normalize();
     } catch (Exception ignored) {
     }
@@ -264,7 +270,7 @@ public class ScheduleControllerTests {
     Document doc = null;
     try {
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-      doc = builder.parse(new File("src/prof.xml"));
+      doc = builder.parse(new File("../src/prof.xml"));
       doc.getDocumentElement().normalize();
     } catch (Exception ignored) {
     }
@@ -307,8 +313,10 @@ public class ScheduleControllerTests {
   public void testScheduleMode() {
     List<SchedulePlanner> emptyList = new ArrayList<>();
     NUPlannerModel mtModel = new NUPlannerModel(emptyList);
-    ScheduleSystem schModel = new ScheduleSystemController(mtModel);
-    schModel.readXML("src/prof.xml");
+    ScheduleSystemView view = new ScheduleFrame(mtModel);
+    ScheduleSystem schModel = new ScheduleSystemController(view);
+    schModel.launch(mtModel);
+    schModel.readXML("../src/prof.xml");
     List<SchedulePlanner> listSchedules = schModel.returnSchedule();
     ScheduleSystemTextView schView = new ScheduleSystemTextView(listSchedules);
 
@@ -344,9 +352,11 @@ public class ScheduleControllerTests {
   public void testScheduleMultipleUsers() {
     List<SchedulePlanner> emptyList = new ArrayList<>();
     NUPlannerModel mtModel = new NUPlannerModel(emptyList);
-    ScheduleSystem schModel = new ScheduleSystemController(mtModel);
-    schModel.readXML("src/prof.xml");
-    schModel.readXML("src/prof.xml");
+    ScheduleSystemView view = new ScheduleFrame(mtModel);
+    ScheduleSystem schModel = new ScheduleSystemController(view);
+    schModel.launch(mtModel);
+    schModel.readXML("../src/prof.xml");
+    schModel.readXML("../src/prof.xml");
     List<SchedulePlanner> listSchedules = schModel.returnSchedule();
     ScheduleSystemTextView schView = new ScheduleSystemTextView(listSchedules);
 
@@ -410,14 +420,14 @@ public class ScheduleControllerTests {
   public void testWriteXMLScheduleDoesNotExistError() {
     this.initData();
     try {
-      this.schSysMod.writeXML(this.sch3);
+      this.schSysMod.writeXML(this.sch3, "../");
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Schedule system does not contain given schedule!", e.getMessage());
     }
 
     try {
-      this.schSysMod.writeXML(this.sch4);
+      this.schSysMod.writeXML(this.sch4, "../");
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Schedule system does not contain given schedule!", e.getMessage());
@@ -428,7 +438,7 @@ public class ScheduleControllerTests {
   @Test
   public void testWriteXML() {
     this.initData();
-    this.schSysMod.writeXML(this.sch1);
+    this.schSysMod.writeXML(this.sch1, "../");
     List<SchedulePlanner> listSchedules = this.schSysMod.returnSchedule();
     ScheduleSystemTextView schView = new ScheduleSystemTextView(listSchedules);
 

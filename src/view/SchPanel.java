@@ -1,5 +1,7 @@
 package view;
 
+import controller.ScheduleSystem;
+
 /**
  * Creates an interface in order to visualize the users'
  * schedules. Includes a method that takes in the user
@@ -7,9 +9,11 @@ package view;
  * to the events in their schedules.
  */
 public interface SchPanel {
-
+  /**
+   *
+   * @param user
+   */
   void drawDates(String user);
 
-  void addClickListener();
-
+  void addListener(ScheduleSystem controller);
 }

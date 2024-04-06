@@ -1,5 +1,6 @@
 package view;
 
+import controller.ScheduleSystem;
 import model.ReadOnlyPlannerModel;
 
 import javax.swing.JFrame;
@@ -26,6 +27,8 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
   private final SchedulePanel panel;
   private EventFrame eventFrame;
   private JFileChooser fchooser = new JFileChooser(".");
+  private JMenuItem addCalendar;
+  private JMenuItem saveCalendar;
 
   /**
    * Initializes the frame observing information provided by the given model, setting the main
@@ -43,32 +46,15 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
     this.panel = new SchedulePanel(model);
     this.setLayout(new BorderLayout());
     this.add(panel);
-    //this.setResizable(false);
 
     JMenuBar bar = new JMenuBar();
     JMenu fileMenu = new JMenu("File");
-    JMenuItem addCalendar = fileMenu.add("Add calendar");
-    JMenuItem saveCalendar = fileMenu.add("Save calendars");
+    addCalendar = fileMenu.add("Add calendar");
+    saveCalendar = fileMenu.add("Save calendars");
 
     addCalendar.setActionCommand("Add calendar");
-    addCalendar.addActionListener(e -> {
-      int retvalue = fchooser.showOpenDialog(ScheduleFrame.this);
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
-        File f = fchooser.getSelectedFile();
-        System.out.println(f);
-      }
-    }
-    );
 
     saveCalendar.setActionCommand("Save calendar");
-    saveCalendar.addActionListener(e -> {
-      int retvalue2 = fchooser.showOpenDialog(ScheduleFrame.this);
-      if (retvalue2 == JFileChooser.APPROVE_OPTION) {
-        File f = fchooser.getSelectedFile();
-        System.out.println(f);
-      }
-    }
-    );
 
     bar.add(fileMenu);
     this.setJMenuBar(bar);
@@ -125,5 +111,33 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
   @Override
   public void makeVisible() {
     setVisible(true);
+  }
+
+  // hides the schedules frame
+  @Override
+  public void hidePanel() {
+    setVisible(false);
+  }
+
+  @Override
+  public void addListener(ScheduleSystem listener) {
+    addCalendar.addActionListener(e -> {
+      int retvalue = fchooser.showOpenDialog(ScheduleFrame.this);
+      if (retvalue == JFileChooser.APPROVE_OPTION) {
+        File f = fchooser.getSelectedFile();
+        System.out.println(f);
+//        listener.readXML(f.getPath());
+      }
+    }
+    );
+
+//    saveCalendar.addActionListener(e -> {
+//      int retvalue2 = fchooser.showOpenDialog(ScheduleFrame.this);
+//      if (retvalue2 == JFileChooser.APPROVE_OPTION) {
+//        File f = fchooser.getSelectedFile();
+//        listener.writeXML(f., "");
+//      }
+//    }
+//    );
   }
 }

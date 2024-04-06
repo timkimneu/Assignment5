@@ -11,6 +11,8 @@ import javax.swing.JButton;
 import javax.swing.BoxLayout;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+
+import controller.ScheduleSystem;
 import model.ReadOnlyPlannerModel;
 
 /**
@@ -77,6 +79,16 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   @Override
   public void makeVisible() {
     setVisible(true);
+  }
+
+  @Override
+  public void hidePanel() {
+    setVisible(false);
+  }
+
+  @Override
+  public void addListener(ScheduleSystem listener) {
+
   }
 
   private void buttonsPanel() {

@@ -1,5 +1,8 @@
 package view;
 
+import controller.ScheduleSystem;
+import controller.ScheduleSystemController;
+
 /**
  * Creates an interface to view the schedule in a formatted manner, with
  * each event indented under their corresponding day of the week. This
@@ -18,7 +21,18 @@ public interface ScheduleSystemView {
   String schedulesToString();
 
   /**
-   * Sets the visibility of the component.
+   * Sets the visibility of the component to true. Makes the component visible.
    */
   void makeVisible();
+
+  /**
+   * Hides the panel. Sets the visibility of the component to false.
+   */
+  void hidePanel();
+
+  /**
+   *
+   * @param listener
+   */
+  void addListener(ScheduleSystem listener);
 }
