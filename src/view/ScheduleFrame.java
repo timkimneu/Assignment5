@@ -140,4 +140,14 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
 //    }
 //    );
   }
+
+  @Override
+  public void refresh() {
+    repaint();
+  }
+
+  @Override
+  public void action(ScheduleSystem system) {
+
+  }
 }

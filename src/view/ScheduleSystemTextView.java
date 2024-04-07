@@ -66,6 +66,16 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
     // ignore, not implemented for text view.
   }
 
+  @Override
+  public void refresh() {
+   // ignore, not implemented for text view.
+  }
+
+  @Override
+  public void action(ScheduleSystem system) {
+    // ignore, not implemented for text view.
+  }
+
   // add events to viewer if it is associated with the day
   private void getWhichDays(String day, int sch) {
     viewer += day + ": \n";

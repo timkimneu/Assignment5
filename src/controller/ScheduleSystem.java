@@ -65,4 +65,6 @@ public interface ScheduleSystem {
    * @param e
    */
   void removeEvent(Event e);
+
+  void handleCellClick(int row, int col);
 }

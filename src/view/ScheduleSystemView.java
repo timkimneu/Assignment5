@@ -35,4 +35,8 @@ public interface ScheduleSystemView {
    * @param listener
    */
   void addListener(ScheduleSystem listener);
+
+  void refresh();
+
+  void action(ScheduleSystem system);
 }

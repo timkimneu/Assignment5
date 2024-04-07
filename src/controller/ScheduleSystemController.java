@@ -54,6 +54,7 @@ public class ScheduleSystemController implements ScheduleSystem {
   public void launch(PlannerModel model) {
     this.model = model;
     this.view.addListener(this);
+    this.view.action(this);
     this.view.makeVisible();
   }
 
@@ -199,7 +200,8 @@ public class ScheduleSystemController implements ScheduleSystem {
 
   @Override
   public void addEvent(Event e) {
-
+    this.model.addEvent(e);
+    view.refresh();
   }
 
   @Override
@@ -209,6 +211,11 @@ public class ScheduleSystemController implements ScheduleSystem {
 
   @Override
   public void removeEvent(Event e) {
+
+  }
+
+  @Override
+  public void handleCellClick(int row, int col) {
 
   }
 

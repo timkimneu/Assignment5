@@ -12,6 +12,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.BasicStroke;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
@@ -194,6 +196,34 @@ public class SchedulePanel extends JPanel implements SchPanel {
 
   @Override
   public void addListener(ScheduleSystem controller) {
+    this.addMouseListener(new MouseListener() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        SchedulePanel panel = SchedulePanel.this;
+        int row = (e.getY() / (panel.getHeight() / 3)) + 1;
+        int col = (e.getX() / (panel.getWidth() / 3)) + 1;
+        controller.handleCellClick(row, col);
+      }
 
+      @Override
+      public void mousePressed(MouseEvent e) {
+
+      }
+
+      @Override
+      public void mouseReleased(MouseEvent e) {
+
+      }
+
+      @Override
+      public void mouseEntered(MouseEvent e) {
+
+      }
+
+      @Override
+      public void mouseExited(MouseEvent e) {
+
+      }
+    });
   }
 }
