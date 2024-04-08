@@ -16,8 +16,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Creates a GUI to visualize the individual schedules planner model and users'
@@ -35,6 +38,10 @@ public class SchedulePanel extends JPanel implements SchPanel {
   private boolean userSelected;
 
   private String id;
+
+  private List<Integer> allCoords = new ArrayList<>();
+
+  private Map<Event, ArrayList<Double>> eventCoords = new HashMap<>();
 
 
   /**
@@ -92,7 +99,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
           Event currEvent = listEvents.get(event);
           Time currTime = currEvent.time();
           fillSquares(g2d, currTime.startTime(), currTime.endTime(), currTime.startDay(),
-              currTime.endDay());
+              currTime.endDay(), currEvent);
         }
       }
     }
@@ -100,36 +107,36 @@ public class SchedulePanel extends JPanel implements SchPanel {
 
   // searches through the start days and calls helper methods in order
   private void fillSquares(Graphics2D g2d, String startTime, String endTime,
-                           DaysOfTheWeek startDay, DaysOfTheWeek endDay) {
+                           DaysOfTheWeek startDay, DaysOfTheWeek endDay, Event event) {
     g2d.setColor(Color.pink);
     switch (startDay) {
       case SUNDAY:
-        fillRemainingDays(g2d, 0, startTime, endTime, startDay, endDay);
+        fillRemainingDays(g2d, 0, startTime, endTime, startDay, endDay, event);
         break;
       case MONDAY:
-        fillRemainingDays(g2d, 1, startTime, endTime, startDay, endDay);
+        fillRemainingDays(g2d, 1, startTime, endTime, startDay, endDay, event);
         break;
       case TUESDAY:
-        fillRemainingDays(g2d, 2, startTime, endTime, startDay, endDay);
+        fillRemainingDays(g2d, 2, startTime, endTime, startDay, endDay, event);
         break;
       case WEDNESDAY:
-        fillRemainingDays(g2d, 3, startTime, endTime, startDay, endDay);
+        fillRemainingDays(g2d, 3, startTime, endTime, startDay, endDay, event);
         break;
       case THURSDAY:
-        fillRemainingDays(g2d, 4, startTime, endTime, startDay, endDay);
+        fillRemainingDays(g2d, 4, startTime, endTime, startDay, endDay, event);
         break;
       case FRIDAY:
-        fillRemainingDays(g2d, 5, startTime, endTime, startDay, endDay);
+        fillRemainingDays(g2d, 5, startTime, endTime, startDay, endDay, event);
         break;
       case SATURDAY:
-        fillRemainingDays(g2d, 6, startTime, endTime, startDay, endDay);
+        fillRemainingDays(g2d, 6, startTime, endTime, startDay, endDay, event);
         break;
       default:
         throw new IllegalArgumentException("Day does not exist");
     }
   }
 
-  private void fillRectSameDay(Graphics2D g2d, int col, String startTime, String endTime) {
+  private void fillRectSameDay(Graphics2D g2d, int col, String startTime, String endTime, Event event) {
     int startHour = Integer.parseInt(startTime) / 100;
     int startMin = Integer.parseInt(startTime) % 100;
     double mult = startHour + (startMin / 60.0);
@@ -138,16 +145,24 @@ public class SchedulePanel extends JPanel implements SchPanel {
     int endMin = Integer.parseInt(endTime) % 100;
     double endMult = endHour + (endMin / 60.0);
     double height = endMult - mult;
-    Rectangle2D rect = new Rectangle2D.Double((double) (col * this.getWidth()) / 7,
-        mult * this.getHeight() / 24,
-        (double) this.getWidth() / 7, (double) this.getHeight() / 24 * height);
+
+    double xCoord = (double) (col * this.getWidth()) / 7;
+    double yCoord = mult * this.getHeight() / 24;
+    double width = (double) this.getWidth() / 7;
+    double heights = (double) this.getHeight() / 24 * height;
+    Rectangle2D rect = new Rectangle2D.Double(xCoord, yCoord,
+        width, heights);
+//    System.out.println("RECTTT" + rect);
+    ArrayList<Double> coords = new ArrayList<>(List.of(xCoord, xCoord+width,
+        yCoord, yCoord+heights));
+    eventCoords.put(event, coords);
     g2d.fill(rect);
   }
 
   private void fillRemainingDays(Graphics2D g2d, int col, String startTime, String endTime,
-                                 DaysOfTheWeek startDay, DaysOfTheWeek endDay) {
+                                 DaysOfTheWeek startDay, DaysOfTheWeek endDay, Event event) {
     if (startDay == endDay) {
-      fillRectSameDay(g2d, col, startTime, endTime);
+      fillRectSameDay(g2d, col, startTime, endTime, event);
       return;
     }
     List<String> days = Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
@@ -167,14 +182,25 @@ public class SchedulePanel extends JPanel implements SchPanel {
         double mult = startHour + (startMin / 60.0);
         double height = (this.getHeight() - (mult * this.getHeight() / 24));
 
-        Rectangle2D rect = new Rectangle2D.Double((double) (col * this.getWidth()) / 7,
-            ((int) mult * this.getHeight()) / 24 - 1,
-            (double) this.getWidth() / 7, (double) height);
+        double xCoord = (double) (col * this.getWidth()) / 7;
+        double yCoord = ((int) mult * this.getHeight()) / 24 - 1;
+        double width = (double) this.getWidth() / 7;
+        double heights = (double) height;
+        Rectangle2D rect = new Rectangle2D.Double(xCoord, yCoord, width, heights);
+        ArrayList<Double> coords = new ArrayList<>(List.of(xCoord, xCoord+width,
+            yCoord, yCoord+heights));
+        eventCoords.put(event, coords);
         g2d.fill(rect);
       }
       else {
-        Rectangle2D rect2 = new Rectangle2D.Double((double) ((day % 7) * this.getWidth()) / 7,
-            0, (double) this.getWidth() / 7, (double) this.getHeight());
+        double xCoord = (double) ((day % 7) * this.getWidth()) / 7;
+        double yCoord = 0;
+        double width = (double) this.getWidth() / 7;
+        double heights = (double) this.getHeight();
+        Rectangle2D rect2 = new Rectangle2D.Double(xCoord, yCoord, width, heights);
+        ArrayList<Double> coords = new ArrayList<>(List.of(xCoord, xCoord+width,
+            yCoord, yCoord+heights));
+        eventCoords.put(event, coords);
         g2d.fill(rect2);
       }
     }
@@ -182,8 +208,14 @@ public class SchedulePanel extends JPanel implements SchPanel {
     int endMin = Integer.parseInt(endTime) % 100;
     double mult = endHour + (endMin / 60.0);
 
-    Rectangle2D rect = new Rectangle2D.Double((double) (endInd * this.getWidth()) / 7,
-        0, (double) this.getWidth() / 7, (double) this.getHeight() / 24 * mult);
+    double xCoord = (double) (endInd * this.getWidth()) / 7;
+    double yCoord = 0;
+    double width = (double) this.getWidth() / 7;
+    double heights = (double) this.getHeight() / 24 * mult;
+    Rectangle2D rect = new Rectangle2D.Double(xCoord, yCoord, width, heights);
+    ArrayList<Double> coords = new ArrayList<>(List.of(xCoord, xCoord+width,
+        yCoord, yCoord+heights));
+    eventCoords.put(event, coords);
     g2d.fill(rect);
   }
 
@@ -200,9 +232,27 @@ public class SchedulePanel extends JPanel implements SchPanel {
       @Override
       public void mouseClicked(MouseEvent e) {
         SchedulePanel panel = SchedulePanel.this;
-        int row = (e.getY() / (panel.getHeight() / 3)) + 1;
-        int col = (e.getX() / (panel.getWidth() / 3)) + 1;
-        controller.handleCellClick(row, col);
+//        int row = (e.getY() / (panel.getHeight() / 3)) + 1;
+//        int col = (e.getX() / (panel.getWidth() / 3)) + 1;
+        int row = e.getX();
+        int col = e.getY();
+        boolean inBounds = false;
+        System.out.println("CLICKKK" + row + "HI" + col);
+        for (Map.Entry<Event, ArrayList<Double>> entry : eventCoords.entrySet()) {
+          ArrayList<Double> value = entry.getValue();
+          System.out.println(value.get(0));
+          System.out.println(value.get(1));
+          System.out.println(value.get(2));
+          System.out.println(value.get(3));
+          if (row >= value.get(0) && row <= value.get(1)
+            && col >= value.get(2) && col <= value.get(3)) {
+            inBounds = true;
+            System.out.println("INBOUNDSSSS");
+          }
+//          System.out.println(value + "VALUE");
+        }
+//        System.out.println(eventCoords);
+        //controller.handleCellClick(row, col);
       }
 
       @Override

@@ -210,12 +210,16 @@ public class ScheduleSystemController implements ScheduleSystem {
 
   @Override
   public void removeEvent(Event e) {
-
+    this.model.removeEvent(e);
+    view.refresh();
   }
 
   @Override
   public void handleCellClick(int row, int col) {
+    System.out.println("HIII CELLL");
 
+
+    //view.refresh();
   }
 
 }

@@ -45,6 +45,8 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   private JList<String> usersBox;
   private JButton modEvent;
 
+  private JButton removeEvent;
+
   /**
    * Constructor of the event frame. Sets the dimension of the frame and asks user for the
    * name, the location, starting day, starting time, ending day, ending time, and the list of
@@ -102,14 +104,28 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
     modEvent.addActionListener(e -> {
       try {
         Event newEvent = new Event(eventText.getText(),
-                new Time(DaysOfTheWeek.valueOf(startDOTW.getSelectedItem().toString()
-                        .toUpperCase()), startTimeTxt.getText(),
-                        (DaysOfTheWeek.valueOf(endDOTW.getSelectedItem().toString().toUpperCase())),
-                        endTimeTxt.getText()),
-                new Location(getOnlineBool(Objects.requireNonNull(onlineBox.getSelectedItem())),
-                        place.getText()), getUsers(usersBox.getSelectedValuesList()));
+          new Time(DaysOfTheWeek.valueOf(startDOTW.getSelectedItem().toString()
+            .toUpperCase()), startTimeTxt.getText(),
+            (DaysOfTheWeek.valueOf(endDOTW.getSelectedItem().toString().toUpperCase())),
+            endTimeTxt.getText()),
+          new Location(getOnlineBool(Objects.requireNonNull(onlineBox.getSelectedItem())),
+            place.getText()), getUsers(usersBox.getSelectedValuesList()));
         listener.addEvent(newEvent);
-        System.out.println("Success?");
+      } catch (IllegalArgumentException ex) {
+        System.out.println(ex.getMessage());
+      }
+    }
+    );
+    removeEvent.addActionListener(e -> {
+      try {
+        Event newEvent = new Event(eventText.getText(),
+          new Time(DaysOfTheWeek.valueOf(startDOTW.getSelectedItem().toString()
+              .toUpperCase()), startTimeTxt.getText(),
+              (DaysOfTheWeek.valueOf(endDOTW.getSelectedItem().toString().toUpperCase())),
+              endTimeTxt.getText()),
+          new Location(getOnlineBool(Objects.requireNonNull(onlineBox.getSelectedItem())),
+              place.getText()), getUsers(usersBox.getSelectedValuesList()));
+        listener.removeEvent(newEvent);
       } catch (IllegalArgumentException ex) {
         System.out.println(ex.getMessage());
       }
@@ -142,20 +158,19 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
 
     modEvent = new JButton("Modify event");
     modEvent.setActionCommand("Modify event");
-    //modEvent.addActionListener(e -> controller.addEvent(finalNewEvent));
 
-    JButton removeEvent = new JButton("Remove event");
+    removeEvent = new JButton("Remove event");
     removeEvent.setActionCommand("Remove event");
-    removeEvent.addActionListener(e -> System.out.println(
-        "Event Name: " + eventText.getText() + "\n"
-            + "Online: " + onlineBox.getSelectedItem() + "\n"
-            + "Place: " + place.getText() + "\n"
-            + "Starting Day: " + startDOTW.getSelectedItem() + "\n"
-            + "Starting Time: " + startTimeTxt.getText() + "\n"
-            + "Ending Day: " + endDOTW.getSelectedItem() + "\n"
-            + "Ending Time: " + endTimeTxt.getText() + "\n"
-            + "Users: " + usersBox.getSelectedValuesList()
-    ));
+//    removeEvent.addActionListener(e -> System.out.println(
+//        "Event Name: " + eventText.getText() + "\n"
+//            + "Online: " + onlineBox.getSelectedItem() + "\n"
+//            + "Place: " + place.getText() + "\n"
+//            + "Starting Day: " + startDOTW.getSelectedItem() + "\n"
+//            + "Starting Time: " + startTimeTxt.getText() + "\n"
+//            + "Ending Day: " + endDOTW.getSelectedItem() + "\n"
+//            + "Ending Time: " + endTimeTxt.getText() + "\n"
+//            + "Users: " + usersBox.getSelectedValuesList()
+//    ));
 
     bottomButtons.add(modEvent);
     bottomButtons.add(removeEvent);

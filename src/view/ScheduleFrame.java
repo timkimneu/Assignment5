@@ -122,6 +122,7 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
   @Override
   public void addListener(ScheduleSystem listener) {
     eventFrame.addListener(listener);
+    panel.addListener(listener);
 
     addCalendar.addActionListener(e -> {
       int retvalue = fchooser.showOpenDialog(ScheduleFrame.this);
