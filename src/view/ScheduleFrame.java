@@ -29,6 +29,8 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
   private JFileChooser fchooser = new JFileChooser(".");
   private JMenuItem addCalendar;
   private JMenuItem saveCalendar;
+  private JButton createEvent;
+  private JButton schEvent;
 
   /**
    * Initializes the frame observing information provided by the given model, setting the main
@@ -87,13 +89,11 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
     JPanel bottomButtons = new JPanel();
     bottomButtons.setLayout(new GridLayout(1, 5));
 
-    JButton createEvent = new JButton("Create event");
+    createEvent = new JButton("Create event");
     createEvent.setActionCommand("Create event");
-    createEvent.addActionListener(e -> eventFrame.setVisible(true));
 
-    JButton schEvent = new JButton("Schedule event");
+    schEvent = new JButton("Schedule event");
     schEvent.setActionCommand("Schedule event");
-    schEvent.addActionListener(e -> eventFrame.setVisible(true));
 
     bottomButtons.add(listUsers);
     bottomButtons.add(createEvent);
@@ -133,7 +133,6 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
       }
     }
     );
-
 //    saveCalendar.addActionListener(e -> {
 //      int retvalue2 = fchooser.showOpenDialog(ScheduleFrame.this);
 //      if (retvalue2 == JFileChooser.APPROVE_OPTION) {
@@ -142,6 +141,9 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
 //      }
 //    }
 //    );
+
+    createEvent.addActionListener(e -> eventFrame.setVisible(true));
+    schEvent.addActionListener(e -> eventFrame.setVisible(true));
   }
 
   @Override

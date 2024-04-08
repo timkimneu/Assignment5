@@ -205,7 +205,8 @@ public class ScheduleSystemController implements ScheduleSystem {
 
   @Override
   public void modifyEvent(Event oldEvent, Event newEvent) {
-
+    this.model.modifyEvent(oldEvent, newEvent);
+    view.refresh();
   }
 
   @Override
@@ -217,9 +218,6 @@ public class ScheduleSystemController implements ScheduleSystem {
   @Override
   public void handleCellClick(int row, int col) {
     System.out.println("HIII CELLL");
-
-
-    //view.refresh();
   }
 
 }

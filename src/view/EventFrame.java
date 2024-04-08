@@ -17,7 +17,6 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import controller.ScheduleSystem;
-import controller.ScheduleSystemController;
 import model.DaysOfTheWeek;
 import model.Event;
 import model.Location;
@@ -48,9 +47,9 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   private JButton removeEvent;
 
   /**
-   * Constructor of the event frame. Sets the dimension of the frame and asks user for the
-   * name, the location, starting day, starting time, ending day, ending time, and the list of
-   * attendees for an event to be added, modified, or removed from the schedule.
+   * Constructor of the event frame. Sets the dimension of the frame and asks user for the name,
+   * the location, starting day, starting time, ending day, ending time, and the list of attendees
+   * for an event to be added, modified, or removed from the schedule.
    */
   public EventFrame(ReadOnlyPlannerModel model) {
     super();
@@ -79,7 +78,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
     timePanel("Ending Time: ", endTimeTxt);
     availableUsersPanel();
 
-    buttonsPanel();
+    modRemoveButtonsPanel();
 
     add(mainPanel);
   }
@@ -152,7 +151,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
     repaint();
   }
 
-  private void buttonsPanel() {
+  private void modRemoveButtonsPanel() {
     JPanel bottomButtons = new JPanel();
     bottomButtons.setLayout(new GridLayout(1, 5));
 
@@ -161,16 +160,6 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
 
     removeEvent = new JButton("Remove event");
     removeEvent.setActionCommand("Remove event");
-//    removeEvent.addActionListener(e -> System.out.println(
-//        "Event Name: " + eventText.getText() + "\n"
-//            + "Online: " + onlineBox.getSelectedItem() + "\n"
-//            + "Place: " + place.getText() + "\n"
-//            + "Starting Day: " + startDOTW.getSelectedItem() + "\n"
-//            + "Starting Time: " + startTimeTxt.getText() + "\n"
-//            + "Ending Day: " + endDOTW.getSelectedItem() + "\n"
-//            + "Ending Time: " + endTimeTxt.getText() + "\n"
-//            + "Users: " + usersBox.getSelectedValuesList()
-//    ));
 
     bottomButtons.add(modEvent);
     bottomButtons.add(removeEvent);
