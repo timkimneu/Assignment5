@@ -54,7 +54,6 @@ public class ScheduleSystemController implements ScheduleSystem {
   public void launch(PlannerModel model) {
     this.model = model;
     this.view.addListener(this);
-    this.view.action(this);
     this.view.makeVisible();
   }
 

@@ -37,6 +37,4 @@ public interface ScheduleSystemView {
   void addListener(ScheduleSystem listener);
 
   void refresh();
-
-  void action(ScheduleSystem system);
 }

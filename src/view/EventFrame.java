@@ -4,6 +4,8 @@ import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
@@ -41,10 +43,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   private JTextField startTimeTxt;
   private JTextField endTimeTxt;
   private JList<String> usersBox;
-
-  private JButton button;
-
-  private final ScheduleSystemController controller;
+  private JButton modEvent;
 
   /**
    * Constructor of the event frame. Sets the dimension of the frame and asks user for the
@@ -54,7 +53,6 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   public EventFrame(ReadOnlyPlannerModel model) {
     super();
     this.model = model;
-    this.controller = new ScheduleSystemController(this);
 
     setSize(300, 500);
     mainPanel = new JPanel();
@@ -101,7 +99,36 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
 
   @Override
   public void addListener(ScheduleSystem listener) {
+    modEvent.addActionListener(e -> {
+      try {
+        Event newEvent = new Event(eventText.getText(),
+                new Time(DaysOfTheWeek.valueOf(startDOTW.getSelectedItem().toString()
+                        .toUpperCase()), startTimeTxt.getText(),
+                        (DaysOfTheWeek.valueOf(endDOTW.getSelectedItem().toString().toUpperCase())),
+                        endTimeTxt.getText()),
+                new Location(getOnlineBool(Objects.requireNonNull(onlineBox.getSelectedItem())),
+                        place.getText()), getUsers(usersBox.getSelectedValuesList()));
+        listener.addEvent(newEvent);
+        System.out.println("Success?");
+      } catch (IllegalArgumentException ex) {
+        System.out.println(ex.getMessage());
+      }
+    }
+    );
+  }
 
+  private List<User> getUsers(List<String> strUsers) {
+    List<User> newUsers = new ArrayList<>();
+    for (String s : strUsers) {
+      User newUser = new User(s);
+      newUsers.add(newUser);
+    }
+    return newUsers;
+  }
+
+  private boolean getOnlineBool(Object o) {
+    String onlineStr = o.toString();
+    return onlineStr.equals("Is online");
   }
 
   @Override
@@ -109,36 +136,12 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
     repaint();
   }
 
-  @Override
-  public void action(ScheduleSystem system) {
-    Event newEvent = null;
-    List<User> newUser = new ArrayList<>();
-    try {
-      newEvent = new Event(eventText.getText(),
-          new Time(DaysOfTheWeek.valueOf(startDOTW.getSelectedItem().toString().toUpperCase()),
-              startTimeTxt.getText(),
-              (DaysOfTheWeek.valueOf(endDOTW.getSelectedItem().toString().toUpperCase())),
-              endTimeTxt.getText()),
-          new Location((Boolean) onlineBox.getSelectedItem(), place.getText()), newUser);
-    } catch (IllegalArgumentException ex) {
-      System.out.println("HI");
-    }
-
-    Event finalNewEvent = newEvent;
-    button.addActionListener(e -> system.addEvent(finalNewEvent));
-
-    //system.addEvent()
-  }
-
   private void buttonsPanel() {
     JPanel bottomButtons = new JPanel();
     bottomButtons.setLayout(new GridLayout(1, 5));
 
-    JButton modEvent = new JButton("Modify event");
+    modEvent = new JButton("Modify event");
     modEvent.setActionCommand("Modify event");
-    List<String> listUsers = usersBox.getSelectedValuesList();
-    //action(controller);
-
     //modEvent.addActionListener(e -> controller.addEvent(finalNewEvent));
 
     JButton removeEvent = new JButton("Remove event");

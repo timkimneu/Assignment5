@@ -121,6 +121,8 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
 
   @Override
   public void addListener(ScheduleSystem listener) {
+    eventFrame.addListener(listener);
+
     addCalendar.addActionListener(e -> {
       int retvalue = fchooser.showOpenDialog(ScheduleFrame.this);
       if (retvalue == JFileChooser.APPROVE_OPTION) {
@@ -144,10 +146,5 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
   @Override
   public void refresh() {
     repaint();
-  }
-
-  @Override
-  public void action(ScheduleSystem system) {
-
   }
 }
