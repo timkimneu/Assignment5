@@ -110,6 +110,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
           new Location(getOnlineBool(Objects.requireNonNull(onlineBox.getSelectedItem())),
             place.getText()), getUsers(usersBox.getSelectedValuesList()));
         listener.addEvent(newEvent);
+        this.hidePanel();
       } catch (IllegalArgumentException ex) {
         System.out.println(ex.getMessage());
       }
@@ -125,6 +126,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
           new Location(getOnlineBool(Objects.requireNonNull(onlineBox.getSelectedItem())),
               place.getText()), getUsers(usersBox.getSelectedValuesList()));
         listener.removeEvent(newEvent);
+        this.hidePanel();
       } catch (IllegalArgumentException ex) {
         System.out.println(ex.getMessage());
       }
@@ -231,4 +233,20 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
     mainPanel.add(scrollPane);
   }
 
+  public void addDefaultEvent(Event event) {
+    eventText.setText(event.name());
+    if (event.location().online()) {
+      onlineBox.setSelectedItem("Is online");
+    }
+    else {
+      onlineBox.setSelectedItem("Is not online");
+    }
+    place.setText(event.location().place());
+    startDOTW.setSelectedItem(event.time().startDay());
+    startTimeTxt.setText(event.time().startTime());
+    endDOTW.setSelectedItem(event.time().endDay());
+    endTimeTxt.setText(event.time().endTime());
+
+    this.makeVisible();
+  }
 }

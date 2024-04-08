@@ -39,9 +39,11 @@ public class SchedulePanel extends JPanel implements SchPanel {
 
   private String id;
 
+  private EventFrame eventFrame;
+
   private List<Integer> allCoords = new ArrayList<>();
 
-  private Map<Event, ArrayList<Double>> eventCoords = new HashMap<>();
+  private Map<ArrayList<Double>, Event> eventCoords = new HashMap<>();
 
 
   /**
@@ -54,6 +56,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
   public SchedulePanel(ReadOnlyPlannerModel model) {
     super();
     this.model = model;
+    this.eventFrame  = new EventFrame(model);
     this.userSelected = false;
   }
 
@@ -155,7 +158,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
 //    System.out.println("RECTTT" + rect);
     ArrayList<Double> coords = new ArrayList<>(List.of(xCoord, xCoord+width,
         yCoord, yCoord+heights));
-    eventCoords.put(event, coords);
+    eventCoords.put(coords, event);
     g2d.fill(rect);
   }
 
@@ -189,7 +192,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
         Rectangle2D rect = new Rectangle2D.Double(xCoord, yCoord, width, heights);
         ArrayList<Double> coords = new ArrayList<>(List.of(xCoord, xCoord+width,
             yCoord, yCoord+heights));
-        eventCoords.put(event, coords);
+        eventCoords.put(coords, event);
         g2d.fill(rect);
       }
       else {
@@ -200,7 +203,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
         Rectangle2D rect2 = new Rectangle2D.Double(xCoord, yCoord, width, heights);
         ArrayList<Double> coords = new ArrayList<>(List.of(xCoord, xCoord+width,
             yCoord, yCoord+heights));
-        eventCoords.put(event, coords);
+        eventCoords.put(coords, event);
         g2d.fill(rect2);
       }
     }
@@ -215,7 +218,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
     Rectangle2D rect = new Rectangle2D.Double(xCoord, yCoord, width, heights);
     ArrayList<Double> coords = new ArrayList<>(List.of(xCoord, xCoord+width,
         yCoord, yCoord+heights));
-    eventCoords.put(event, coords);
+    eventCoords.put(coords, event);
     g2d.fill(rect);
   }
 
@@ -231,28 +234,15 @@ public class SchedulePanel extends JPanel implements SchPanel {
     this.addMouseListener(new MouseListener() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        SchedulePanel panel = SchedulePanel.this;
-//        int row = (e.getY() / (panel.getHeight() / 3)) + 1;
-//        int col = (e.getX() / (panel.getWidth() / 3)) + 1;
         int row = e.getX();
         int col = e.getY();
-        boolean inBounds = false;
-        System.out.println("CLICKKK" + row + "HI" + col);
-        for (Map.Entry<Event, ArrayList<Double>> entry : eventCoords.entrySet()) {
-          ArrayList<Double> value = entry.getValue();
-          System.out.println(value.get(0));
-          System.out.println(value.get(1));
-          System.out.println(value.get(2));
-          System.out.println(value.get(3));
+        for (Map.Entry<ArrayList<Double>, Event> entry : eventCoords.entrySet()) {
+          ArrayList<Double> value = entry.getKey();
           if (row >= value.get(0) && row <= value.get(1)
-            && col >= value.get(2) && col <= value.get(3)) {
-            inBounds = true;
-            System.out.println("INBOUNDSSSS");
+              && col >= value.get(2) && col <= value.get(3)) {
+            eventFrame.addDefaultEvent(entry.getValue());
           }
-//          System.out.println(value + "VALUE");
         }
-//        System.out.println(eventCoords);
-        //controller.handleCellClick(row, col);
       }
 
       @Override
