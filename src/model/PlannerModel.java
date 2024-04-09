@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 /**
  * Represents a part of the full planner or schedule system that allows for interaction between
  * different individual's schedules and the adding, modifying, and removing events from schedules
@@ -17,6 +19,16 @@ public interface PlannerModel extends ReadOnlyPlannerModel {
    * event is already scheduled in any attendee's schedule.
    */
   void addEvent(Event event);
+
+  /**
+   *
+   * @param name
+   * @param location
+   * @param duration
+   * @param users
+   * @param selected
+   */
+  void scheduleEvent(String name, Location location, int duration, List<User> users);
 
   /**
    * Modifies an existing event by replacing the old event with the new given event. Works by

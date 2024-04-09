@@ -19,7 +19,7 @@ public class SchedulePlanner implements Schedule {
   public SchedulePlanner(List<Event> events, String id) {
     this.events = events;
     this.id = id;
-    this.checkAnyOverlap();
+    this.checkAnyOverlap(this.events());
   }
 
   @Override
@@ -39,7 +39,7 @@ public class SchedulePlanner implements Schedule {
     } else {
       this.events().add(e);
       try {
-        this.checkAnyOverlap();
+        this.checkAnyOverlap(this.events());
       } catch (IllegalStateException ex) {
         this.removeEvent(e);
         throw new IllegalArgumentException("Added event overlaps with an existing event!" +
@@ -63,9 +63,9 @@ public class SchedulePlanner implements Schedule {
   }
 
   // method to check if the events have any overlap
-  private void checkAnyOverlap() throws IllegalStateException {
-    for (Event e1 : this.events()) {
-      for (Event e2 : this.events()) {
+  private void checkAnyOverlap(List<Event> events) throws IllegalStateException {
+    for (Event e1 : events) {
+      for (Event e2 : events) {
         if (!e1.equals(e2)) {
           checkForOverlap(e1, e2);
         }

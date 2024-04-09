@@ -1,7 +1,9 @@
 package controller;
 
 import model.Event;
+import model.Location;
 import model.PlannerModel;
+import model.ReadOnlyPlannerModel;
 import model.SchedulePlanner;
 import model.User;
 
@@ -29,11 +31,10 @@ public interface ScheduleSystem {
    * Details events in the schedule, including the name, time, location, and list of users
    * attending the event.
    *
-   * @param sch Schedule to be written into a new/overwritten XML file
    * @param beginPath Should always be "" (empty string), is otherwise only used to access
    *                  parent folder in testing file.
    */
-  void writeXML(SchedulePlanner sch, String beginPath);
+  void writeXML(String beginPath);
 
   /**
    * Provides a representation of the current list of Schedule objects contained in the system.
@@ -58,14 +59,30 @@ public interface ScheduleSystem {
    *
    * @param oldEvent
    * @param newEvent
+   * @param user
    */
   void modifyEvent(Event oldEvent, Event newEvent, User user);
 
   /**
    *
    * @param e
+   * @param user
    */
   void removeEvent(Event e, User user);
 
+  /**
+   *
+   * @param name
+   * @param location
+   * @param duration
+   * @param users
+   */
+  void scheduleEvent(String name, Location location, int duration, List<User> users);
+
+  /**
+   *
+   * @param row
+   * @param col
+   */
   void handleCellClick(int row, int col);
 }

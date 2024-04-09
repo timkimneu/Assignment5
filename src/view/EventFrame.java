@@ -38,6 +38,10 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   private JButton removeEvent;
   private Event originalEvent;
   private Event unmodifiedEvent;
+  private final JPanel usersTag;// = new JPanel();
+  private JLabel availUsers;// = new JLabel("\tAvailable Users: ");
+  private GridLayout gridLayout;// = new GridLayout(0, 1);
+  private JScrollPane scrollPane;// = new JScrollPane();
   private User user;
 
   /**
@@ -48,6 +52,11 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   public EventFrame(ReadOnlyPlannerModel model) {
     super();
     this.model = model;
+
+    usersTag = new JPanel();
+    availUsers = new JLabel("\tAvailable Users: ");
+    scrollPane = new JScrollPane();
+    gridLayout = new GridLayout(0, 1);
 
     setSize(350, 500);
     mainPanel = new JPanel();
@@ -115,7 +124,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
       try {
         listener.removeEvent(originalEvent, user);
         this.hidePanel();
-      } catch (IllegalArgumentException ex) {
+      } catch (IllegalArgumentException | NullPointerException ex) {
         JOptionPane.showMessageDialog(null, "Cannot remove event");
         System.out.println(ex.getMessage());
       }
@@ -151,6 +160,19 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   @Override
   public void refresh() {
     repaint();
+  }
+
+  public void resetFrame() {
+    eventText.setText("");
+    place.setText("");
+    startDOTW.setSelectedItem("Sunday");
+    startTimeTxt.setText("");
+    endDOTW.setSelectedItem("Sunday");
+    endTimeTxt.setText("");
+
+    // add select users
+    this.availableUsersPanel();
+    this.makeVisible();
   }
 
   private void modRemoveButtonsPanel() {
@@ -221,16 +243,15 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   }
 
   private void availableUsersPanel() {
-    JPanel usersTag = new JPanel();
-    usersTag.setLayout(new GridLayout(0, 1));
-    usersTag.add(new JLabel("\tAvailable Users: "));
+    usersTag.setLayout(gridLayout);
+
+    usersTag.add(availUsers);
 
     mainPanel.add(usersTag);
 
     String[] allUsers = this.model.users().toArray(new String[0]);
 
     usersBox = new JList<>(allUsers);
-    JScrollPane scrollPane = new JScrollPane();
     scrollPane.setViewportView(usersBox);
     usersBox.setLayoutOrientation(JList.VERTICAL);
 
@@ -247,30 +268,28 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
       onlineBox.setSelectedItem("Is not online");
     }
     place.setText(event.location().place());
-    startDOTW.setSelectedItem(event.time().startDay());
+    startDOTW.setSelectedItem(event.time().startDay().observeDay());
     startTimeTxt.setText(event.time().startTime());
-    endDOTW.setSelectedItem(event.time().endDay());
+    endDOTW.setSelectedItem(event.time().endDay().observeDay());
     endTimeTxt.setText(event.time().endTime());
 
-//    for (int i = 0; i < event.users().size(); i++) {
-////      usersBox.setSelectedValue(event.users().get(i).name(), true);
-//      System.out.println("USERSS" + event.users().get(i).name());
-//    }
-
-//    String host = event.users().get(0).name();
-//    usersBox.setSelectedValue(event.host().name(), true);
-//    usersBox.setSelectedIndex(0);
-
     // add select users
+    this.availableUsersPanel();
+//    this.refresh();
+    usersBox.setSelectedValue(user.name(), true);
+
     this.originalEvent = event;
 
+    this.refresh();
     this.makeVisible();
   }
 
+  @Override
   public void addSelectedUser(User user) {
     this.user = user;
   }
 
+  @Override
   public void getUnmodifiedEvent(Event event) {
     this.unmodifiedEvent = event;
   }

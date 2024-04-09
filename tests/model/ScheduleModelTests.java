@@ -617,21 +617,21 @@ public class ScheduleModelTests {
   public void testPlannerModifyEventSelfReplaceError() {
     this.initData();
     try {
-      this.model2.modifyEvent(this.vacation, this.vacation);
+      this.model2.modifyEvent(this.vacation, this.vacation, this.user1);
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Cannot replace old event with same event!", e.getMessage());
     }
 
     try {
-      this.model3.modifyEvent(this.mondayAfternoonJog, this.mondayAfternoonJog);
+      this.model3.modifyEvent(this.mondayAfternoonJog, this.mondayAfternoonJog, this.user1);
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Cannot replace old event with same event!", e.getMessage());
     }
 
     try {
-      this.model2.modifyEvent(this.wednesdayDinner, this.wednesdayDinner);
+      this.model2.modifyEvent(this.wednesdayDinner, this.wednesdayDinner, this.user1);
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Cannot replace old event with same event!", e.getMessage());
@@ -644,7 +644,7 @@ public class ScheduleModelTests {
   public void testPlannerModifyEventAlreadyContainsError() {
     this.initData1();
     try {
-      this.model1.modifyEvent(this.vacation, this.wednesdayDinner);
+      this.model1.modifyEvent(this.vacation, this.wednesdayDinner, this.user1);
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Schedule already contains given event!", e.getMessage());
@@ -657,7 +657,7 @@ public class ScheduleModelTests {
   public void testPlannerModifyEventOverlapsError() {
     this.initData();
     try {
-      this.model2.modifyEvent(this.church, this.vacation);
+      this.model2.modifyEvent(this.church, this.vacation, this.user1);
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Added event overlaps with an existing event!" +
@@ -665,7 +665,7 @@ public class ScheduleModelTests {
     }
 
     try {
-      this.model2.modifyEvent(this.mondayAfternoonJog, this.school);
+      this.model2.modifyEvent(this.mondayAfternoonJog, this.school, this.user1);
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Added event overlaps with an existing event!" +
@@ -679,7 +679,7 @@ public class ScheduleModelTests {
   public void testPlannerModifyEventNoSuchEventError() {
     this.initData1();
     try {
-      this.model1.modifyEvent(this.church, this.school);
+      this.model1.modifyEvent(this.church, this.school, this.user1);
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Event to be removed not found!", e.getMessage());
@@ -691,9 +691,9 @@ public class ScheduleModelTests {
   public void testPlannerModifyEvent() {
     this.initData1();
     Assert.assertEquals(2, this.model1.events("User 1").size());
-    this.model1.modifyEvent(this.vacation, this.church);
+    this.model1.modifyEvent(this.vacation, this.church, this.user1);
     Assert.assertEquals(2, this.model1.events("User 1").size());
-    this.model1.modifyEvent(this.church, this.school);
+    this.model1.modifyEvent(this.church, this.school, this.user1);
     Assert.assertEquals(2, this.model1.events("User 1").size());
   }
 
@@ -703,7 +703,7 @@ public class ScheduleModelTests {
   public void testPlannerRemoveEventNoSuchEventError() {
     this.initData1();
     try {
-      this.model1.removeEvent(this.church);
+      this.model1.removeEvent(this.church, this.user1);
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Event to be removed not found!", e.getMessage());
@@ -715,9 +715,9 @@ public class ScheduleModelTests {
   public void testPlannerRemoveEvent() {
     this.initData1();
     Assert.assertEquals(2, this.model1.events("User 1").size());
-    this.model1.removeEvent(this.vacation);
+    this.model1.removeEvent(this.vacation, this.user1);
     Assert.assertEquals(1, this.model1.events("User 1").size());
-    this.model1.removeEvent(this.wednesdayDinner);
+    this.model1.removeEvent(this.wednesdayDinner, this.user1);
     Assert.assertEquals(0, this.model1.events("User 1").size());
   }
 }

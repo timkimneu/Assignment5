@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -67,6 +69,107 @@ public class NUPlannerModel implements PlannerModel {
         }
       }
     }
+  }
+
+  @Override
+  public void scheduleEvent(String name, Location location, int duration, List<User> users) {
+    int mins = duration % 60;
+    int hours = ((duration - mins) / 60) % 24;
+    int days = (((duration - mins) / 60) - hours) / 24;
+
+    String endTime = getEndingTime("0000", hours, mins, days);
+    Time potentialTime = new Time(DaysOfTheWeek.SUNDAY, "0000",
+        getNextDOTW(DaysOfTheWeek.SUNDAY, days), endTime);
+    Event potentialEvent = new Event(name, potentialTime, location, users);
+
+    if (!attemptEvent(potentialEvent, users)) {
+//      Collections.sort(events, )
+      for (Schedule sch : this.schedules()) {
+        for (int i = 0 ; i < sch.events().size(); i++) {
+          String eventEndTime = sch.events().get(i).time().endTime();
+          String eventEndTimePlusOne = String.valueOf(Integer.parseInt(eventEndTime) + 1);
+          DaysOfTheWeek eventEndDay = sch.events().get(i).time().endDay();
+          Time potTime = new Time(eventEndDay, eventEndTimePlusOne, getNextDOTW(eventEndDay, days),
+              getEndingTime(eventEndTimePlusOne, hours, mins, days));
+          Event potEvent = new Event(name, potTime, location, users);
+          if (attemptEvent(potEvent, users)) {
+            System.out.println("!!PLp");
+            return;
+          }
+        }
+      }
+    }
+  }
+
+  private boolean attemptEvent(Event event, List<User> users) {
+    for (User u : users) {
+      try {
+        for (Schedule sch : this.schedules()) {
+          if (u.name().equals(sch.scheduleID())) {
+            sch.addEvent(event);
+          }
+        }
+      } catch (IllegalArgumentException e) {
+        for (Schedule sch : this.schedules()) {
+          try {
+            sch.removeEvent(event);
+          } catch (IllegalArgumentException ex) {
+            // ignore
+          }
+        }
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private String getEndingTime(String start, int hours, int mins, int days) {
+    int startTimeInt = Integer.parseInt(start);
+    int startMin = startTimeInt % 60;
+    int startHr = (startTimeInt - startMin) / 60;
+
+    int endMin = mins + startMin;
+    int endHr = hours + startHr;
+    if (endMin > 59) {
+      endMin -= 60;
+      endHr += 1;
+    }
+    if (endHr > 23) {
+      endHr -= 24;
+      days += 1;
+    }
+    return getTimeString(endHr, endMin);
+  }
+
+  private DaysOfTheWeek getNextDOTW(DaysOfTheWeek start, int days) {
+    List<String> daysOfTheWeek = Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday",
+        "Thursday", "Friday", "Saturday");
+    String startStrDOTW = start.observeDay();
+    int startIndexDOTW = daysOfTheWeek.indexOf(startStrDOTW);
+    int endIndexDOTW = startIndexDOTW + days;
+    if (endIndexDOTW > 6) {
+      endIndexDOTW -= 7;
+    }
+    String endStrDOTW = daysOfTheWeek.get(endIndexDOTW);
+    DaysOfTheWeek day = DaysOfTheWeek.valueOf(endStrDOTW.toUpperCase());
+    return day;
+  }
+
+  private String getTimeString(int hours, int mins) {
+    String hrsString;
+    String minsString;
+    if (hours < 10) {
+      hrsString = "0" + hours;
+    } else {
+      hrsString = String.valueOf(hours);
+    }
+
+    if (mins < 10) {
+      minsString = "0" + mins;
+    } else {
+      minsString = String.valueOf(mins);
+    }
+    return hrsString + minsString;
   }
 
   @Override

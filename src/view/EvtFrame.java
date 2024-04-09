@@ -2,6 +2,7 @@ package view;
 
 import controller.ScheduleSystem;
 import model.Event;
+import model.User;
 
 /**
  * Class interface that represents the screen that pops up
@@ -15,5 +16,9 @@ public interface EvtFrame {
   void addListener(ScheduleSystem listener);
 
   void addDefaultEvent(Event event);
+
+  void addSelectedUser(User user);
+
+  void getUnmodifiedEvent(Event event);
 
 }

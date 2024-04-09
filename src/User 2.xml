@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<schedule id="User 2">
+	<event>
+		<name>"School"</name>
+		<time>
+			<start-day>Monday</start-day>
+			<start>1200</start>
+			<end-day>Monday</end-day>
+			<end>1600</end>
+		</time>
+		<time>
+			<online>false</online>
+			<place>Campus</place>
+		</time>
+		<users>
+			<uid>"User 1"</uid>
+			<uid>"User 2"</uid>
+			<uid>"User 3"</uid>
+		</users>
+	</event>
+	<event>
+		<name>"Church"</name>
+		<time>
+			<start-day>Sunday</start-day>
+			<start>0800</start>
+			<end-day>Sunday</end-day>
+			<end>1000</end>
+		</time>
+		<time>
+			<online>false</online>
+			<place>Park Street</place>
+		</time>
+		<users>
+			<uid>"User 1"</uid>
+			<uid>"User 2"</uid>
+			<uid>"User 3"</uid>
+		</users>
+	</event>
+</schedule>

@@ -2,19 +2,33 @@ package view;
 
 import controller.ScheduleSystem;
 import model.Event;
+import model.Location;
 import model.ReadOnlyPlannerModel;
+import model.User;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Objects;
 
-public class EventDurationFrame extends JFrame implements EvtFrame {
+public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSystemView {
   private final ReadOnlyPlannerModel model;
   private final JPanel mainPanel;
   private JTextField eventText;
+
+  private JTextField durTime;
   private JTextField place;
   private JComboBox<String> onlineBox;
   private JList<String> usersBox;
   private JButton schEvent;
+
+  private final JPanel usersTag;// = new JPanel();
+  private JLabel availUsers;// = new JLabel("\tAvailable Users: ");
+  private GridLayout gridLayout;// = new GridLayout(0, 1);
+  private JScrollPane scrollPane;// = new JScrollPane();
+
+//  private JList usersBox;
 
   /**
    * Constructor of the event frame. Sets the dimension of the frame and asks user for the name,
@@ -26,6 +40,11 @@ public class EventDurationFrame extends JFrame implements EvtFrame {
 
   public EventDurationFrame(ReadOnlyPlannerModel model) {
     this.model = model;
+
+    usersTag = new JPanel();
+    availUsers = new JLabel("\tAvailable Users: ");
+    scrollPane = new JScrollPane();
+    gridLayout = new GridLayout(0, 1);
 
     setSize(350, 500);
     mainPanel = new JPanel();
@@ -40,7 +59,7 @@ public class EventDurationFrame extends JFrame implements EvtFrame {
 
     onlinePanel();
     durationPanel();
-    availableUsersPanel();
+//    availableUsersPanel();
     createEventButton();
 
     add(mainPanel);
@@ -64,7 +83,8 @@ public class EventDurationFrame extends JFrame implements EvtFrame {
     JPanel durInput = new JPanel();
     durInput.setLayout(new GridLayout(0, 1));
     durInput.add(dur);
-    durInput.add(new JTextField());
+    durTime = new JTextField();
+    durInput.add(durTime);
 
     mainPanel.add(durInput);
   }
@@ -90,16 +110,17 @@ public class EventDurationFrame extends JFrame implements EvtFrame {
   }
 
   private void availableUsersPanel() {
-    JPanel usersTag = new JPanel();
-    usersTag.setLayout(new GridLayout(0, 1));
-    usersTag.add(new JLabel("\tAvailable Users: "));
+    this.refresh();
+    usersTag.setLayout(gridLayout);
+
+    usersTag.add(availUsers);
 
     mainPanel.add(usersTag);
 
+    System.out.println("USERS" + this.model.users());
     String[] allUsers = this.model.users().toArray(new String[0]);
 
     usersBox = new JList<>(allUsers);
-    JScrollPane scrollPane = new JScrollPane();
     scrollPane.setViewportView(usersBox);
     usersBox.setLayoutOrientation(JList.VERTICAL);
 
@@ -107,21 +128,81 @@ public class EventDurationFrame extends JFrame implements EvtFrame {
   }
 
   @Override
+  public String schedulesToString() {
+    return null;
+  }
+
+  @Override
+  public void makeVisible() {
+    setVisible(true);
+  }
+
+  @Override
+  public void hidePanel() {
+    setVisible(false);
+  }
+
+  @Override
   public void addListener(ScheduleSystem listener) {
-//    schEvent.addActionListener(e -> {
-//          try {
-//            listener.addEvent();
-//            this.hidePanel();
-//          } catch (IllegalArgumentException ex) {
-//            JOptionPane.showMessageDialog(null, "Cannot create event");
-//            System.out.println(ex.getMessage());
-//          }
-//        }
-//    );
+    schEvent.addActionListener(e -> {
+          try {
+            System.out.println("ppopnpinipnp");
+            String eventName = eventText.getText();
+            Location loc = new Location(getOnlineBool(Objects.requireNonNull(onlineBox.getSelectedItem())),
+                place.getText());
+            int duration = Integer.parseInt(durTime.getText());
+            List<User> listUsers = getUsers(usersBox.getSelectedValuesList());
+            listener.scheduleEvent(eventName, loc, duration, listUsers);
+            this.hidePanel();
+          } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(null, "Cannot schedule event");
+            System.out.println(ex.getMessage());
+          }
+        }
+    );
+  }
+
+  private List<User> getUsers(List<String> strUsers) {
+    List<User> newUsers = new ArrayList<>();
+    for (String s : strUsers) {
+      User newUser = new User(s);
+      newUsers.add(newUser);
+    }
+    return newUsers;
+  }
+
+  private boolean getOnlineBool(Object o) {
+    String onlineStr = o.toString();
+    return onlineStr.equals("Is online");
+  }
+
+  @Override
+  public void refresh() {
+    repaint();
+  }
+
+  public void resetFrame() {
+    eventText.setText("");
+    place.setText("");
+    durTime.setText("");
+
+    // add select users
+    this.availableUsersPanel();
+    this.makeVisible();
   }
 
   @Override
   public void addDefaultEvent(Event event) {
+    this.refresh();
+  }
 
+  @Override
+  public void addSelectedUser(User user) {
+    //
+  }
+
+  @Override
+  public void getUnmodifiedEvent(Event event) {
+    //
   }
 }

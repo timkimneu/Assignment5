@@ -107,19 +107,20 @@ public class ScheduleSystemController implements ScheduleSystem {
       listOfEvents.add(currEvent);
     }
     SchedulePlanner currSch = new SchedulePlanner(listOfEvents, id);
+    System.out.println(currSch.events());
     if (!this.model.schedules().contains(currSch)) {
       this.model.schedules().add(currSch);
-      System.out.println("wdddd");
+//      for (int i = 0; i < model.schedules().size(); i++) {
+//        System.out.println(model.schedules().get(i).events().get(i).name());
+//      }
     }
     view.refresh();
   }
 
   // write to XML file
   @Override
-  public void writeXML(SchedulePlanner sch, String beginPath) {
-    if (!this.model.schedules().contains(sch)) {
-      throw new IllegalArgumentException("Schedule system does not contain given schedule!");
-    } else {
+  public void writeXML(String beginPath) {
+    for (SchedulePlanner sch : this.model.schedules()) {
       try {
         Writer file = new FileWriter(beginPath + "src/" + sch.scheduleID() + ".xml");
         file.write("<?xml version=\"1.0\"?>\n");
@@ -207,6 +208,9 @@ public class ScheduleSystemController implements ScheduleSystem {
 
   @Override
   public void modifyEvent(Event oldEvent, Event newEvent, User user) {
+    if (oldEvent.equals(newEvent)) {
+      throw new IllegalArgumentException("Cannot replace old event with same event!");
+    }
     this.model.removeEvent(oldEvent, user);
     this.model.addEvent(newEvent);
 //    this.model.modifyEvent(oldEvent, newEvent, user);
@@ -216,6 +220,12 @@ public class ScheduleSystemController implements ScheduleSystem {
   @Override
   public void removeEvent(Event e, User user) {
     this.model.removeEvent(e, user);
+    view.refresh();
+  }
+
+  @Override
+  public void scheduleEvent(String name, Location location, int duration, List<User> users) {
+    this.model.scheduleEvent(name, location, duration, users);
     view.refresh();
   }
 

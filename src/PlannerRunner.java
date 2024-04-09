@@ -4,6 +4,7 @@ import model.DaysOfTheWeek;
 import model.Event;
 import model.Location;
 import model.NUPlannerModel;
+import model.ScheduleCreator;
 import model.SchedulePlanner;
 import model.Time;
 import model.User;
@@ -74,6 +75,12 @@ public final class PlannerRunner {
     view2.hidePanel();
     model2.readXML("src/School Schedule.xml");
     List<SchedulePlanner> listSchedules2 = model2.returnSchedule();
+
+//    String schedule = args[0];
+//    Readable commandLines = new InputStreamReader(System.in);
+//    Appendable ap = System.out;
+//    PlannerModel planner = ScheduleCreator.createSchedule();
+
 
     List<SchedulePlanner> newList = new ArrayList<>();
     newList.addAll(listSchedules);

@@ -41,9 +41,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
 
   private EventFrame eventFrame;
 
-  private List<Integer> allCoords = new ArrayList<>();
-
-  private Map<ArrayList<Double>, Event> eventCoords = new HashMap<>();
+  private final Map<ArrayList<Double>, Event> eventCoords;
 
 
   /**
@@ -58,6 +56,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
     this.model = model;
     this.eventFrame  = eventFrame;
     this.userSelected = false;
+    this.eventCoords = new HashMap<>();
   }
 
   @Override

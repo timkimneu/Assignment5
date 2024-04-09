@@ -4,18 +4,11 @@ import controller.ScheduleSystem;
 import model.ReadOnlyPlannerModel;
 import model.User;
 
-import javax.swing.JFrame;
-import javax.swing.JFileChooser;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JComboBox;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
+import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +16,6 @@ import java.util.List;
  * different users to view the appropriate schedule pertaining to that user.
  */
 public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFrame {
-
   private final ReadOnlyPlannerModel model;
   private final SchedulePanel panel;
   private EventFrame eventFrame;
@@ -33,6 +25,8 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
   private JMenuItem saveCalendar;
   private JButton createEvent;
   private JButton schEvent;
+  private JComboBox<String> userBox;
+
 
   /**
    * Initializes the frame observing information provided by the given model, setting the main
@@ -52,6 +46,7 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
     this.setLayout(new BorderLayout());
     this.add(panel);
 
+
     JMenuBar bar = new JMenuBar();
     JMenu fileMenu = new JMenu("File");
     addCalendar = fileMenu.add("Add calendar");
@@ -62,6 +57,27 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
 
     bar.add(fileMenu);
     this.setJMenuBar(bar);
+    JPanel listUsers = new JPanel();
+    listUsers.setLayout(new BoxLayout(listUsers, BoxLayout.PAGE_AXIS));
+    userBox = new JComboBox<>(new String[]{"<none>"});
+    List<String> users = model.users();
+    for (int i = 0; i < users.size(); i++) {
+      userBox.addItem(users.get(i));
+    }
+    listUsers.add(userBox);
+
+    createEvent = new JButton("Create event");
+    createEvent.setActionCommand("Create event");
+
+    schEvent = new JButton("Schedule event");
+    schEvent.setActionCommand("Schedule event");
+
+    JPanel bottomButtons = new JPanel();
+    bottomButtons.setLayout(new GridLayout(1, 5));
+    bottomButtons.add(listUsers);
+    bottomButtons.add(createEvent);
+    bottomButtons.add(schEvent);
+    this.add(bottomButtons, BorderLayout.PAGE_END);
 
     eventButtonListener();
   }
@@ -69,15 +85,6 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
   // Adds event listeners for the buttons on the schedule. Uses lambda
   // functionality to implement these commands.
   private void eventButtonListener() {
-    JPanel listUsers = new JPanel();
-    listUsers.setLayout(new BoxLayout(listUsers, BoxLayout.PAGE_AXIS));
-    List<String> users = model.users();
-    JComboBox<String> userBox = new JComboBox<>();
-    userBox.addItem("<none>");
-    for (int i = 0; i < users.size(); i++) {
-      userBox.addItem(users.get(i));
-    }
-    listUsers.add(userBox);
     userBox.setActionCommand("User schedule");
     userBox.addActionListener(e -> {
       if (e.getSource() instanceof JComboBox) {
@@ -88,20 +95,19 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
       }
     }
     );
+  }
 
-    JPanel bottomButtons = new JPanel();
-    bottomButtons.setLayout(new GridLayout(1, 5));
-
-    createEvent = new JButton("Create event");
-    createEvent.setActionCommand("Create event");
-
-    schEvent = new JButton("Schedule event");
-    schEvent.setActionCommand("Schedule event");
-
-    bottomButtons.add(listUsers);
-    bottomButtons.add(createEvent);
-    bottomButtons.add(schEvent);
-    this.add(bottomButtons, BorderLayout.PAGE_END);
+  private void updateUserBox(){
+    List<String> currentUsers = new ArrayList<>();
+    for (int i = 0; i < userBox.getItemCount(); i++) {
+      currentUsers.add(userBox.getItemAt(i));
+    }
+    List<String> users = model.users();
+    for (int i = 0; i < users.size(); i++) {
+      if(!currentUsers.contains(users.get(i))){
+        userBox.addItem(users.get(i));
+      }
+    }
   }
 
   // doesn't need to use this method, so returns null
@@ -125,32 +131,32 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
   @Override
   public void addListener(ScheduleSystem listener) {
     eventFrame.addListener(listener);
+    durationFrame.addListener(listener);
     panel.addListener(listener);
 
     addCalendar.addActionListener(e -> {
-      int retvalue = fchooser.showOpenDialog(ScheduleFrame.this);
+      int retvalue = fchooser.showOpenDialog(this);
       if (retvalue == JFileChooser.APPROVE_OPTION) {
         File f = fchooser.getSelectedFile();
-//        System.out.println(f);
-        listener.readXML(f.getPath());
+        try {
+          listener.readXML(f.getPath());
+        } catch (IllegalArgumentException | NullPointerException ex) {
+          JOptionPane.showMessageDialog(null, "Cannot add calendar");
+          System.out.println(ex.getMessage());
+        }
       }
     }
     );
-//    saveCalendar.addActionListener(e -> {
-//      int retvalue2 = fchooser.showOpenDialog(ScheduleFrame.this);
-//      if (retvalue2 == JFileChooser.APPROVE_OPTION) {
-//        File f = fchooser.getSelectedFile();
-//        listener.writeXML(f., "");
-//      }
-//    }
-//    );
 
-    createEvent.addActionListener(e -> eventFrame.setVisible(true));
-    schEvent.addActionListener(e -> eventFrame.setVisible(true));
+    saveCalendar.addActionListener(e -> listener.writeXML(""));
+    createEvent.addActionListener(e -> eventFrame.resetFrame());
+    schEvent.addActionListener(e -> durationFrame.resetFrame());
   }
 
   @Override
   public void refresh() {
+    this.updateUserBox();
+    eventFrame.refresh();
     repaint();
   }
 }
