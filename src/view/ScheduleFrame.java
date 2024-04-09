@@ -2,6 +2,7 @@ package view;
 
 import controller.ScheduleSystem;
 import model.ReadOnlyPlannerModel;
+import model.User;
 
 import javax.swing.JFrame;
 import javax.swing.JFileChooser;
@@ -26,6 +27,7 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
   private final ReadOnlyPlannerModel model;
   private final SchedulePanel panel;
   private EventFrame eventFrame;
+  private EventDurationFrame durationFrame;
   private JFileChooser fchooser = new JFileChooser(".");
   private JMenuItem addCalendar;
   private JMenuItem saveCalendar;
@@ -43,9 +45,10 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
     super();
     this.model = model;
     this.eventFrame  = new EventFrame(model);
+    this.durationFrame = new EventDurationFrame(model);
     this.setSize(550, 610);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    this.panel = new SchedulePanel(model);
+    this.panel = new SchedulePanel(model, this.eventFrame);
     this.setLayout(new BorderLayout());
     this.add(panel);
 
@@ -55,7 +58,6 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
     saveCalendar = fileMenu.add("Save calendars");
 
     addCalendar.setActionCommand("Add calendar");
-
     saveCalendar.setActionCommand("Save calendar");
 
     bar.add(fileMenu);
@@ -81,6 +83,7 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
       if (e.getSource() instanceof JComboBox) {
         JComboBox<String> user = (JComboBox<String>) e.getSource();
         String userStr = (String) user.getSelectedItem();
+        eventFrame.addSelectedUser(new User(userStr));
         panel.drawDates(userStr);
       }
     }
@@ -128,8 +131,8 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
       int retvalue = fchooser.showOpenDialog(ScheduleFrame.this);
       if (retvalue == JFileChooser.APPROVE_OPTION) {
         File f = fchooser.getSelectedFile();
-        System.out.println(f);
-//        listener.readXML(f.getPath());
+//        System.out.println(f);
+        listener.readXML(f.getPath());
       }
     }
     );

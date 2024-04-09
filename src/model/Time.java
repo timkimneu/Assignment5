@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 /**
  * Represents the time frame that an event takes place in. Denotes the day and time that an event
  * begins at and the day and time the event will end on. Starting and ending day are denoted as
@@ -245,5 +247,23 @@ public class Time {
     } else {
       return hoursString + ":" + minutesString + "PM";
     }
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof Time)) {
+      return false;
+    }
+    Time time = (Time) other;
+    return this.startDay.equals(time.startDay) && this.startTime.equals(time.startTime) &&
+        this.endDay.equals(time.endDay) && this.endTime.equals(time.endTime);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.startDay, this.startTime, this.endDay, this.endTime);
   }
 }

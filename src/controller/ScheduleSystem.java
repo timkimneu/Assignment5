@@ -3,6 +3,7 @@ package controller;
 import model.Event;
 import model.PlannerModel;
 import model.SchedulePlanner;
+import model.User;
 
 import java.util.List;
 
@@ -58,13 +59,13 @@ public interface ScheduleSystem {
    * @param oldEvent
    * @param newEvent
    */
-  void modifyEvent(Event oldEvent, Event newEvent);
+  void modifyEvent(Event oldEvent, Event newEvent, User user);
 
   /**
    *
    * @param e
    */
-  void removeEvent(Event e);
+  void removeEvent(Event e, User user);
 
   void handleCellClick(int row, int col);
 }

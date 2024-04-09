@@ -26,11 +26,11 @@ public interface PlannerModel extends ReadOnlyPlannerModel {
    * modify the event for all schedules that contain the old event. Only adds the new modified
    * event to the individuals listed in the new event.
    */
-  void modifyEvent(Event event, Event newEvent);
+  void modifyEvent(Event event, Event newEvent, User user);
 
   /**
    * Removes an existing event from all schedules in the system. Throw an error if the event to be
    * removed cannot be found in any schedule that is meant to be removed from.
    */
-  void removeEvent(Event event);
+  void removeEvent(Event event, User user);
 }

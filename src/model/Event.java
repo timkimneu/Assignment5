@@ -1,6 +1,7 @@
 package model;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a social gathering that has a name, a specified starting and ending time,
@@ -11,7 +12,7 @@ public class Event {
   private final Time time;
   private final Location location;
   private final List<User> users;
-  private User host;
+  private final User host;
 
   /**
    * Represents a social gathering that has a name, a specified starting and ending time,
@@ -73,5 +74,41 @@ public class Event {
    */
   public List<User> users() {
     return this.users;
+  }
+
+  /**
+   * Observer in order to observe the host user.
+   *
+   * @return User that represents the host
+   */
+  public User host() {
+    return this.host;
+  }
+
+  /**
+   *
+   * @param u
+   * @return
+   */
+  public boolean isHost(User u) {
+    return this.host.equals(u);
+  }
+  
+  @Override
+  public boolean equals(Object other) {
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof Event)) {
+      return false;
+    }
+    Event event = (Event) other;
+    return this.name.equals(event.name) && this.time.equals(event.time) &&
+        this.location.equals(event.location);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.name, this.time, this.location);
   }
 }

@@ -109,7 +109,9 @@ public class ScheduleSystemController implements ScheduleSystem {
     SchedulePlanner currSch = new SchedulePlanner(listOfEvents, id);
     if (!this.model.schedules().contains(currSch)) {
       this.model.schedules().add(currSch);
+      System.out.println("wdddd");
     }
+    view.refresh();
   }
 
   // write to XML file
@@ -204,20 +206,22 @@ public class ScheduleSystemController implements ScheduleSystem {
   }
 
   @Override
-  public void modifyEvent(Event oldEvent, Event newEvent) {
-    this.model.modifyEvent(oldEvent, newEvent);
+  public void modifyEvent(Event oldEvent, Event newEvent, User user) {
+    this.model.removeEvent(oldEvent, user);
+    this.model.addEvent(newEvent);
+//    this.model.modifyEvent(oldEvent, newEvent, user);
     view.refresh();
   }
 
   @Override
-  public void removeEvent(Event e) {
-    this.model.removeEvent(e);
+  public void removeEvent(Event e, User user) {
+    this.model.removeEvent(e, user);
     view.refresh();
   }
 
   @Override
   public void handleCellClick(int row, int col) {
-    System.out.println("HIII CELLL");
+
   }
 
 }

@@ -6,15 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.BoxLayout;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 import controller.ScheduleSystem;
 import model.DaysOfTheWeek;
@@ -31,7 +23,6 @@ import model.User;
  * ending day, ending time, and a list of users.
  */
 public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
-
   private final JPanel mainPanel;
   private final ReadOnlyPlannerModel model;
   private JComboBox<String> onlineBox;
@@ -42,9 +33,12 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   private JTextField startTimeTxt;
   private JTextField endTimeTxt;
   private JList<String> usersBox;
+  private JButton createEvent;
   private JButton modEvent;
-
   private JButton removeEvent;
+  private Event originalEvent;
+  private Event unmodifiedEvent;
+  private User user;
 
   /**
    * Constructor of the event frame. Sets the dimension of the frame and asks user for the name,
@@ -55,7 +49,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
     super();
     this.model = model;
 
-    setSize(300, 500);
+    setSize(350, 500);
     mainPanel = new JPanel();
     //for elements to be arranged vertically within this panel
     mainPanel.setLayout(new GridLayout(0, 1));
@@ -92,7 +86,6 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   public void makeVisible() {
     setVisible(true);
   }
-
   @Override
   public void hidePanel() {
     setVisible(false);
@@ -100,38 +93,45 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
 
   @Override
   public void addListener(ScheduleSystem listener) {
+    createEvent.addActionListener(e -> {
+      try {
+        listener.addEvent(createEvent());
+        this.hidePanel();
+      } catch (IllegalArgumentException ex) {
+        JOptionPane.showMessageDialog(null, "Cannot create event");
+        System.out.println(ex.getMessage());
+      }
+    });
     modEvent.addActionListener(e -> {
       try {
-        Event newEvent = new Event(eventText.getText(),
-          new Time(DaysOfTheWeek.valueOf(startDOTW.getSelectedItem().toString()
+        listener.modifyEvent(unmodifiedEvent, createEvent(), user);
+        this.hidePanel();
+      } catch (IllegalArgumentException ex) {
+        JOptionPane.showMessageDialog(null, "Cannot modify event");
+        System.out.println(ex.getMessage());
+      }
+    });
+    removeEvent.addActionListener(e -> {
+      try {
+        listener.removeEvent(originalEvent, user);
+        this.hidePanel();
+      } catch (IllegalArgumentException ex) {
+        JOptionPane.showMessageDialog(null, "Cannot remove event");
+        System.out.println(ex.getMessage());
+      }
+    }
+    );
+  }
+
+  private Event createEvent() {
+    Event newEvent = new Event(eventText.getText(),
+        new Time(DaysOfTheWeek.valueOf(startDOTW.getSelectedItem().toString()
             .toUpperCase()), startTimeTxt.getText(),
             (DaysOfTheWeek.valueOf(endDOTW.getSelectedItem().toString().toUpperCase())),
             endTimeTxt.getText()),
-          new Location(getOnlineBool(Objects.requireNonNull(onlineBox.getSelectedItem())),
+        new Location(getOnlineBool(Objects.requireNonNull(onlineBox.getSelectedItem())),
             place.getText()), getUsers(usersBox.getSelectedValuesList()));
-        listener.addEvent(newEvent);
-        this.hidePanel();
-      } catch (IllegalArgumentException ex) {
-        System.out.println(ex.getMessage());
-      }
-    }
-    );
-    removeEvent.addActionListener(e -> {
-      try {
-        Event newEvent = new Event(eventText.getText(),
-          new Time(DaysOfTheWeek.valueOf(startDOTW.getSelectedItem().toString()
-              .toUpperCase()), startTimeTxt.getText(),
-              (DaysOfTheWeek.valueOf(endDOTW.getSelectedItem().toString().toUpperCase())),
-              endTimeTxt.getText()),
-          new Location(getOnlineBool(Objects.requireNonNull(onlineBox.getSelectedItem())),
-              place.getText()), getUsers(usersBox.getSelectedValuesList()));
-        listener.removeEvent(newEvent);
-        this.hidePanel();
-      } catch (IllegalArgumentException ex) {
-        System.out.println(ex.getMessage());
-      }
-    }
-    );
+    return newEvent;
   }
 
   private List<User> getUsers(List<String> strUsers) {
@@ -157,12 +157,16 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
     JPanel bottomButtons = new JPanel();
     bottomButtons.setLayout(new GridLayout(1, 5));
 
+    createEvent = new JButton("Create event");
+    createEvent.setActionCommand("Create event");
+
     modEvent = new JButton("Modify event");
     modEvent.setActionCommand("Modify event");
 
     removeEvent = new JButton("Remove event");
     removeEvent.setActionCommand("Remove event");
 
+    bottomButtons.add(createEvent);
     bottomButtons.add(modEvent);
     bottomButtons.add(removeEvent);
     this.add(bottomButtons, BorderLayout.PAGE_END);
@@ -233,6 +237,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
     mainPanel.add(scrollPane);
   }
 
+  @Override
   public void addDefaultEvent(Event event) {
     eventText.setText(event.name());
     if (event.location().online()) {
@@ -247,6 +252,26 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
     endDOTW.setSelectedItem(event.time().endDay());
     endTimeTxt.setText(event.time().endTime());
 
+//    for (int i = 0; i < event.users().size(); i++) {
+////      usersBox.setSelectedValue(event.users().get(i).name(), true);
+//      System.out.println("USERSS" + event.users().get(i).name());
+//    }
+
+//    String host = event.users().get(0).name();
+//    usersBox.setSelectedValue(event.host().name(), true);
+//    usersBox.setSelectedIndex(0);
+
+    // add select users
+    this.originalEvent = event;
+
     this.makeVisible();
+  }
+
+  public void addSelectedUser(User user) {
+    this.user = user;
+  }
+
+  public void getUnmodifiedEvent(Event event) {
+    this.unmodifiedEvent = event;
   }
 }

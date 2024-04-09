@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 /**
  * Represents a User or individual attending an event. Only details a name with no other
  * information.
@@ -21,5 +23,22 @@ public class User {
    */
   public String name() {
     return this.name;
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof User)) {
+      return false;
+    }
+    User user = (User) other;
+    return this.name.equals(user.name);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(this.name);
   }
 }

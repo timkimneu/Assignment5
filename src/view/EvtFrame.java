@@ -1,5 +1,8 @@
 package view;
 
+import controller.ScheduleSystem;
+import model.Event;
+
 /**
  * Class interface that represents the screen that pops up
  * when a user wants to add, modify, or remove an event to a selected
@@ -8,5 +11,9 @@ package view;
  * ending time, and a list of users.
  */
 public interface EvtFrame {
-  // ignore
+
+  void addListener(ScheduleSystem listener);
+
+  void addDefaultEvent(Event event);
+
 }

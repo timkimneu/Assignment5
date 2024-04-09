@@ -70,7 +70,7 @@ public class NUPlannerModel implements PlannerModel {
   }
 
   @Override
-  public void modifyEvent(Event event, Event newEvent) {
+  public void modifyEvent(Event event, Event newEvent, User user) {
     if (event.equals(newEvent)) {
       throw new IllegalArgumentException("Cannot replace old event with same event!");
     }
@@ -86,11 +86,18 @@ public class NUPlannerModel implements PlannerModel {
   }
 
   @Override
-  public void removeEvent(Event event) {
-    for (User u : event.users()) {
-      for (SchedulePlanner sch : this.schedules) {
-        String scheduleID = sch.scheduleID();
-        if (u.name().equals(scheduleID)) {
+  public void removeEvent(Event event, User user) {
+    if (event.isHost(user)) {
+      for (User u : event.users()) {
+        for (Schedule sch : this.schedules()) {
+          if (u.name().equals(sch.scheduleID())) {
+            sch.removeEvent(event);
+          }
+        }
+      }
+    } else {
+      for (Schedule sch : this.schedules()) {
+        if (user.name().equals(sch.scheduleID())) {
           sch.removeEvent(event);
         }
       }

@@ -53,10 +53,10 @@ public class SchedulePanel extends JPanel implements SchPanel {
    *
    * @param model takes in a ReadOnlyPlannerModel to have access to a user's schedule.
    */
-  public SchedulePanel(ReadOnlyPlannerModel model) {
+  public SchedulePanel(ReadOnlyPlannerModel model, EventFrame eventFrame) {
     super();
     this.model = model;
-    this.eventFrame  = new EventFrame(model);
+    this.eventFrame  = eventFrame;
     this.userSelected = false;
   }
 
@@ -155,7 +155,6 @@ public class SchedulePanel extends JPanel implements SchPanel {
     double heights = (double) this.getHeight() / 24 * height;
     Rectangle2D rect = new Rectangle2D.Double(xCoord, yCoord,
         width, heights);
-//    System.out.println("RECTTT" + rect);
     ArrayList<Double> coords = new ArrayList<>(List.of(xCoord, xCoord+width,
         yCoord, yCoord+heights));
     eventCoords.put(coords, event);
@@ -241,6 +240,9 @@ public class SchedulePanel extends JPanel implements SchPanel {
           if (row >= value.get(0) && row <= value.get(1)
               && col >= value.get(2) && col <= value.get(3)) {
             eventFrame.addDefaultEvent(entry.getValue());
+            eventFrame.makeVisible();
+            eventFrame.getUnmodifiedEvent(entry.getValue());
+            break;
           }
         }
       }

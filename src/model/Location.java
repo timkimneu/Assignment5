@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 /**
  * Represents the location of an Event. A location is denoted by a place but can also be online.
  */
@@ -35,5 +37,22 @@ public class Location {
    */
   public String place() {
     return this.place;
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof Location)) {
+      return false;
+    }
+    Location loc = (Location) other;
+    return this.online == (loc.online) && this.place.equals(loc.place);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.place, this.online);
   }
 }
