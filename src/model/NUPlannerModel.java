@@ -1,9 +1,15 @@
 package model;
 
+import org.testng.internal.collections.Pair;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Represents the full planner or schedule system that allows for interaction between different
@@ -76,21 +82,33 @@ public class NUPlannerModel implements PlannerModel {
     int mins = duration % 60;
     int hours = ((duration - mins) / 60) % 24;
     int days = (((duration - mins) / 60) - hours) / 24;
+    String endTime = null;
+    int value = 0;
 
-    String endTime = getEndingTime("0000", hours, mins, days);
+    Map<String, Integer> map = getEndingTime("0000", hours, mins);
+    for (Map.Entry<String, Integer> entry : map.entrySet()) {
+      endTime = entry.getKey();
+      value = entry.getValue();
+    }
+
+    System.out.println("ENDDDD: " + endTime);
+    System.out.println("VALUEEE: " + value);
     Time potentialTime = new Time(DaysOfTheWeek.SUNDAY, "0000",
-        getNextDOTW(DaysOfTheWeek.SUNDAY, days), endTime);
+        getNextDOTW(DaysOfTheWeek.SUNDAY, days + value), endTime);
     Event potentialEvent = new Event(name, potentialTime, location, users);
 
     if (!attemptEvent(potentialEvent, users)) {
-//      Collections.sort(events, )
       for (Schedule sch : this.schedules()) {
         for (int i = 0 ; i < sch.events().size(); i++) {
           String eventEndTime = sch.events().get(i).time().endTime();
           String eventEndTimePlusOne = String.valueOf(Integer.parseInt(eventEndTime) + 1);
           DaysOfTheWeek eventEndDay = sch.events().get(i).time().endDay();
-          Time potTime = new Time(eventEndDay, eventEndTimePlusOne, getNextDOTW(eventEndDay, days),
-              getEndingTime(eventEndTimePlusOne, hours, mins, days));
+          Map<String, Integer> map1 = getEndingTime(eventEndTimePlusOne, hours, mins);
+          for (Map.Entry<String, Integer> entry : map1.entrySet()) {
+            endTime = entry.getKey();
+            value = entry.getValue();
+          }
+          Time potTime = new Time(eventEndDay, eventEndTimePlusOne, getNextDOTW(eventEndDay, days + value), endTime);
           Event potEvent = new Event(name, potTime, location, users);
           if (attemptEvent(potEvent, users)) {
             System.out.println("!!PLp");
@@ -123,22 +141,25 @@ public class NUPlannerModel implements PlannerModel {
     return true;
   }
 
-  private String getEndingTime(String start, int hours, int mins, int days) {
+  private Map<String, Integer> getEndingTime(String start, int hours, int mins) {
     int startTimeInt = Integer.parseInt(start);
-    int startMin = startTimeInt % 60;
-    int startHr = (startTimeInt - startMin) / 60;
+    int startMin = startTimeInt % 100;
+    int startHr = (startTimeInt - startMin) / 100;
+    int days = 0;
 
     int endMin = mins + startMin;
     int endHr = hours + startHr;
-    if (endMin > 59) {
+    while (endMin > 59) {
       endMin -= 60;
       endHr += 1;
     }
-    if (endHr > 23) {
+    while (endHr > 23) {
       endHr -= 24;
-      days += 1;
+      days = 1;
     }
-    return getTimeString(endHr, endMin);
+    Map<String, Integer> result = new HashMap<>();
+    result.put(getTimeString(endHr, endMin), days);
+    return result;
   }
 
   private DaysOfTheWeek getNextDOTW(DaysOfTheWeek start, int days) {

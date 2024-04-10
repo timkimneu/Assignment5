@@ -420,14 +420,14 @@ public class ScheduleControllerTests {
   public void testWriteXMLScheduleDoesNotExistError() {
     this.initData();
     try {
-      this.schSysMod.writeXML(this.sch3, "../");
+      this.schSysMod.writeXML("../");
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Schedule system does not contain given schedule!", e.getMessage());
     }
 
     try {
-      this.schSysMod.writeXML(this.sch4, "../");
+      this.schSysMod.writeXML("../");
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Schedule system does not contain given schedule!", e.getMessage());
@@ -438,7 +438,7 @@ public class ScheduleControllerTests {
   @Test
   public void testWriteXML() {
     this.initData();
-    this.schSysMod.writeXML(this.sch1, "../");
+    this.schSysMod.writeXML("../");
     List<SchedulePlanner> listSchedules = this.schSysMod.returnSchedule();
     ScheduleSystemTextView schView = new ScheduleSystemTextView(listSchedules);
 

@@ -26,7 +26,6 @@ public interface PlannerModel extends ReadOnlyPlannerModel {
    * @param location
    * @param duration
    * @param users
-   * @param selected
    */
   void scheduleEvent(String name, Location location, int duration, List<User> users);
 
