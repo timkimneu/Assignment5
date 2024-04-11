@@ -68,7 +68,7 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
 
   @Override
   public void refresh() {
-   // ignore, not implemented for text view.
+    // ignore, not implemented for text view.
   }
 
   // add events to viewer if it is associated with the day
@@ -88,7 +88,7 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
 
         Time time = listEvents.get(event).time();
         viewer += "time: " + time.startDay().observeDay() + ": " + time.startTime() +
-            " -> " + time.endDay().observeDay() + ": " + time.endTime() + "\n\t";
+                " -> " + time.endDay().observeDay() + ": " + time.endTime() + "\n\t";
 
         Location location = listEvents.get(event).location();
         viewer += "location: " + location.place() + "\n\t";
@@ -138,8 +138,7 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
   private void addDaysHelper(Dictionary<String, Integer> dict, String day, int sch) {
     if (dict.get(day.toUpperCase()) != 0) {
       getWhichDays(day, sch);
-    }
-    else {
+    } else {
       viewer += day + ":\n";
     }
   }

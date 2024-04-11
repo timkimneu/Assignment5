@@ -1,7 +1,6 @@
 package view;
 
 import controller.ScheduleSystem;
-import controller.ScheduleSystemController;
 
 /**
  * Creates an interface to view the schedule in a formatted manner, with
@@ -31,10 +30,14 @@ public interface ScheduleSystemView {
   void hidePanel();
 
   /**
+   * Adds controller to view to communicate view with model.
    *
-   * @param listener
+   * @param listener Controller to allow listening on view.
    */
   void addListener(ScheduleSystem listener);
 
+  /**
+   * Repaints the view to update changes from the model.
+   */
   void refresh();
 }

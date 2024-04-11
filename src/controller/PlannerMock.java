@@ -33,9 +33,10 @@ public class PlannerMock implements PlannerModel {
   public void addEvent(Event event) {
     try {
       this.log.append(String.format("name = %s, startDay = %s, endDay = %s, startTime = %s, " +
-          "endTime = %s, online = %s, place = %s", event.name(), event.time().startDay(),
-          event.time().endDay(), event.time().startTime(), event.time().endTime(),
-          getOnlineBool(event.location().online()), event.location().place()));
+                      "endTime = %s, online = %s, place = %s", event.name(),
+              event.time().startDay(), event.time().endDay(), event.time().startTime(),
+              event.time().endTime(), getOnlineBool(event.location().online()),
+              event.location().place()));
     } catch (IOException e) {
       // continue
     }
@@ -45,7 +46,7 @@ public class PlannerMock implements PlannerModel {
   public void scheduleEvent(String name, Location location, int duration, List<User> users) {
     try {
       this.log.append(String.format("name = %s, online = %s, place = %s, duration = %d",
-          name, getOnlineBool(location.online()), location.place(), duration));
+              name, getOnlineBool(location.online()), location.place(), duration));
     } catch (IOException e) {
       // continue
     }
@@ -62,14 +63,16 @@ public class PlannerMock implements PlannerModel {
     try {
       // should not ever run, Controller calls remove then add for its modifyEvent method
       this.log.append(String.format("oldName = %s, oldStartDay = %s, oldEndDay = %s, " +
-              "oldStartTime = %s, oldEndTime = %s, oldOnline = %s, oldPlace = %s, " +
-              "newName = %s, newStartDay = %s, newEndDay = %s, newStartTime = %s, " +
-              "newEndTime = %s, newOnline = %s, newPlace = %s, user = %s",
-          event.name(), event.time().startDay(), event.time().endDay(), event.time().startTime(),
-          event.time().endTime(), getOnlineBool(event.location().online()), event.location().place(),
-          newEvent.name(), newEvent.time().startDay(), newEvent.time().endDay(),
-          newEvent.time().startTime(), newEvent.time().endTime(),
-          getOnlineBool(newEvent.location().online()), newEvent.location().place(), user.name()));
+                      "oldStartTime = %s, oldEndTime = %s, oldOnline = %s, oldPlace = %s, " +
+                      "newName = %s, newStartDay = %s, newEndDay = %s, newStartTime = %s, " +
+                      "newEndTime = %s, newOnline = %s, newPlace = %s, user = %s",
+              event.name(), event.time().startDay(), event.time().endDay(),
+              event.time().startTime(), event.time().endTime(),
+              getOnlineBool(event.location().online()), event.location().place(),
+              newEvent.name(), newEvent.time().startDay(), newEvent.time().endDay(),
+              newEvent.time().startTime(), newEvent.time().endTime(),
+              getOnlineBool(newEvent.location().online()), newEvent.location().place(),
+              user.name()));
     } catch (IOException e) {
       // continue
     }
@@ -79,10 +82,10 @@ public class PlannerMock implements PlannerModel {
   public void removeEvent(Event event, User user) {
     try {
       this.log.append(String.format("name = %s, startDay = %s, endDay = %s, startTime = %s, " +
-              "endTime = %s, online = %s, place = %s, user = %s", event.name(),
-          event.time().startDay(), event.time().endDay(), event.time().startTime(),
-          event.time().endTime(), getOnlineBool(event.location().online()),
-          event.location().place(), user.name()));
+                      "endTime = %s, online = %s, place = %s, user = %s", event.name(),
+              event.time().startDay(), event.time().endDay(), event.time().startTime(),
+              event.time().endTime(), getOnlineBool(event.location().online()),
+              event.location().place(), user.name()));
     } catch (IOException e) {
       // continue
     }

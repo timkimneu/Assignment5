@@ -535,7 +535,7 @@ public class ScheduleModelTests {
   @Test
   public void testPlannerSchedules() {
     this.initData();
-    List<Schedule> schedules0 =  new ArrayList<>(Collections.singletonList(this.mtSch));
+    List<Schedule> schedules0 = new ArrayList<>(Collections.singletonList(this.mtSch));
     List<Schedule> schedules1 = new ArrayList<>(Arrays.asList(this.sch1, this.sch2));
     Assert.assertEquals(new ArrayList<>(), this.mtModel.schedules());
     Assert.assertEquals(schedules0, this.model1.schedules());
@@ -726,7 +726,7 @@ public class ScheduleModelTests {
 
   @Test
   public void testOverlappingTimes() {
-    Time time1 = new Time(DaysOfTheWeek.MONDAY,"0920", DaysOfTheWeek.TUESDAY, "0200");
+    Time time1 = new Time(DaysOfTheWeek.MONDAY, "0920", DaysOfTheWeek.TUESDAY, "0200");
     Time time2 = new Time(DaysOfTheWeek.TUESDAY, "0000", DaysOfTheWeek.TUESDAY, "0100");
 
     boolean overlap = time1.anyOverlap(time2);
@@ -735,7 +735,7 @@ public class ScheduleModelTests {
 
   @Test
   public void testOverlappingTimes2() {
-    Time time1 = new Time(DaysOfTheWeek.SUNDAY,"0000", DaysOfTheWeek.MONDAY, "0920");
+    Time time1 = new Time(DaysOfTheWeek.SUNDAY, "0000", DaysOfTheWeek.MONDAY, "0920");
     Time time2 = new Time(DaysOfTheWeek.MONDAY, "0720", DaysOfTheWeek.TUESDAY, "0000");
 
     boolean overlap = time1.anyOverlap(time2);
@@ -744,10 +744,9 @@ public class ScheduleModelTests {
 
   @Test
   public void testOverlappingTimes3() {
-    Time time1 = new Time(DaysOfTheWeek.TUESDAY,"0950", DaysOfTheWeek.TUESDAY, "1130");
+    Time time1 = new Time(DaysOfTheWeek.TUESDAY, "0950", DaysOfTheWeek.TUESDAY, "1130");
     Time time2 = new Time(DaysOfTheWeek.TUESDAY, "1315", DaysOfTheWeek.TUESDAY, "1515");
 
-//    boolean overlap = time1.anyOverlap(time2);
     boolean overlap = time1.anyOverlap(time2);
     assertFalse(overlap);
   }

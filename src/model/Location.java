@@ -14,7 +14,7 @@ public class Location {
    * the event is online, as well as where it is.
    *
    * @param online Boolean that describes whether the event is online or not
-   * @param place String that describes where the event takes place.
+   * @param place  String that describes where the event takes place.
    */
   public Location(boolean online, String place) {
     this.online = online;

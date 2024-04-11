@@ -76,6 +76,10 @@ public final class PlannerRunner {
     model2.readXML("src/School Schedule.xml");
     List<SchedulePlanner> listSchedules2 = model2.returnSchedule();
 
+    if (args.length == 0) {
+      System.out.println("Please provide an argument: anytime or workhours");
+      return;
+    }
     String schedule = args[0];
     NUPlannerModel model = ScheduleCreator.createSchedule(
         ScheduleCreator.ScheduleType.valueOf(schedule.toUpperCase()));

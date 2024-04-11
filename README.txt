@@ -102,7 +102,11 @@ Changes to existing classes:
 Major changes since last update include the scheduling functionality where users can create an event without specifying
 an explicit starting/ending day and starting/ending time. We added the method scheduleEvent to the PlannerModel
 interface to implement scheduling in our NUPlannerModel and later the WorkTimePlannerModel. Several private helper
-methods are all added to implement this scheduleEvent method.
+methods are all added to implement this scheduleEvent method. Major refactoring was also needed in the Time class
+as the check for overlapping Time objects was incorrect and was the source of many bugs regarding both PlannerModel
+classes. Almost all classes in the view also were changed to accommodate the implementation of the controller in
+those classes instead of simply printing arguments into the console. The controller had methods added to
+communicate changes to the model which would then be updated in the view.
 
 Extra Credit:
 The frame is fully resizable. The lines for these can be found in the SchedulePanel class, where the method repaint

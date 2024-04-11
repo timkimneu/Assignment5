@@ -6,15 +6,31 @@ import model.Location;
 import model.ReadOnlyPlannerModel;
 import model.User;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+import javax.swing.JList;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.BoxLayout;
+import javax.swing.JOptionPane;
+
+import java.awt.GridLayout;
+import java.awt.BorderLayout;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * JFrame class extension that represents the screen that pops up when a user wants to
+ * add, modify, or remove an event to a selected schedule in the planner. The window
+ * asks a user to input the name of the event, a location, starting day, starting time,
+ * ending day, ending time, and a list of users.
+ */
 public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSystemView {
   private final ReadOnlyPlannerModel model;
-  private User host;
   private final JPanel mainPanel;
   private JTextField eventText;
   private JTextField durTime;
@@ -27,14 +43,13 @@ public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSyst
   private GridLayout gridLayout;// = new GridLayout(0, 1);
   private JScrollPane scrollPane;// = new JScrollPane();
 
-//  private JList usersBox;
 
   /**
    * Constructor of the event frame. Sets the dimension of the frame and asks user for the name,
    * the location, starting day, starting time, ending day, ending time, and the list of attendees
    * for an event to be added, modified, or removed from the schedule.
    *
-   * @param model
+   * @param model Model to get to observe from to appropriately autofill boxes with.
    */
 
   public EventDurationFrame(ReadOnlyPlannerModel model) {
@@ -58,15 +73,9 @@ public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSyst
 
     onlinePanel();
     durationPanel();
-//    availableUsersPanel();
     createEventButton();
 
     add(mainPanel);
-  }
-
-  @Override
-  public void setHost(User host) {
-    this.host = host;
   }
 
   private void createEventButton() {
@@ -148,18 +157,18 @@ public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSyst
   @Override
   public void addListener(ScheduleSystem listener) {
     schEvent.addActionListener(e -> {
-          try {
-            String eventName = eventText.getText();
-            Location loc = new Location(getOnlineBool(Objects.requireNonNull(onlineBox.getSelectedItem())),
-                place.getText());
-            int duration = Integer.parseInt(durTime.getText());
-            List<User> listUsers = getUsers(usersBox.getSelectedValuesList());
-            listener.scheduleEvent(eventName, loc, duration, listUsers);
-            this.hidePanel();
-          } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(null, "Cannot schedule event");
-          }
-        }
+      try {
+        String eventName = eventText.getText();
+        Location loc = new Location(getOnlineBool(Objects.requireNonNull(
+                onlineBox.getSelectedItem())), place.getText());
+        int duration = Integer.parseInt(durTime.getText());
+        List<User> listUsers = getUsers(usersBox.getSelectedValuesList());
+        listener.scheduleEvent(eventName, loc, duration, listUsers);
+        this.hidePanel();
+      } catch (IllegalArgumentException ex) {
+        JOptionPane.showMessageDialog(null, "Cannot schedule event");
+      }
+    }
     );
   }
 
@@ -182,6 +191,9 @@ public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSyst
     repaint();
   }
 
+  /**
+   * Resets the frame to blank (previous inputs/autofill).
+   */
   public void resetFrame() {
     eventText.setText("");
     place.setText("");

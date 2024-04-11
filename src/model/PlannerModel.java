@@ -30,10 +30,10 @@ public interface PlannerModel extends ReadOnlyPlannerModel {
    * with the new event with any existing event of any attendee. Throws an error if the given
    * event is already scheduled in any attendee's schedule.
    *
-   * @param name String that represents the event name.
+   * @param name     String that represents the event name.
    * @param location Location class that represents the place and whether event is online.
    * @param duration How long the event is in minutes.
-   * @param users List of users that are attending the event.
+   * @param users    List of users that are attending the event.
    */
   void scheduleEvent(String name, Location location, int duration, List<User> users);
 
@@ -45,9 +45,9 @@ public interface PlannerModel extends ReadOnlyPlannerModel {
    * modify the event for all schedules that contain the old event. Only adds the new modified
    * event to the individuals listed in the new event.
    *
-   * @param event Old event that will be replaced.
+   * @param event    Old event that will be replaced.
    * @param newEvent New Event to replace with old event.
-   * @param user User that is attending the event.
+   * @param user     User that is attending the event.
    */
   void modifyEvent(Event event, Event newEvent, User user);
 
@@ -56,7 +56,7 @@ public interface PlannerModel extends ReadOnlyPlannerModel {
    * removed cannot be found in any schedule that is meant to be removed from.
    *
    * @param event Event that will be removed.
-   * @param user User that is attending the event.
+   * @param user  User that is attending the event.
    */
   void removeEvent(Event event, User user);
 }

@@ -75,7 +75,7 @@ public class NUPlannerModel implements PlannerModel {
   @Override
   public void scheduleEvent(String name, Location location, int duration, List<User> users) {
     List<String> daysOfTheWeek = Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday",
-        "Thursday", "Friday", "Saturday");
+            "Thursday", "Friday", "Saturday");
     int mins = duration % 60;
     int hours = ((duration - mins) / 60) % 24;
     int days = (((duration - mins) / 60) - hours) / 24;
@@ -94,7 +94,7 @@ public class NUPlannerModel implements PlannerModel {
         }
         DaysOfTheWeek startingDay = DaysOfTheWeek.valueOf(daysOfTheWeek.get(day).toUpperCase());
         Time potentialTime = new Time(startingDay, startTime,
-            getNextDOTW(startingDay, days + value), endTime);
+                getNextDOTW(startingDay, days + value), endTime);
         Event potentialEvent = new Event(name, potentialTime, location, users);
         if (attemptEvent(potentialEvent, users)) {
           return;
@@ -152,7 +152,7 @@ public class NUPlannerModel implements PlannerModel {
   // retrieves the next day of the week if an incrememt is necessary
   private DaysOfTheWeek getNextDOTW(DaysOfTheWeek start, int days) {
     List<String> daysOfTheWeek = Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday",
-        "Thursday", "Friday", "Saturday");
+            "Thursday", "Friday", "Saturday");
     String startStrDOTW = start.observeDay();
     int startIndexDOTW = daysOfTheWeek.indexOf(startStrDOTW);
     int endIndexDOTW = startIndexDOTW + days;

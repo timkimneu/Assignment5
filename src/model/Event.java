@@ -20,9 +20,9 @@ public class Event {
    * include the name of the event, and references to the time, location, and user classes
    * in order to store their corresponding values.
    *
-   * @param name String that represents the name of the event
-   * @param time Includes the start time and end time of an event
-   * @param loc Has information of whether the place and whether it is online or not
+   * @param name  String that represents the name of the event
+   * @param time  Includes the start time and end time of an event
+   * @param loc   Has information of whether the place and whether it is online or not
    * @param users Includes a list of users that are a part of the event
    */
   public Event(String name, Time time, Location loc, List<User> users) {
@@ -94,7 +94,7 @@ public class Event {
   public boolean isHost(User user) {
     return this.host.equals(user);
   }
-  
+
   @Override
   public boolean equals(Object other) {
     if (other == this) {
@@ -105,7 +105,7 @@ public class Event {
     }
     Event event = (Event) other;
     return this.name.equals(event.name) && this.time.equals(event.time) &&
-        this.location.equals(event.location);
+            this.location.equals(event.location);
   }
 
   @Override

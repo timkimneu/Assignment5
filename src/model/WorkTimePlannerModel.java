@@ -37,7 +37,8 @@ public class WorkTimePlannerModel extends NUPlannerModel {
 
   @Override
   public void scheduleEvent(String name, Location location, int duration, List<User> users) {
-    List<String> daysOfTheWeek = Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday");
+    List<String> daysOfTheWeek = Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday",
+            "Friday");
     int mins = duration % 60;
     int hours = ((duration - mins) / 60) % 24;
     String endTime = null;

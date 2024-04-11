@@ -91,11 +91,10 @@ public class Time {
     boolean check2 = false;
     if (this.startDay().compareTo(t.startDay()) < 0) {
       check1 = this.hasOverlapContainedWeek(t);
-    }
-    else if (this.startTime().compareTo(t.startTime()) < 0 && this.startDay().compareTo(t.startDay()) == 0) {
+    } else if (this.startTime().compareTo(t.startTime()) < 0
+            && this.startDay().compareTo(t.startDay()) == 0) {
       check1 = this.hasOverlapContainedWeek(t);
-    }
-    else {
+    } else {
       check2 = t.hasOverlapContainedWeek(this);
     }
     return check1 || check2 || this.hasOverlapCrossWeek(t);
@@ -115,13 +114,11 @@ public class Time {
 
     if (this.endDay().compareTo(t.startDay()) > 0) {
       return true;
-    }
-    else if (this.endDay().compareTo(t.startDay()) == 0) {
+    } else if (this.endDay().compareTo(t.startDay()) == 0) {
       if (firstEndingHr > secondStartHr) {
         return true;
       }
-    }
-    else if (firstEndingHr == secondStartHr) {
+    } else if (firstEndingHr == secondStartHr) {
       if (firstEndMin > secondStartMin) {
         return true;
       }
@@ -270,7 +267,7 @@ public class Time {
     }
     Time time = (Time) other;
     return this.startDay.equals(time.startDay) && this.startTime.equals(time.startTime) &&
-        this.endDay.equals(time.endDay) && this.endTime.equals(time.endTime);
+            this.endDay.equals(time.endDay) && this.endTime.equals(time.endTime);
   }
 
   @Override
@@ -280,6 +277,7 @@ public class Time {
 
   @Override
   public String toString() {
-    return this.startDay.observeDay() + " " + this.startTime + " " + this.endDay.observeDay() + " " + this.endTime + " ";
+    return this.startDay.observeDay() + " " + this.startTime + " " + this.endDay.observeDay()
+            + " " + this.endTime + " ";
   }
 }

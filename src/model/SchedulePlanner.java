@@ -14,7 +14,7 @@ public class SchedulePlanner implements Schedule {
    * as a unique id identifier.
    *
    * @param events List of events that will form a schedule
-   * @param id String to show the unique id of the event
+   * @param id     String to show the unique id of the event
    */
   public SchedulePlanner(List<Event> events, String id) {
     this.events = events;
@@ -43,7 +43,7 @@ public class SchedulePlanner implements Schedule {
       } catch (IllegalStateException ex) {
         this.removeEvent(e);
         throw new IllegalArgumentException("Added event overlaps with an existing event!" +
-            " Removing added event.");
+                " Removing added event.");
       }
     }
   }
@@ -78,7 +78,8 @@ public class SchedulePlanner implements Schedule {
     Time e1Time = e1.time();
     Time e2Time = e2.time();
     if (e1Time.anyOverlap(e2Time)) {
-      throw new IllegalStateException("Schedule contains overlapping events!" + e1.time().toString() + e2.time().toString());
+      throw new IllegalStateException("Schedule contains overlapping events!" + e1.time().toString()
+              + e2.time().toString());
     }
   }
 }

@@ -8,12 +8,11 @@ import model.SchedulePlanner;
 import model.Time;
 
 import javax.swing.JPanel;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.BasicStroke;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Line2D;
@@ -56,7 +55,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
   public SchedulePanel(ReadOnlyPlannerModel model, EventFrame eventFrame) {
     super();
     this.model = model;
-    this.eventFrame  = eventFrame;
+    this.eventFrame = eventFrame;
     this.userSelected = false;
     this.eventCoords = new HashMap<>();
   }
@@ -64,7 +63,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
-    Graphics2D g2d = (Graphics2D)g;
+    Graphics2D g2d = (Graphics2D) g;
 
     if (this.userSelected) {
       drawScheduleState(g2d);
@@ -75,19 +74,18 @@ public class SchedulePanel extends JPanel implements SchPanel {
       if (line % 4 == 0) {
         g2d.setStroke(new BasicStroke(5));
         g2d.drawLine(0, (int) (this.getHeight() / 24.0 * line),
-            this.getWidth(), (int) (this.getHeight() / 24.0 * line));
-      }
-      else {
+                this.getWidth(), (int) (this.getHeight() / 24.0 * line));
+      } else {
         g2d.setStroke(new BasicStroke(1));
         g2d.drawLine(0, (int) (this.getHeight() / 24.0 * line),
-            this.getWidth(), (int) (this.getHeight() / 24.0 * line));
+                this.getWidth(), (int) (this.getHeight() / 24.0 * line));
       }
     }
 
     g2d.setStroke(new BasicStroke(1));
     for (int col = 0; col < 7; col++) {
       Line2D line2D = new Line2D.Double((double) this.getWidth() / 7.0 * col, 0,
-          (double) this.getWidth() / 7.0 * col, this.getHeight());
+              (double) this.getWidth() / 7.0 * col, this.getHeight());
       g2d.draw(line2D);
     }
   }
@@ -103,7 +101,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
           Event currEvent = listEvents.get(event);
           Time currTime = currEvent.time();
           fillSquares(g2d, currTime.startTime(), currTime.endTime(), currTime.startDay(),
-              currTime.endDay(), currEvent);
+                  currTime.endDay(), currEvent);
         }
       }
     }
@@ -140,7 +138,8 @@ public class SchedulePanel extends JPanel implements SchPanel {
     }
   }
 
-  private void fillRectSameDay(Graphics2D g2d, int col, String startTime, String endTime, Event event) {
+  private void fillRectSameDay(Graphics2D g2d, int col, String startTime, String endTime,
+                               Event event) {
     int startHour = Integer.parseInt(startTime) / 100;
     int startMin = Integer.parseInt(startTime) % 100;
     double mult = startHour + (startMin / 60.0);
@@ -155,9 +154,9 @@ public class SchedulePanel extends JPanel implements SchPanel {
     double width = (double) this.getWidth() / 7;
     double heights = (double) this.getHeight() / 24 * height;
     Rectangle2D rect = new Rectangle2D.Double(xCoord, yCoord,
-        width, heights);
-    ArrayList<Double> coords = new ArrayList<>(List.of(xCoord, xCoord+width,
-        yCoord, yCoord+heights));
+            width, heights);
+    ArrayList<Double> coords = new ArrayList<>(List.of(xCoord, xCoord + width,
+            yCoord, yCoord + heights));
     eventCoords.put(coords, event);
     g2d.fill(rect);
   }
@@ -169,7 +168,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
       return;
     }
     List<String> days = Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
-        "Friday", "Saturday");
+            "Friday", "Saturday");
     g2d.setColor(Color.pink);
     int startInd = days.indexOf(startDay.observeDay());
     int endInd = days.indexOf(endDay.observeDay());
@@ -190,19 +189,18 @@ public class SchedulePanel extends JPanel implements SchPanel {
         double width = (double) this.getWidth() / 7;
         double heights = (double) height;
         Rectangle2D rect = new Rectangle2D.Double(xCoord, yCoord, width, heights);
-        ArrayList<Double> coords = new ArrayList<>(List.of(xCoord, xCoord+width,
-            yCoord, yCoord+heights));
+        ArrayList<Double> coords = new ArrayList<>(List.of(xCoord, xCoord + width,
+                yCoord, yCoord + heights));
         eventCoords.put(coords, event);
         g2d.fill(rect);
-      }
-      else {
+      } else {
         double xCoord = (double) ((day % 7) * this.getWidth()) / 7;
         double yCoord = 0;
         double width = (double) this.getWidth() / 7;
         double heights = (double) this.getHeight();
         Rectangle2D rect2 = new Rectangle2D.Double(xCoord, yCoord, width, heights);
-        ArrayList<Double> coords = new ArrayList<>(List.of(xCoord, xCoord+width,
-            yCoord, yCoord+heights));
+        ArrayList<Double> coords = new ArrayList<>(List.of(xCoord, xCoord + width,
+                yCoord, yCoord + heights));
         eventCoords.put(coords, event);
         g2d.fill(rect2);
       }
@@ -216,8 +214,8 @@ public class SchedulePanel extends JPanel implements SchPanel {
     double width = (double) this.getWidth() / 7;
     double heights = (double) this.getHeight() / 24 * mult;
     Rectangle2D rect = new Rectangle2D.Double(xCoord, yCoord, width, heights);
-    ArrayList<Double> coords = new ArrayList<>(List.of(xCoord, xCoord+width,
-        yCoord, yCoord+heights));
+    ArrayList<Double> coords = new ArrayList<>(List.of(xCoord, xCoord + width,
+            yCoord, yCoord + heights));
     eventCoords.put(coords, event);
     g2d.fill(rect);
   }
@@ -239,7 +237,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
         for (Map.Entry<ArrayList<Double>, Event> entry : eventCoords.entrySet()) {
           ArrayList<Double> value = entry.getKey();
           if (row >= value.get(0) && row <= value.get(1)
-              && col >= value.get(2) && col <= value.get(3)) {
+                  && col >= value.get(2) && col <= value.get(3)) {
             eventFrame.addDefaultEvent(entry.getValue());
             eventFrame.makeVisible();
             eventFrame.getUnmodifiedEvent(entry.getValue());
@@ -250,22 +248,22 @@ public class SchedulePanel extends JPanel implements SchPanel {
 
       @Override
       public void mousePressed(MouseEvent e) {
-
+        //ignore
       }
 
       @Override
       public void mouseReleased(MouseEvent e) {
-
+        //ignore
       }
 
       @Override
       public void mouseEntered(MouseEvent e) {
-
+        //ignore
       }
 
       @Override
       public void mouseExited(MouseEvent e) {
-
+        //ignore
       }
     });
   }

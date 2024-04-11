@@ -61,14 +61,14 @@ public interface ScheduleSystem {
    *
    * @param oldEvent Event to be replaced by the new event which is passed into the model.
    * @param newEvent Event to replace older event which is passed into the model.
-   * @param user User that will be modifying the event for which is passed into the model.
+   * @param user     User that will be modifying the event for which is passed into the model.
    */
   void modifyEvent(Event oldEvent, Event newEvent, User user);
 
   /**
    * Listener for when a user attempts to remove an event in the view.
    *
-   * @param e Event to be removed which is passed into the model.
+   * @param e    Event to be removed which is passed into the model.
    * @param user User that designates the schedule that the event is being removed from.
    */
   void removeEvent(Event e, User user);
@@ -76,10 +76,10 @@ public interface ScheduleSystem {
   /**
    * Listener for when a user attempts to automatically schedule an event in the view.
    *
-   * @param name Name to be passed into the model.
+   * @param name     Name to be passed into the model.
    * @param location Location to be passed into the model.
    * @param duration Integer duration to be passed into the model.
-   * @param users List of users to be passed into the model.
+   * @param users    List of users to be passed into the model.
    */
   void scheduleEvent(String name, Location location, int duration, List<User> users);
 }

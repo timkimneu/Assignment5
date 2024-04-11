@@ -59,7 +59,7 @@ public class ScheduleSystemController implements ScheduleSystem {
 
   // read XML file
   @Override
-  public void readXML(String filePath)  {
+  public void readXML(String filePath) {
     List<Event> listOfEvents = new ArrayList<>();
     String id = null;
     Document doc = null;
@@ -210,7 +210,6 @@ public class ScheduleSystemController implements ScheduleSystem {
     }
     this.model.removeEvent(oldEvent, user);
     this.model.addEvent(newEvent);
-//    this.model.modifyEvent(oldEvent, newEvent, user);
     view.refresh();
   }
 

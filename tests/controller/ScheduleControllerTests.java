@@ -9,6 +9,7 @@ import model.SchedulePlanner;
 import model.Time;
 import model.User;
 import model.WorkTimePlannerModel;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -22,15 +23,14 @@ import view.ScheduleSystemView;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import java.io.File;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Represents examples and tests of the ScheduleSystemController class and all of its relevant
@@ -111,9 +111,9 @@ public class ScheduleControllerTests {
     this.school = new Event("Classes", this.time2, this.loc2, this.users2);
     this.vacation = new Event("Cancun Trip", this.time3, this.loc3, this.users3);
     this.mondayAfternoonJog = new Event("Afternoon Jog", this.time4, this.loc4,
-        new ArrayList<>(Collections.singletonList(this.user1)));
+            new ArrayList<>(Collections.singletonList(this.user1)));
     this.wednesdayDinner = new Event("Wednesday Dinner", this.time5, this.loc5,
-        new ArrayList<>(Collections.singletonList(this.user1)));
+            new ArrayList<>(Collections.singletonList(this.user1)));
     this.mtEvents = new ArrayList<>();
     this.events1 = new ArrayList<>(Arrays.asList(this.church, this.school));
     this.events2 = new ArrayList<>(Arrays.asList(this.vacation, this.mondayAfternoonJog));
@@ -326,31 +326,31 @@ public class ScheduleControllerTests {
     ScheduleSystemTextView schView = new ScheduleSystemTextView(listSchedules);
 
     assertEquals("User: Prof. Lucia\n" +
-        "Sunday:\n" +
-        "Monday:\n" +
-        "Tuesday: \n" +
-        "\tname: \"CS3500 Morning Lecture\"\n" +
-        "\ttime: Tuesday: 0950 -> Tuesday: 1130\n" +
-        "\tlocation: \"Churchill Hall 101\"\n" +
-        "\tonline: false\n" +
-        "\tinvitees: Prof. Lucia\n" +
-        "\tStudent Anon\n" +
-        "\tChat\n" +
-        "\tname: \"CS3500 Afternoon Lecture\"\n" +
-        "\ttime: Tuesday: 1335 -> Tuesday: 1515\n" +
-        "\tlocation: \"Churchill Hall 101\"\n" +
-        "\tonline: false\n" +
-        "\tinvitees: Prof. Lucia\n" +
-        "\tChat\n" +
-        "Wednesday:\n" +
-        "Thursday:\n" +
-        "Friday: \n" +
-        "\tname: Sleep\n" +
-        "\ttime: Friday: 1800 -> Sunday: 1200\n" +
-        "\tlocation: Home\n" +
-        "\tonline: true\n" +
-        "\tinvitees: Prof. Lucia\n" +
-        "Saturday:\n", schView.schedulesToString());
+            "Sunday:\n" +
+            "Monday:\n" +
+            "Tuesday: \n" +
+            "\tname: \"CS3500 Morning Lecture\"\n" +
+            "\ttime: Tuesday: 0950 -> Tuesday: 1130\n" +
+            "\tlocation: \"Churchill Hall 101\"\n" +
+            "\tonline: false\n" +
+            "\tinvitees: Prof. Lucia\n" +
+            "\tStudent Anon\n" +
+            "\tChat\n" +
+            "\tname: \"CS3500 Afternoon Lecture\"\n" +
+            "\ttime: Tuesday: 1335 -> Tuesday: 1515\n" +
+            "\tlocation: \"Churchill Hall 101\"\n" +
+            "\tonline: false\n" +
+            "\tinvitees: Prof. Lucia\n" +
+            "\tChat\n" +
+            "Wednesday:\n" +
+            "Thursday:\n" +
+            "Friday: \n" +
+            "\tname: Sleep\n" +
+            "\ttime: Friday: 1800 -> Sunday: 1200\n" +
+            "\tlocation: Home\n" +
+            "\tonline: true\n" +
+            "\tinvitees: Prof. Lucia\n" +
+            "Saturday:\n", schView.schedulesToString());
   }
 
   @Test
@@ -366,57 +366,57 @@ public class ScheduleControllerTests {
     ScheduleSystemTextView schView = new ScheduleSystemTextView(listSchedules);
 
     assertEquals("User: Prof. Lucia\n" +
-        "Sunday:\n" +
-        "Monday:\n" +
-        "Tuesday: \n" +
-        "\tname: \"CS3500 Morning Lecture\"\n" +
-        "\ttime: Tuesday: 0950 -> Tuesday: 1130\n" +
-        "\tlocation: \"Churchill Hall 101\"\n" +
-        "\tonline: false\n" +
-        "\tinvitees: Prof. Lucia\n" +
-        "\tStudent Anon\n" +
-        "\tChat\n" +
-        "\tname: \"CS3500 Afternoon Lecture\"\n" +
-        "\ttime: Tuesday: 1335 -> Tuesday: 1515\n" +
-        "\tlocation: \"Churchill Hall 101\"\n" +
-        "\tonline: false\n" +
-        "\tinvitees: Prof. Lucia\n" +
-        "\tChat\n" +
-        "Wednesday:\n" +
-        "Thursday:\n" +
-        "Friday: \n" +
-        "\tname: Sleep\n" +
-        "\ttime: Friday: 1800 -> Sunday: 1200\n" +
-        "\tlocation: Home\n" +
-        "\tonline: true\n" +
-        "\tinvitees: Prof. Lucia\n" +
-        "Saturday:\n" +
-        "User: Prof. Lucia\n" +
-        "Sunday:\n" +
-        "Monday:\n" +
-        "Tuesday: \n" +
-        "\tname: \"CS3500 Morning Lecture\"\n" +
-        "\ttime: Tuesday: 0950 -> Tuesday: 1130\n" +
-        "\tlocation: \"Churchill Hall 101\"\n" +
-        "\tonline: false\n" +
-        "\tinvitees: Prof. Lucia\n" +
-        "\tStudent Anon\n" +
-        "\tChat\n" +
-        "\tname: \"CS3500 Afternoon Lecture\"\n" +
-        "\ttime: Tuesday: 1335 -> Tuesday: 1515\n" +
-        "\tlocation: \"Churchill Hall 101\"\n" +
-        "\tonline: false\n" +
-        "\tinvitees: Prof. Lucia\n" +
-        "\tChat\n" +
-        "Wednesday:\n" +
-        "Thursday:\n" +
-        "Friday: \n" +
-        "\tname: Sleep\n" +
-        "\ttime: Friday: 1800 -> Sunday: 1200\n" +
-        "\tlocation: Home\n" +
-        "\tonline: true\n" +
-        "\tinvitees: Prof. Lucia\n" +
-        "Saturday:\n", schView.schedulesToString());
+            "Sunday:\n" +
+            "Monday:\n" +
+            "Tuesday: \n" +
+            "\tname: \"CS3500 Morning Lecture\"\n" +
+            "\ttime: Tuesday: 0950 -> Tuesday: 1130\n" +
+            "\tlocation: \"Churchill Hall 101\"\n" +
+            "\tonline: false\n" +
+            "\tinvitees: Prof. Lucia\n" +
+            "\tStudent Anon\n" +
+            "\tChat\n" +
+            "\tname: \"CS3500 Afternoon Lecture\"\n" +
+            "\ttime: Tuesday: 1335 -> Tuesday: 1515\n" +
+            "\tlocation: \"Churchill Hall 101\"\n" +
+            "\tonline: false\n" +
+            "\tinvitees: Prof. Lucia\n" +
+            "\tChat\n" +
+            "Wednesday:\n" +
+            "Thursday:\n" +
+            "Friday: \n" +
+            "\tname: Sleep\n" +
+            "\ttime: Friday: 1800 -> Sunday: 1200\n" +
+            "\tlocation: Home\n" +
+            "\tonline: true\n" +
+            "\tinvitees: Prof. Lucia\n" +
+            "Saturday:\n" +
+            "User: Prof. Lucia\n" +
+            "Sunday:\n" +
+            "Monday:\n" +
+            "Tuesday: \n" +
+            "\tname: \"CS3500 Morning Lecture\"\n" +
+            "\ttime: Tuesday: 0950 -> Tuesday: 1130\n" +
+            "\tlocation: \"Churchill Hall 101\"\n" +
+            "\tonline: false\n" +
+            "\tinvitees: Prof. Lucia\n" +
+            "\tStudent Anon\n" +
+            "\tChat\n" +
+            "\tname: \"CS3500 Afternoon Lecture\"\n" +
+            "\ttime: Tuesday: 1335 -> Tuesday: 1515\n" +
+            "\tlocation: \"Churchill Hall 101\"\n" +
+            "\tonline: false\n" +
+            "\tinvitees: Prof. Lucia\n" +
+            "\tChat\n" +
+            "Wednesday:\n" +
+            "Thursday:\n" +
+            "Friday: \n" +
+            "\tname: Sleep\n" +
+            "\ttime: Friday: 1800 -> Sunday: 1200\n" +
+            "\tlocation: Home\n" +
+            "\tonline: true\n" +
+            "\tinvitees: Prof. Lucia\n" +
+            "Saturday:\n", schView.schedulesToString());
   }
 
   // test writeXML method in ScheduleSystemModel class
@@ -428,53 +428,54 @@ public class ScheduleControllerTests {
     ScheduleSystemTextView schView = new ScheduleSystemTextView(listSchedules);
 
     assertEquals("User: School Schedule\n" +
-        "Sunday: \n" +
-        "\tname: Church\n" +
-        "\ttime: Sunday: 1000 -> Sunday: 1300\n" +
-        "\tlocation: Mulberry Street\n" +
-        "\tonline: false\n" +
-        "\tinvitees: Me\n" +
-        "\tMom\n" +
-        "\tDad\n" +
-        "Monday: \n" +
-        "\tname: Classes\n" +
-        "\ttime: Monday: 0800 -> Friday: 1500\n" +
-        "\tlocation: Northeastern University\n" +
-        "\tonline: false\n" +
-        "\tinvitees: Me\n" +
-        "\tClassmate\n" +
-        "\tBest Friend\n" +
-        "Tuesday:\n" +
-        "Wednesday:\n" +
-        "Thursday:\n" +
-        "Friday:\n" +
-        "Saturday:\n" +
-        "User: Summer Schedule\n" +
-        "Sunday:\n" +
-        "Monday: \n" +
-        "\tname: Afternoon Jog\n" +
-        "\ttime: Monday: 1200 -> Monday: 1245\n" +
-        "\tlocation: Outside\n" +
-        "\tonline: false\n" +
-        "\tinvitees: Me\n" +
-        "Tuesday:\n" +
-        "Wednesday:\n" +
-        "Thursday: \n" +
-        "\tname: Cancun Trip\n" +
-        "\ttime: Thursday: 1700 -> Monday: 0900\n" +
-        "\tlocation: Cancun Resort\n" +
-        "\tonline: false\n" +
-        "\tinvitees: Me\n" +
-        "\tFriend\n" +
-        "\tBest Friend\n" +
-        "Friday:\n" +
-        "Saturday:\n", schView.schedulesToString());
+            "Sunday: \n" +
+            "\tname: Church\n" +
+            "\ttime: Sunday: 1000 -> Sunday: 1300\n" +
+            "\tlocation: Mulberry Street\n" +
+            "\tonline: false\n" +
+            "\tinvitees: Me\n" +
+            "\tMom\n" +
+            "\tDad\n" +
+            "Monday: \n" +
+            "\tname: Classes\n" +
+            "\ttime: Monday: 0800 -> Friday: 1500\n" +
+            "\tlocation: Northeastern University\n" +
+            "\tonline: false\n" +
+            "\tinvitees: Me\n" +
+            "\tClassmate\n" +
+            "\tBest Friend\n" +
+            "Tuesday:\n" +
+            "Wednesday:\n" +
+            "Thursday:\n" +
+            "Friday:\n" +
+            "Saturday:\n" +
+            "User: Summer Schedule\n" +
+            "Sunday:\n" +
+            "Monday: \n" +
+            "\tname: Afternoon Jog\n" +
+            "\ttime: Monday: 1200 -> Monday: 1245\n" +
+            "\tlocation: Outside\n" +
+            "\tonline: false\n" +
+            "\tinvitees: Me\n" +
+            "Tuesday:\n" +
+            "Wednesday:\n" +
+            "Thursday: \n" +
+            "\tname: Cancun Trip\n" +
+            "\ttime: Thursday: 1700 -> Monday: 0900\n" +
+            "\tlocation: Cancun Resort\n" +
+            "\tonline: false\n" +
+            "\tinvitees: Me\n" +
+            "\tFriend\n" +
+            "\tBest Friend\n" +
+            "Friday:\n" +
+            "Saturday:\n", schView.schedulesToString());
   }
 
   @Test
   public void testControllerAddEvent() {
     this.initData();
-    NUPlannerModel mtModel = new NUPlannerModel(new ArrayList<>(List.of(new SchedulePlanner(this.mtEvents, "Me"))));
+    NUPlannerModel mtModel = new NUPlannerModel(new ArrayList<>(List.of(
+            new SchedulePlanner(this.mtEvents, "Me"))));
     ScheduleSystemView ssView = new ScheduleFrame(mtModel);
     ScheduleSystemController schSysCon = new ScheduleSystemController(ssView);
     schSysCon.launch(mtModel);
@@ -485,7 +486,8 @@ public class ScheduleControllerTests {
   @Test
   public void testControllerRemoveEvent() {
     this.initData();
-    NUPlannerModel mtModel = new NUPlannerModel(new ArrayList<>(List.of(new SchedulePlanner(this.mtEvents, "Me"))));
+    NUPlannerModel mtModel = new NUPlannerModel(new ArrayList<>(List.of(new SchedulePlanner(
+            this.mtEvents, "Me"))));
     ScheduleSystemView ssView = new ScheduleFrame(mtModel);
     ScheduleSystemController schSysCon = new ScheduleSystemController(ssView);
     schSysCon.launch(mtModel);
@@ -498,7 +500,8 @@ public class ScheduleControllerTests {
   @Test
   public void testControllerModifyEvent() {
     this.initData();
-    NUPlannerModel mtModel = new NUPlannerModel(new ArrayList<>(List.of(new SchedulePlanner(this.mtEvents, "Me"))));
+    NUPlannerModel mtModel = new NUPlannerModel(new ArrayList<>(List.of(new SchedulePlanner(
+            this.mtEvents, "Me"))));
     ScheduleSystemView ssView = new ScheduleFrame(mtModel);
     ScheduleSystemController schSysCon = new ScheduleSystemController(ssView);
     schSysCon.launch(mtModel);
@@ -510,7 +513,8 @@ public class ScheduleControllerTests {
   @Test
   public void testControllerScheduleEvent() {
     this.initData();
-    NUPlannerModel mtModel = new NUPlannerModel(new ArrayList<>(List.of(new SchedulePlanner(this.mtEvents, "Me"))));
+    NUPlannerModel mtModel = new NUPlannerModel(new ArrayList<>(List.of(new SchedulePlanner(
+            this.mtEvents, "Me"))));
     ScheduleSystemView ssView = new ScheduleFrame(mtModel);
     ScheduleSystemController schSysCon = new ScheduleSystemController(ssView);
     schSysCon.launch(mtModel);
@@ -522,7 +526,8 @@ public class ScheduleControllerTests {
   @Test
   public void testControllerReturnSchedules() {
     this.initData();
-    Assert.assertEquals(new ArrayList<>(Arrays.asList(this.sch1, this.sch2)), schSysMod.returnSchedule());
+    Assert.assertEquals(new ArrayList<>(Arrays.asList(this.sch1, this.sch2)),
+            schSysMod.returnSchedule());
   }
 
   private void initAppendable() {
@@ -538,8 +543,9 @@ public class ScheduleControllerTests {
     this.initData();
     this.initAppendable();
     ssc.addEvent(this.church);
-    Assert.assertEquals("name = Church, startDay = SUNDAY, endDay = SUNDAY, startTime = 1000," +
-        " endTime = 1300, online = false, place = Mulberry Street", strOut.toString());
+    Assert.assertEquals("name = Church, startDay = SUNDAY, endDay = SUNDAY, " +
+            "startTime = 1000, endTime = 1300, online = false, place = Mulberry Street",
+            strOut.toString());
   }
 
   @Test
@@ -547,8 +553,9 @@ public class ScheduleControllerTests {
     this.initData();
     this.initAppendable();
     ssc.removeEvent(this.church, this.user1);
-    Assert.assertEquals("name = Church, startDay = SUNDAY, endDay = SUNDAY, startTime = 1000," +
-        " endTime = 1300, online = false, place = Mulberry Street, user = Me", strOut.toString());
+    Assert.assertEquals("name = Church, startDay = SUNDAY, endDay = SUNDAY, " +
+            "startTime = 1000, endTime = 1300, online = false, place = Mulberry Street, user = Me",
+            strOut.toString());
   }
 
   @Test
@@ -557,7 +564,7 @@ public class ScheduleControllerTests {
     this.initAppendable();
     ssc.scheduleEvent("Evt Name", new Location(true, "home"), 1234, this.users1);
     Assert.assertEquals("name = Evt Name, online = true, place = home, duration = 1234",
-        strOut.toString());
+            strOut.toString());
   }
 
   @Test
@@ -566,10 +573,10 @@ public class ScheduleControllerTests {
     this.initData();
     this.initAppendable();
     ssc.modifyEvent(this.church, this.school, this.user2);
-    Assert.assertEquals("name = Church, startDay = SUNDAY, endDay = SUNDAY, startTime = 1000, " +
-        "endTime = 1300, online = false, place = Mulberry Street, user = Momname = Classes, " +
-        "startDay = MONDAY, endDay = FRIDAY, startTime = 0800, endTime = 1500, online = false, " +
-        "place = Northeastern University", strOut.toString());
+    Assert.assertEquals("name = Church, startDay = SUNDAY, endDay = SUNDAY, " +
+            "startTime = 1000, endTime = 1300, online = false, place = Mulberry Street, " +
+            "user = Momname = Classes, startDay = MONDAY, endDay = FRIDAY, startTime = 0800, " +
+            "endTime = 1500, online = false, place = Northeastern University", strOut.toString());
   }
 
   @Test
@@ -579,7 +586,7 @@ public class ScheduleControllerTests {
     listUsers.add(new User("Kat"));
     listUsers.add(new User("Tim"));
     Event sixFlags = new Event("Six Flags", new Time(this.sunday, "0800", this.sunday, "1200"),
-        new Location(false, "California"), listUsers);
+            new Location(false, "California"), listUsers);
 
     SchedulePlanner timSch = new SchedulePlanner(new ArrayList<>(Arrays.asList(sixFlags)), "Tim");
     PlannerModel anytimeModel = new NUPlannerModel(new ArrayList<>(Arrays.asList(timSch)));
@@ -604,7 +611,7 @@ public class ScheduleControllerTests {
     listUsers.add(new User("Kat"));
     listUsers.add(new User("Tim"));
     Event sixFlags = new Event("Six Flags", new Time(this.sunday, "0800", this.sunday, "1200"),
-        new Location(false, "California"), listUsers);
+            new Location(false, "California"), listUsers);
 
     SchedulePlanner timSch = new SchedulePlanner(new ArrayList<>(Arrays.asList(sixFlags)), "Tim");
     SchedulePlanner katSch = new SchedulePlanner(new ArrayList<>(Arrays.asList(sixFlags)), "Kat");
@@ -653,7 +660,7 @@ public class ScheduleControllerTests {
     listUsers.add(new User("Kat"));
     listUsers.add(new User("Tim"));
     Event sixFlags = new Event("Six Flags", new Time(this.monday, "0900", this.monday, "1300"),
-        new Location(false, "California"), listUsers);
+            new Location(false, "California"), listUsers);
 
     SchedulePlanner timSch = new SchedulePlanner(new ArrayList<>(List.of(sixFlags)), "Tim");
     SchedulePlanner katSch = new SchedulePlanner(new ArrayList<>(List.of(sixFlags)), "Kat");

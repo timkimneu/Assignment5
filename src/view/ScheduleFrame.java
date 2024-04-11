@@ -4,7 +4,17 @@ import controller.ScheduleSystem;
 import model.ReadOnlyPlannerModel;
 import model.User;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+import javax.swing.BoxLayout;
+import javax.swing.JOptionPane;
+import javax.swing.JMenuItem;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JFileChooser;
+
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.io.File;
@@ -26,7 +36,6 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
   private JButton createEvent;
   private JButton schEvent;
   private JComboBox<String> userBox;
-//  private User selectedUser;
 
 
   /**
@@ -39,7 +48,7 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
   public ScheduleFrame(ReadOnlyPlannerModel model) {
     super();
     this.model = model;
-    this.eventFrame  = new EventFrame(model);
+    this.eventFrame = new EventFrame(model);
     this.durationFrame = new EventDurationFrame(model);
     this.setSize(550, 610);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -98,14 +107,14 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
     );
   }
 
-  private void updateUserBox(){
+  private void updateUserBox() {
     List<String> currentUsers = new ArrayList<>();
     for (int user = 0; user < userBox.getItemCount(); user++) {
       currentUsers.add(userBox.getItemAt(user));
     }
     List<String> users = model.users();
     for (int user = 0; user < users.size(); user++) {
-      if(!currentUsers.contains(users.get(user))){
+      if (!currentUsers.contains(users.get(user))) {
         userBox.addItem(users.get(user));
       }
     }

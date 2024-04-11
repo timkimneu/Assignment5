@@ -26,9 +26,9 @@ public class User {
   }
 
   /**
-   * Overwrites the equals method for the User class
+   * Overwrites the equals method for the User class.
    *
-   * @param other that represents the other object
+   * @param other that represents the other object.
    */
   @Override
   public boolean equals(Object other) {
@@ -43,7 +43,7 @@ public class User {
   }
 
   /**
-   * Overwrites the hashCode method for the User class
+   * Overwrites the hashCode method for the User class.
    */
   @Override
   public int hashCode() {
