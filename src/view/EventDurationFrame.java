@@ -14,15 +14,14 @@ import java.util.Objects;
 
 public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSystemView {
   private final ReadOnlyPlannerModel model;
+  private User host;
   private final JPanel mainPanel;
   private JTextField eventText;
-
   private JTextField durTime;
   private JTextField place;
   private JComboBox<String> onlineBox;
   private JList<String> usersBox;
   private JButton schEvent;
-
   private final JPanel usersTag;// = new JPanel();
   private JLabel availUsers;// = new JLabel("\tAvailable Users: ");
   private GridLayout gridLayout;// = new GridLayout(0, 1);
@@ -63,6 +62,11 @@ public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSyst
     createEventButton();
 
     add(mainPanel);
+  }
+
+  @Override
+  public void setHost(User host) {
+    this.host = host;
   }
 
   private void createEventButton() {
@@ -117,7 +121,6 @@ public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSyst
 
     mainPanel.add(usersTag);
 
-    System.out.println("USERS" + this.model.users());
     String[] allUsers = this.model.users().toArray(new String[0]);
 
     usersBox = new JList<>(allUsers);
@@ -146,7 +149,6 @@ public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSyst
   public void addListener(ScheduleSystem listener) {
     schEvent.addActionListener(e -> {
           try {
-            System.out.println("ppopnpinipnp");
             String eventName = eventText.getText();
             Location loc = new Location(getOnlineBool(Objects.requireNonNull(onlineBox.getSelectedItem())),
                 place.getText());
@@ -156,7 +158,6 @@ public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSyst
             this.hidePanel();
           } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(null, "Cannot schedule event");
-            System.out.println(ex.getMessage());
           }
         }
     );
@@ -173,7 +174,7 @@ public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSyst
 
   private boolean getOnlineBool(Object o) {
     String onlineStr = o.toString();
-    return onlineStr.equals("Is online");
+    return onlineStr.equals("true");
   }
 
   @Override

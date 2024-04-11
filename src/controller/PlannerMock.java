@@ -10,9 +10,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents the mock for the planner model. Verifying that the commands
+ * into the Readable is properly managed, as well as providing feedback
+ * to the user through methods that determine the state of items in the
+ * program.
+ */
 public class PlannerMock implements PlannerModel {
   private final Appendable log;
 
+  /**
+   * Launches the calendar with the given the model.
+   * The schedule type is started with the given customization as well.
+   *
+   * @param log appendable of the current calendar
+   */
   public PlannerMock(Appendable log) {
     this.log = log;
   }
@@ -29,11 +41,6 @@ public class PlannerMock implements PlannerModel {
     }
   }
 
-  private boolean getOnlineBool(Object o) {
-    String onlineStr = o.toString();
-    return onlineStr.equals("Is online");
-  }
-
   @Override
   public void scheduleEvent(String name, Location location, int duration, List<User> users) {
     try {
@@ -44,9 +51,16 @@ public class PlannerMock implements PlannerModel {
     }
   }
 
+  // gets the boolean of whether the object is online or not
+  private boolean getOnlineBool(Object o) {
+    String onlineStr = o.toString();
+    return onlineStr.equals("true");
+  }
+
   @Override
   public void modifyEvent(Event event, Event newEvent, User user) {
     try {
+      // should not ever run, Controller calls remove then add for its modifyEvent method
       this.log.append(String.format("oldName = %s, oldStartDay = %s, oldEndDay = %s, " +
               "oldStartTime = %s, oldEndTime = %s, oldOnline = %s, oldPlace = %s, " +
               "newName = %s, newStartDay = %s, newEndDay = %s, newStartTime = %s, " +
@@ -55,7 +69,7 @@ public class PlannerMock implements PlannerModel {
           event.time().endTime(), getOnlineBool(event.location().online()), event.location().place(),
           newEvent.name(), newEvent.time().startDay(), newEvent.time().endDay(),
           newEvent.time().startTime(), newEvent.time().endTime(),
-          getOnlineBool(newEvent.location().online()), newEvent.location().place(), user));
+          getOnlineBool(newEvent.location().online()), newEvent.location().place(), user.name()));
     } catch (IOException e) {
       // continue
     }
@@ -68,7 +82,7 @@ public class PlannerMock implements PlannerModel {
               "endTime = %s, online = %s, place = %s, user = %s", event.name(),
           event.time().startDay(), event.time().endDay(), event.time().startTime(),
           event.time().endTime(), getOnlineBool(event.location().online()),
-          event.location().place(), user));
+          event.location().place(), user.name()));
     } catch (IOException e) {
       // continue
     }

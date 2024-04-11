@@ -87,35 +87,46 @@ public class Time {
    * @return True if there exists an overlap between the two Time objects and false otherwise.
    */
   public boolean anyOverlap(Time t) {
-    return this.hasOverlapContainedWeek(t)
-            || t.hasOverlapContainedWeek(this)
-            || this.hasOverlapCrossWeek(t);
+    boolean check1 = false;
+    boolean check2 = false;
+    if (this.startDay().compareTo(t.startDay()) < 0) {
+      check1 = this.hasOverlapContainedWeek(t);
+    }
+    else if (this.startTime().compareTo(t.startTime()) < 0 && this.startDay().compareTo(t.startDay()) == 0) {
+      check1 = this.hasOverlapContainedWeek(t);
+    }
+    else {
+      check2 = t.hasOverlapContainedWeek(this);
+    }
+    return check1 || check2 || this.hasOverlapCrossWeek(t);
   }
 
   private boolean hasOverlapContainedWeek(Time t) {
     // check if start day of other Time object is before the ending day of this Time object
-    if (this.startDay().compareTo(t.startDay()) <= 0 && this.endDay().compareTo(t.startDay()) > 0) {
+    int firstStartHr = this.getHours(this.startTime());
+    int firstEndingHr = this.getHours(this.endTime());
+    int secondStartHr = t.getHours(t.startTime());
+    int secondEndHr = t.getHours(t.endTime());
+
+    int firstStartMin = this.getMinutes(this.startTime());
+    int firstEndMin = this.getMinutes(this.endTime());
+    int secondStartMin = this.getMinutes(t.startTime());
+    int secondEndMin = this.getMinutes(t.endTime());
+
+    if (this.endDay().compareTo(t.startDay()) > 0) {
       return true;
-      // check case when start day of other Time object is
-      // same day as the end day of this Time object.
-    } else if (this.endDay().equals(t.startDay())) {
-      int firstStartHr = this.getHours(this.startTime());
-      int firstEndingHr = this.getHours(this.endTime());
-      int secondStartHr = t.getHours(t.startTime());
-      // check if starting hour of other Time object is before the ending hour of this Time object
-      if (firstStartHr <= secondStartHr && firstEndingHr > secondStartHr) {
+    }
+    else if (this.endDay().compareTo(t.startDay()) == 0) {
+      if (firstEndingHr > secondStartHr) {
         return true;
-        // check case when start hour of other Time object is
-        // same hour as the end hour of this Time object.
-      } else if (firstEndingHr == secondStartHr) {
-        int firstStartMin = this.getMinutes(this.startTime());
-        int firstEndMin = this.getMinutes(this.endTime());
-        int secondStartMin = this.getMinutes(t.startTime());
-        // check if start minute of other Time object is less
-        // than or equal to end minute of this Time object.
-        return firstStartMin <= secondStartMin && firstEndMin > secondStartMin;
       }
     }
+    else if (firstEndingHr == secondStartHr) {
+      if (firstEndMin > secondStartMin) {
+        return true;
+      }
+    }
+
     // otherwise return false
     return false;
   }
@@ -265,5 +276,10 @@ public class Time {
   @Override
   public int hashCode() {
     return Objects.hash(this.startDay, this.startTime, this.endDay, this.endTime);
+  }
+
+  @Override
+  public String toString() {
+    return this.startDay.observeDay() + " " + this.startTime + " " + this.endDay.observeDay() + " " + this.endTime + " ";
   }
 }

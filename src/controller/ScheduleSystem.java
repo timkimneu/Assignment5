@@ -3,7 +3,6 @@ package controller;
 import model.Event;
 import model.Location;
 import model.PlannerModel;
-import model.ReadOnlyPlannerModel;
 import model.SchedulePlanner;
 import model.User;
 
@@ -44,45 +43,43 @@ public interface ScheduleSystem {
   List<SchedulePlanner> returnSchedule();
 
   /**
+   * Initializes the model in the controller and makes the view visible.
    *
-   * @param model
+   * @param model Model to be initialized in the controller and displayed in the view.
    */
   void launch(PlannerModel model);
 
   /**
+   * Listener for when a user attempts to create an event in the view.
    *
-   * @param e
+   * @param e Event to be added and passed to be handled in the model.
    */
   void addEvent(Event e);
 
   /**
+   * Listener for when a user attempts to modify an event in the view.
    *
-   * @param oldEvent
-   * @param newEvent
-   * @param user
+   * @param oldEvent Event to be replaced by the new event which is passed into the model.
+   * @param newEvent Event to replace older event which is passed into the model.
+   * @param user User that will be modifying the event for which is passed into the model.
    */
   void modifyEvent(Event oldEvent, Event newEvent, User user);
 
   /**
+   * Listener for when a user attempts to remove an event in the view.
    *
-   * @param e
-   * @param user
+   * @param e Event to be removed which is passed into the model.
+   * @param user User that designates the schedule that the event is being removed from.
    */
   void removeEvent(Event e, User user);
 
   /**
+   * Listener for when a user attempts to automatically schedule an event in the view.
    *
-   * @param name
-   * @param location
-   * @param duration
-   * @param users
+   * @param name Name to be passed into the model.
+   * @param location Location to be passed into the model.
+   * @param duration Integer duration to be passed into the model.
+   * @param users List of users to be passed into the model.
    */
   void scheduleEvent(String name, Location location, int duration, List<User> users);
-
-  /**
-   *
-   * @param row
-   * @param col
-   */
-  void handleCellClick(int row, int col);
 }

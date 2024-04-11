@@ -26,6 +26,7 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
   private JButton createEvent;
   private JButton schEvent;
   private JComboBox<String> userBox;
+//  private User selectedUser;
 
 
   /**
@@ -61,8 +62,8 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
     listUsers.setLayout(new BoxLayout(listUsers, BoxLayout.PAGE_AXIS));
     userBox = new JComboBox<>(new String[]{"<none>"});
     List<String> users = model.users();
-    for (int i = 0; i < users.size(); i++) {
-      userBox.addItem(users.get(i));
+    for (int user = 0; user < users.size(); user++) {
+      userBox.addItem(users.get(user));
     }
     listUsers.add(userBox);
 
@@ -99,13 +100,13 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
 
   private void updateUserBox(){
     List<String> currentUsers = new ArrayList<>();
-    for (int i = 0; i < userBox.getItemCount(); i++) {
-      currentUsers.add(userBox.getItemAt(i));
+    for (int user = 0; user < userBox.getItemCount(); user++) {
+      currentUsers.add(userBox.getItemAt(user));
     }
     List<String> users = model.users();
-    for (int i = 0; i < users.size(); i++) {
-      if(!currentUsers.contains(users.get(i))){
-        userBox.addItem(users.get(i));
+    for (int user = 0; user < users.size(); user++) {
+      if(!currentUsers.contains(users.get(user))){
+        userBox.addItem(users.get(user));
       }
     }
   }
@@ -142,7 +143,6 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
           listener.readXML(f.getPath());
         } catch (IllegalArgumentException | NullPointerException ex) {
           JOptionPane.showMessageDialog(null, "Cannot add calendar");
-          System.out.println(ex.getMessage());
         }
       }
     }

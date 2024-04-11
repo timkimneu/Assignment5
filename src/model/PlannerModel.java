@@ -17,15 +17,23 @@ public interface PlannerModel extends ReadOnlyPlannerModel {
    * are in the list of attendees in a new event. Throws an error if there exists any overlap
    * with the new event with any existing event of any attendee. Throws an error if the given
    * event is already scheduled in any attendee's schedule.
+   *
+   * @param event Event class that represents the event to be added.
    */
   void addEvent(Event event);
 
   /**
+   * Makes an event with the provided parameters provided, and schedules the event.
+   * Adds the given event to all users in the planner system provided by the list of users
+   * pertaining to the given event. In other words, adds this event to a user's schedule if they
+   * are in the list of attendees in a new event. Throws an error if there exists any overlap
+   * with the new event with any existing event of any attendee. Throws an error if the given
+   * event is already scheduled in any attendee's schedule.
    *
-   * @param name
-   * @param location
-   * @param duration
-   * @param users
+   * @param name String that represents the event name.
+   * @param location Location class that represents the place and whether event is online.
+   * @param duration How long the event is in minutes.
+   * @param users List of users that are attending the event.
    */
   void scheduleEvent(String name, Location location, int duration, List<User> users);
 
@@ -36,12 +44,19 @@ public interface PlannerModel extends ReadOnlyPlannerModel {
    * "modified" event, also throw an error. If the old event does not exist, throw an error. Will
    * modify the event for all schedules that contain the old event. Only adds the new modified
    * event to the individuals listed in the new event.
+   *
+   * @param event Old event that will be replaced.
+   * @param newEvent New Event to replace with old event.
+   * @param user User that is attending the event.
    */
   void modifyEvent(Event event, Event newEvent, User user);
 
   /**
    * Removes an existing event from all schedules in the system. Throw an error if the event to be
    * removed cannot be found in any schedule that is meant to be removed from.
+   *
+   * @param event Event that will be removed.
+   * @param user User that is attending the event.
    */
   void removeEvent(Event event, User user);
 }

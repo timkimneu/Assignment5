@@ -8,6 +8,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 /**
  * Represents examples and tests of the Schedule model and all of its relevant supporting classes.
  * Examples and tests of classes and methods within the model package.
@@ -307,17 +310,17 @@ public class ScheduleModelTests {
   @Test
   public void testAnyOverlap() {
     this.initData();
-    Assert.assertFalse(this.time1.anyOverlap(this.time2));
+    assertFalse(this.time1.anyOverlap(this.time2));
   }
 
   // Test online method for Location class
   @Test
   public void testLocationOnline() {
     this.initData();
-    Assert.assertFalse(this.loc1.online());
-    Assert.assertFalse(this.loc4.online());
-    Assert.assertFalse(this.loc5.online());
-    Assert.assertTrue(this.loc6.online());
+    assertFalse(this.loc1.online());
+    assertFalse(this.loc4.online());
+    assertFalse(this.loc5.online());
+    assertTrue(this.loc6.online());
   }
 
   // Test place method for Location class
@@ -399,7 +402,7 @@ public class ScheduleModelTests {
     Assert.assertEquals(new ArrayList<>(Arrays.asList(this.church, this.school)), sch.events());
 
     Schedule sch0 = new SchedulePlanner(this.mtEvents, "New Schedule");
-    Assert.assertTrue(sch0.events().isEmpty());
+    assertTrue(sch0.events().isEmpty());
   }
 
   // test addEvent method in Schedule class for IllegalArgumentException
@@ -472,13 +475,13 @@ public class ScheduleModelTests {
     this.initData();
     Schedule sch = new SchedulePlanner(this.mtEvents, "My Schedule");
     // check that schedule is empty
-    Assert.assertFalse(sch.events().contains(this.school));
-    Assert.assertTrue(sch.events().isEmpty());
+    assertFalse(sch.events().contains(this.school));
+    assertTrue(sch.events().isEmpty());
     Assert.assertEquals(0, sch.events().size());
     // check that schedule added school event
     sch.addEvent(this.school);
-    Assert.assertFalse(sch.events().isEmpty());
-    Assert.assertTrue(sch.events().contains(this.school));
+    assertFalse(sch.events().isEmpty());
+    assertTrue(sch.events().contains(this.school));
     Assert.assertEquals(new ArrayList<>(Collections.singletonList(this.school)), sch.events());
     Assert.assertEquals(1, sch.events().size());
 
@@ -525,7 +528,7 @@ public class ScheduleModelTests {
 
     sch.removeEvent(this.school);
     Assert.assertEquals(this.mtEvents, sch.events());
-    Assert.assertTrue(sch.events().isEmpty());
+    assertTrue(sch.events().isEmpty());
   }
 
   // test schedules method for NUPlannerModel class
@@ -720,4 +723,33 @@ public class ScheduleModelTests {
     this.model1.removeEvent(this.wednesdayDinner, this.user1);
     Assert.assertEquals(0, this.model1.events("User 1").size());
   }
+
+  @Test
+  public void testOverlappingTimes() {
+    Time time1 = new Time(DaysOfTheWeek.MONDAY,"0920", DaysOfTheWeek.TUESDAY, "0200");
+    Time time2 = new Time(DaysOfTheWeek.TUESDAY, "0000", DaysOfTheWeek.TUESDAY, "0100");
+
+    boolean overlap = time1.anyOverlap(time2);
+    assertTrue(overlap);
+  }
+
+  @Test
+  public void testOverlappingTimes2() {
+    Time time1 = new Time(DaysOfTheWeek.SUNDAY,"0000", DaysOfTheWeek.MONDAY, "0920");
+    Time time2 = new Time(DaysOfTheWeek.MONDAY, "0720", DaysOfTheWeek.TUESDAY, "0000");
+
+    boolean overlap = time1.anyOverlap(time2);
+    assertTrue(overlap);
+  }
+
+  @Test
+  public void testOverlappingTimes3() {
+    Time time1 = new Time(DaysOfTheWeek.TUESDAY,"0950", DaysOfTheWeek.TUESDAY, "1130");
+    Time time2 = new Time(DaysOfTheWeek.TUESDAY, "1315", DaysOfTheWeek.TUESDAY, "1515");
+
+//    boolean overlap = time1.anyOverlap(time2);
+    boolean overlap = time1.anyOverlap(time2);
+    assertFalse(overlap);
+  }
+
 }

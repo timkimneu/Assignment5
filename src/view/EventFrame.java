@@ -3,6 +3,7 @@ package view;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,6 +34,8 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   private JTextField startTimeTxt;
   private JTextField endTimeTxt;
   private JList<String> usersBox;
+
+  private JList<String> attendeesBox;
   private JButton createEvent;
   private JButton modEvent;
   private JButton removeEvent;
@@ -139,7 +142,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
             (DaysOfTheWeek.valueOf(endDOTW.getSelectedItem().toString().toUpperCase())),
             endTimeTxt.getText()),
         new Location(getOnlineBool(Objects.requireNonNull(onlineBox.getSelectedItem())),
-            place.getText()), getUsers(usersBox.getSelectedValuesList()));
+            place.getText()), getUsers(attendeesBox.getSelectedValuesList()));
     return newEvent;
   }
 
@@ -154,7 +157,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
 
   private boolean getOnlineBool(Object o) {
     String onlineStr = o.toString();
-    return onlineStr.equals("Is online");
+    return onlineStr.equals("true");
   }
 
   @Override
@@ -276,7 +279,17 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
     // add select users
     this.availableUsersPanel();
 //    this.refresh();
-    usersBox.setSelectedValue(user.name(), true);
+//    usersBox.clearSelection();
+    String[] allAttendees = new String[event.users().size()];
+
+    for (int user = 0; user < event.users().size(); user++) {
+      String us = String.valueOf(event.users().get(user).name()).replaceAll("\"", "");
+      allAttendees[user] = us;
+    }
+    attendeesBox = new JList<>(allAttendees);
+    scrollPane.setViewportView(attendeesBox);
+    String selectedName = user.name().replaceAll("\"", "");
+    attendeesBox.setSelectedValue(selectedName, true);
 
     this.originalEvent = event;
 
@@ -292,5 +305,10 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   @Override
   public void getUnmodifiedEvent(Event event) {
     this.unmodifiedEvent = event;
+  }
+
+  @Override
+  public void setHost(User host) {
+    // not implemented
   }
 }

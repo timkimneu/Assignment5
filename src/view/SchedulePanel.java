@@ -12,6 +12,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.BasicStroke;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Line2D;
@@ -72,20 +74,20 @@ public class SchedulePanel extends JPanel implements SchPanel {
     for (int line = 0; line < 24; line++) {
       if (line % 4 == 0) {
         g2d.setStroke(new BasicStroke(5));
-        g2d.drawLine(0, this.getWidth() / 24 * line,
-            this.getWidth(), this.getWidth() / 24 * line);
+        g2d.drawLine(0, (int) (this.getHeight() / 24.0 * line),
+            this.getWidth(), (int) (this.getHeight() / 24.0 * line));
       }
       else {
         g2d.setStroke(new BasicStroke(1));
-        g2d.drawLine(0, this.getWidth() / 24 * line,
-            this.getWidth(), this.getWidth() / 24 * line);
+        g2d.drawLine(0, (int) (this.getHeight() / 24.0 * line),
+            this.getWidth(), (int) (this.getHeight() / 24.0 * line));
       }
     }
 
     g2d.setStroke(new BasicStroke(1));
     for (int col = 0; col < 7; col++) {
-      Line2D line2D = new Line2D.Double((double) this.getWidth() / 7 * col, 0,
-          (double) this.getWidth() / 7 * col, this.getWidth());
+      Line2D line2D = new Line2D.Double((double) this.getWidth() / 7.0 * col, 0,
+          (double) this.getWidth() / 7.0 * col, this.getHeight());
       g2d.draw(line2D);
     }
   }

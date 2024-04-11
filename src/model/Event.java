@@ -12,7 +12,7 @@ public class Event {
   private final Time time;
   private final Location location;
   private final List<User> users;
-  private final User host;
+  private User host;
 
   /**
    * Represents a social gathering that has a name, a specified starting and ending time,
@@ -86,12 +86,13 @@ public class Event {
   }
 
   /**
+   * Method that returns a boolean to determine if user is the host.
    *
-   * @param u
+   * @param user User that may represent the host
    * @return
    */
-  public boolean isHost(User u) {
-    return this.host.equals(u);
+  public boolean isHost(User user) {
+    return this.host.equals(user);
   }
   
   @Override

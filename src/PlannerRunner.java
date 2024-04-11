@@ -76,18 +76,15 @@ public final class PlannerRunner {
     model2.readXML("src/School Schedule.xml");
     List<SchedulePlanner> listSchedules2 = model2.returnSchedule();
 
-//    String schedule = args[0];
-//    Readable commandLines = new InputStreamReader(System.in);
-//    Appendable ap = System.out;
-//    PlannerModel planner = ScheduleCreator.createSchedule();
-
+    String schedule = args[0];
+    NUPlannerModel model = ScheduleCreator.createSchedule(
+        ScheduleCreator.ScheduleType.valueOf(schedule.toUpperCase()));
 
     List<SchedulePlanner> newList = new ArrayList<>();
     newList.addAll(listSchedules);
     newList.addAll(listSchedules2);
     newList.addAll(schedules1);
 
-    NUPlannerModel model = new NUPlannerModel(newList);
     ScheduleSystemView view = new ScheduleFrame(model);
     ScheduleSystem controller = new ScheduleSystemController(view);
     controller.launch(model);

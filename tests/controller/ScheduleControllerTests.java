@@ -8,6 +8,7 @@ import model.PlannerModel;
 import model.SchedulePlanner;
 import model.Time;
 import model.User;
+import model.WorkTimePlannerModel;
 import org.junit.Assert;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -22,12 +23,14 @@ import view.ScheduleSystemView;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Represents examples and tests of the ScheduleSystemController class and all of its relevant
@@ -73,7 +76,9 @@ public class ScheduleControllerTests {
   SchedulePlanner sch3;
   SchedulePlanner sch4;
   ScheduleSystemController schSysMod;
+  ScheduleSystemController ssc;
   PlannerModel model1;
+  Appendable strOut;
 
   private void initData() {
     this.sunday = DaysOfTheWeek.SUNDAY;
@@ -129,7 +134,7 @@ public class ScheduleControllerTests {
     Document doc = null;
     try {
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-      doc = builder.parse(new File("../src/tutorial.xml"));
+      doc = builder.parse(new File("src/tutorial.xml"));
       doc.getDocumentElement().normalize();
     } catch (Exception ignored) {
     }
@@ -148,7 +153,7 @@ public class ScheduleControllerTests {
     Document doc = null;
     try {
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-      doc = builder.parse(new File("../src/tutorial.xml"));
+      doc = builder.parse(new File("src/tutorial.xml"));
       doc.getDocumentElement().normalize();
     } catch (Exception ignored) {
     }
@@ -171,7 +176,7 @@ public class ScheduleControllerTests {
     Document doc = null;
     try {
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-      doc = builder.parse(new File("../src/prof.xml"));
+      doc = builder.parse(new File("src/prof.xml"));
       doc.getDocumentElement().normalize();
     } catch (Exception ignored) {
     }
@@ -200,7 +205,7 @@ public class ScheduleControllerTests {
     Document doc = null;
     try {
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-      doc = builder.parse(new File("../src/prof.xml"));
+      doc = builder.parse(new File("src/prof.xml"));
       doc.getDocumentElement().normalize();
     } catch (Exception ignored) {
     }
@@ -239,7 +244,7 @@ public class ScheduleControllerTests {
     Document doc = null;
     try {
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-      doc = builder.parse(new File("../src/prof.xml"));
+      doc = builder.parse(new File("src/prof.xml"));
       doc.getDocumentElement().normalize();
     } catch (Exception ignored) {
     }
@@ -270,7 +275,7 @@ public class ScheduleControllerTests {
     Document doc = null;
     try {
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-      doc = builder.parse(new File("../src/prof.xml"));
+      doc = builder.parse(new File("src/prof.xml"));
       doc.getDocumentElement().normalize();
     } catch (Exception ignored) {
     }
@@ -316,7 +321,7 @@ public class ScheduleControllerTests {
     ScheduleSystemView view = new ScheduleFrame(mtModel);
     ScheduleSystem schModel = new ScheduleSystemController(view);
     schModel.launch(mtModel);
-    schModel.readXML("../src/prof.xml");
+    schModel.readXML("src/prof.xml");
     List<SchedulePlanner> listSchedules = schModel.returnSchedule();
     ScheduleSystemTextView schView = new ScheduleSystemTextView(listSchedules);
 
@@ -355,8 +360,8 @@ public class ScheduleControllerTests {
     ScheduleSystemView view = new ScheduleFrame(mtModel);
     ScheduleSystem schModel = new ScheduleSystemController(view);
     schModel.launch(mtModel);
-    schModel.readXML("../src/prof.xml");
-    schModel.readXML("../src/prof.xml");
+    schModel.readXML("src/prof.xml");
+    schModel.readXML("src/prof.xml");
     List<SchedulePlanner> listSchedules = schModel.returnSchedule();
     ScheduleSystemTextView schView = new ScheduleSystemTextView(listSchedules);
 
@@ -414,31 +419,11 @@ public class ScheduleControllerTests {
         "Saturday:\n", schView.schedulesToString());
   }
 
-  // test writeXML method in ScheduleSystemModel class for IllegalArgumentException
-  // when the current list of schedules does not contain the given Schedule
-  @Test
-  public void testWriteXMLScheduleDoesNotExistError() {
-    this.initData();
-    try {
-      this.schSysMod.writeXML("../");
-      Assert.fail("Failed to catch error");
-    } catch (IllegalArgumentException e) {
-      Assert.assertEquals("Schedule system does not contain given schedule!", e.getMessage());
-    }
-
-    try {
-      this.schSysMod.writeXML("../");
-      Assert.fail("Failed to catch error");
-    } catch (IllegalArgumentException e) {
-      Assert.assertEquals("Schedule system does not contain given schedule!", e.getMessage());
-    }
-  }
-
   // test writeXML method in ScheduleSystemModel class
   @Test
   public void testWriteXML() {
     this.initData();
-    this.schSysMod.writeXML("../");
+    this.schSysMod.writeXML("");
     List<SchedulePlanner> listSchedules = this.schSysMod.returnSchedule();
     ScheduleSystemTextView schView = new ScheduleSystemTextView(listSchedules);
 
@@ -485,4 +470,230 @@ public class ScheduleControllerTests {
         "Friday:\n" +
         "Saturday:\n", schView.schedulesToString());
   }
+
+  @Test
+  public void testControllerAddEvent() {
+    this.initData();
+    NUPlannerModel mtModel = new NUPlannerModel(new ArrayList<>(List.of(new SchedulePlanner(this.mtEvents, "Me"))));
+    ScheduleSystemView ssView = new ScheduleFrame(mtModel);
+    ScheduleSystemController schSysCon = new ScheduleSystemController(ssView);
+    schSysCon.launch(mtModel);
+    schSysCon.addEvent(this.mondayAfternoonJog);
+    Assert.assertTrue(mtModel.schedules().get(0).events().contains(this.mondayAfternoonJog));
+  }
+
+  @Test
+  public void testControllerRemoveEvent() {
+    this.initData();
+    NUPlannerModel mtModel = new NUPlannerModel(new ArrayList<>(List.of(new SchedulePlanner(this.mtEvents, "Me"))));
+    ScheduleSystemView ssView = new ScheduleFrame(mtModel);
+    ScheduleSystemController schSysCon = new ScheduleSystemController(ssView);
+    schSysCon.launch(mtModel);
+    schSysCon.addEvent(this.mondayAfternoonJog);
+    Assert.assertTrue(mtModel.schedules().get(0).events().contains(this.mondayAfternoonJog));
+    schSysCon.removeEvent(this.mondayAfternoonJog, this.user1);
+    Assert.assertFalse(mtModel.schedules().get(0).events().contains(this.mondayAfternoonJog));
+  }
+
+  @Test
+  public void testControllerModifyEvent() {
+    this.initData();
+    NUPlannerModel mtModel = new NUPlannerModel(new ArrayList<>(List.of(new SchedulePlanner(this.mtEvents, "Me"))));
+    ScheduleSystemView ssView = new ScheduleFrame(mtModel);
+    ScheduleSystemController schSysCon = new ScheduleSystemController(ssView);
+    schSysCon.launch(mtModel);
+    schSysCon.addEvent(this.mondayAfternoonJog);
+    schSysCon.modifyEvent(this.mondayAfternoonJog, this.church, this.user1);
+    Assert.assertTrue(mtModel.schedules().get(0).events().contains(this.church));
+  }
+
+  @Test
+  public void testControllerScheduleEvent() {
+    this.initData();
+    NUPlannerModel mtModel = new NUPlannerModel(new ArrayList<>(List.of(new SchedulePlanner(this.mtEvents, "Me"))));
+    ScheduleSystemView ssView = new ScheduleFrame(mtModel);
+    ScheduleSystemController schSysCon = new ScheduleSystemController(ssView);
+    schSysCon.launch(mtModel);
+    Assert.assertEquals(0, mtModel.schedules().get(0).events().size());
+    schSysCon.scheduleEvent("Neat event", this.loc1, 120, this.users1);
+    Assert.assertEquals(1, mtModel.schedules().get(0).events().size());
+  }
+
+  @Test
+  public void testControllerReturnSchedules() {
+    this.initData();
+    Assert.assertEquals(new ArrayList<>(Arrays.asList(this.sch1, this.sch2)), schSysMod.returnSchedule());
+  }
+
+  private void initAppendable() {
+    this.strOut = new StringBuilder();
+    PlannerModel mkModel = new PlannerMock(strOut);
+    ScheduleSystemView view = new ScheduleFrame(mkModel);
+    ssc = new ScheduleSystemController(view);
+    ssc.launch(mkModel);
+  }
+
+  @Test
+  public void testMockAddEvent() {
+    this.initData();
+    this.initAppendable();
+    ssc.addEvent(this.church);
+    Assert.assertEquals("name = Church, startDay = SUNDAY, endDay = SUNDAY, startTime = 1000," +
+        " endTime = 1300, online = false, place = Mulberry Street", strOut.toString());
+  }
+
+  @Test
+  public void testMockRemoveEvent() {
+    this.initData();
+    this.initAppendable();
+    ssc.removeEvent(this.church, this.user1);
+    Assert.assertEquals("name = Church, startDay = SUNDAY, endDay = SUNDAY, startTime = 1000," +
+        " endTime = 1300, online = false, place = Mulberry Street, user = Me", strOut.toString());
+  }
+
+  @Test
+  public void testMockScheduleEvent() {
+    this.initData();
+    this.initAppendable();
+    ssc.scheduleEvent("Evt Name", new Location(true, "home"), 1234, this.users1);
+    Assert.assertEquals("name = Evt Name, online = true, place = home, duration = 1234",
+        strOut.toString());
+  }
+
+  @Test
+  public void testMockModifyEvent() {
+    // test will call remove and add and combine string logs
+    this.initData();
+    this.initAppendable();
+    ssc.modifyEvent(this.church, this.school, this.user2);
+    Assert.assertEquals("name = Church, startDay = SUNDAY, endDay = SUNDAY, startTime = 1000, " +
+        "endTime = 1300, online = false, place = Mulberry Street, user = Momname = Classes, " +
+        "startDay = MONDAY, endDay = FRIDAY, startTime = 0800, endTime = 1500, online = false, " +
+        "place = Northeastern University", strOut.toString());
+  }
+
+  @Test
+  public void testAnytimeStrategyAddingOneEventToEmptySchedule() {
+    this.initData();
+    List<User> listUsers = new ArrayList<>();
+    listUsers.add(new User("Kat"));
+    listUsers.add(new User("Tim"));
+    Event sixFlags = new Event("Six Flags", new Time(this.sunday, "0800", this.sunday, "1200"),
+        new Location(false, "California"), listUsers);
+
+    SchedulePlanner timSch = new SchedulePlanner(new ArrayList<>(Arrays.asList(sixFlags)), "Tim");
+    PlannerModel anytimeModel = new NUPlannerModel(new ArrayList<>(Arrays.asList(timSch)));
+    String eventName = "Hi";
+    Location loc = new Location(true, "school");
+    int duration = 1500;
+
+    anytimeModel.scheduleEvent(eventName, loc, duration, listUsers);
+
+    SchedulePlanner curr = anytimeModel.schedules().get(0);
+    assertEquals("Hi", curr.events().get(1).name());
+    assertEquals(DaysOfTheWeek.SUNDAY, curr.events().get(1).time().startDay());
+    assertEquals(DaysOfTheWeek.MONDAY, curr.events().get(1).time().endDay());
+    assertEquals("1200", curr.events().get(1).time().startTime());
+    assertEquals("1300", curr.events().get(1).time().endTime());
+  }
+
+  @Test
+  public void testAnytimeStrategyAddingOneEventToMoreEventsSchedule() {
+    this.initData();
+    List<User> listUsers = new ArrayList<>();
+    listUsers.add(new User("Kat"));
+    listUsers.add(new User("Tim"));
+    Event sixFlags = new Event("Six Flags", new Time(this.sunday, "0800", this.sunday, "1200"),
+        new Location(false, "California"), listUsers);
+
+    SchedulePlanner timSch = new SchedulePlanner(new ArrayList<>(Arrays.asList(sixFlags)), "Tim");
+    SchedulePlanner katSch = new SchedulePlanner(new ArrayList<>(Arrays.asList(sixFlags)), "Kat");
+    PlannerModel anytimeModel = new NUPlannerModel(new ArrayList<>(Arrays.asList(timSch, katSch)));
+    String eventName = "Hi";
+    String eventName2 = "Hello";
+    Location loc = new Location(true, "school");
+    Location loc2 = new Location(true, "home");
+    int duration = 1500;
+    int duration2 = 2300;
+
+    anytimeModel.scheduleEvent(eventName, loc, duration, listUsers);
+    anytimeModel.scheduleEvent(eventName2, loc2, duration2, listUsers);
+
+    SchedulePlanner curr = anytimeModel.schedules().get(0);
+    assertEquals("Hi", curr.events().get(1).name());
+    assertEquals(DaysOfTheWeek.SUNDAY, curr.events().get(1).time().startDay());
+    assertEquals(DaysOfTheWeek.MONDAY, curr.events().get(1).time().endDay());
+    assertEquals("1200", curr.events().get(1).time().startTime());
+    assertEquals("1300", curr.events().get(1).time().endTime());
+
+    assertEquals("Hello", curr.events().get(2).name());
+    assertEquals(DaysOfTheWeek.MONDAY, curr.events().get(2).time().startDay());
+    assertEquals(DaysOfTheWeek.WEDNESDAY, curr.events().get(2).time().endDay());
+    assertEquals("1300", curr.events().get(2).time().startTime());
+    assertEquals("0320", curr.events().get(2).time().endTime());
+
+    SchedulePlanner curr1 = anytimeModel.schedules().get(1);
+    assertEquals("Hi", curr1.events().get(1).name());
+    assertEquals(DaysOfTheWeek.SUNDAY, curr1.events().get(1).time().startDay());
+    assertEquals(DaysOfTheWeek.MONDAY, curr1.events().get(1).time().endDay());
+    assertEquals("1200", curr1.events().get(1).time().startTime());
+    assertEquals("1300", curr1.events().get(1).time().endTime());
+
+    assertEquals("Hello", curr1.events().get(2).name());
+    assertEquals(DaysOfTheWeek.MONDAY, curr1.events().get(2).time().startDay());
+    assertEquals(DaysOfTheWeek.WEDNESDAY, curr1.events().get(2).time().endDay());
+    assertEquals("1300", curr1.events().get(2).time().startTime());
+    assertEquals("0320", curr1.events().get(2).time().endTime());
+  }
+
+  @Test
+  public void testWorkHoursStrategyAddingOneEventToEmptySchedule() {
+    this.initData();
+    List<User> listUsers = new ArrayList<>();
+    listUsers.add(new User("Kat"));
+    listUsers.add(new User("Tim"));
+    Event sixFlags = new Event("Six Flags", new Time(this.monday, "0900", this.monday, "1300"),
+        new Location(false, "California"), listUsers);
+
+    SchedulePlanner timSch = new SchedulePlanner(new ArrayList<>(List.of(sixFlags)), "Tim");
+    SchedulePlanner katSch = new SchedulePlanner(new ArrayList<>(List.of(sixFlags)), "Kat");
+    PlannerModel workModel = new WorkTimePlannerModel(new ArrayList<>((List.of(timSch, katSch))));
+
+    String eventName = "Hi";
+    String eventName2 = "Hello";
+    Location loc = new Location(true, "school");
+    Location loc2 = new Location(true, "home");
+    int duration = 120;
+    int duration2 = 240;
+
+    workModel.scheduleEvent(eventName, loc, duration, listUsers);
+    workModel.scheduleEvent(eventName2, loc2, duration2, listUsers);
+
+    SchedulePlanner curr = workModel.schedules().get(0);
+    assertEquals("Hi", curr.events().get(1).name());
+    assertEquals(DaysOfTheWeek.MONDAY, curr.events().get(1).time().startDay());
+    assertEquals(DaysOfTheWeek.MONDAY, curr.events().get(1).time().endDay());
+    assertEquals("1300", curr.events().get(1).time().startTime());
+    assertEquals("1500", curr.events().get(1).time().endTime());
+
+    assertEquals("Hello", curr.events().get(2).name());
+    assertEquals(DaysOfTheWeek.TUESDAY, curr.events().get(2).time().startDay());
+    assertEquals(DaysOfTheWeek.TUESDAY, curr.events().get(2).time().endDay());
+    assertEquals("0900", curr.events().get(2).time().startTime());
+    assertEquals("1300", curr.events().get(2).time().endTime());
+
+    SchedulePlanner curr1 = workModel.schedules().get(1);
+    assertEquals("Hi", curr1.events().get(1).name());
+    assertEquals(DaysOfTheWeek.MONDAY, curr1.events().get(1).time().startDay());
+    assertEquals(DaysOfTheWeek.MONDAY, curr1.events().get(1).time().endDay());
+    assertEquals("1300", curr1.events().get(1).time().startTime());
+    assertEquals("1500", curr1.events().get(1).time().endTime());
+
+    assertEquals("Hello", curr1.events().get(2).name());
+    assertEquals(DaysOfTheWeek.TUESDAY, curr1.events().get(2).time().startDay());
+    assertEquals(DaysOfTheWeek.TUESDAY, curr1.events().get(2).time().endDay());
+    assertEquals("0900", curr1.events().get(2).time().startTime());
+    assertEquals("1300", curr1.events().get(2).time().endTime());
+  }
+
 }

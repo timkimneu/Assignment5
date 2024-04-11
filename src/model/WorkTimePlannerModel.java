@@ -1,93 +1,118 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+/**
+ * Represents the work time planner or schedule system that allows for interaction between different
+ * individual's schedules and the adding, modifying, and removing events from schedules within the
+ * system. Adding, modifying, and removing events should add, modify, or remove events according
+ * to the list of users of the specified event and according to the existing users in the planner
+ * system. Throws errors if there are time conflicts between events for any attendee of the
+ * modified event. Also retrieves the full list of schedules currently contained within the
+ * planner system and can also observe the list of events for a specific user if the user exists,
+ * otherwise throws an error.
+ */
 public class WorkTimePlannerModel extends NUPlannerModel {
   private final List<SchedulePlanner> schedules;
-  WorkTimePlannerModel() {
+
+  /**
+   * Planner model that is initialized without a given list of schedules.
+   */
+  public WorkTimePlannerModel() {
     super();
     this.schedules = new ArrayList<>();
   }
 
-  WorkTimePlannerModel(List<SchedulePlanner> schedules) {
-    super();
+  /**
+   * Planner model that is initialized with a given list of schedules.
+   */
+  public WorkTimePlannerModel(List<SchedulePlanner> schedules) {
+    super(schedules);
     this.schedules = schedules;
   }
 
   @Override
   public void scheduleEvent(String name, Location location, int duration, List<User> users) {
+    List<String> daysOfTheWeek = Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday");
     int mins = duration % 60;
     int hours = ((duration - mins) / 60) % 24;
-
-    String endTime = getEndingTime("0859", hours, mins);
-    Time potentialTime = new Time(DaysOfTheWeek.MONDAY, "0859", DaysOfTheWeek.MONDAY, endTime);
-    Event potentialEvent = new Event(name, potentialTime, location, users);
-
-    if (!attemptEvent(potentialEvent)) {
-      for (Schedule sch : this.schedules()) {
-        for (Event e : sch.events()) {
-          String eventEndTime = e.time().endTime();
-          String eventEndTimePlusOne = String.valueOf(Integer.parseInt(eventEndTime) + 1);
-          DaysOfTheWeek eventEndDay = e.time().endDay();
-          Time potTime = new Time(eventEndDay, eventEndTimePlusOne, eventEndDay,
-              getEndingTime(eventEndTimePlusOne, hours, mins));
-          Event potEvent = new Event(name, potTime, location, users);
-          attemptEvent(potEvent);
+    String endTime = null;
+    for (int day = 0; day < 5; day++) {
+      for (int min = 540; min < 1020; min++) {
+        if (duration + min > 1020) {
+          break;
+        }
+        int startMins = min % 60;
+        int startHours = (min - startMins) / 60;
+        String startTime = this.getTimeString(startHours, startMins);
+        Map<String, Integer> map = getEndingTime(startTime, hours, mins);
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+          endTime = entry.getKey();
+        }
+        DaysOfTheWeek startingDay = DaysOfTheWeek.valueOf(daysOfTheWeek.get(day).toUpperCase());
+        Time potentialTime = new Time(startingDay, startTime, startingDay, endTime);
+        Event potentialEvent = new Event(name, potentialTime, location, users);
+        if (attemptEvent(potentialEvent, users)) {
+          return;
         }
       }
     }
+    throw new IllegalArgumentException("Cannot schedule");
   }
 
-  private boolean attemptEvent(Event event) {
-    try {
-      for (Schedule sch : this.schedules()) {
-        sch.events().add(event);
-      }
-      return true;
-    } catch (IllegalArgumentException e) {
-      for (Schedule sch : this.schedules()) {
-        try {
-          sch.removeEvent(event);
-        } catch (IllegalArgumentException ex) {
-          // ignore
+  // converting the time string
+  private String getTimeString(int hours, int mins) {
+    String hrsString = String.format("%02d", hours);
+    String minsString = String.format("%02d", mins);
+    return hrsString + minsString;
+  }
+
+  // determines if event is valid
+  private boolean attemptEvent(Event event, List<User> users) {
+    for (User u : users) {
+      try {
+        for (Schedule sch : this.schedules()) {
+          if (u.name().equals(sch.scheduleID())) {
+            sch.addEvent(event);
+          }
         }
+      } catch (IllegalArgumentException e) {
+        for (Schedule sch : this.schedules()) {
+          try {
+            sch.removeEvent(event);
+          } catch (IllegalArgumentException ex) {
+            // ignore
+          }
+        }
+        return false;
       }
     }
-    return false;
+    return true;
   }
 
-  private String getEndingTime(String start, int hours, int mins) {
+  // returns a map of the string days and integer of the day index of the list
+  private Map<String, Integer> getEndingTime(String start, int hours, int mins) {
     int startTimeInt = Integer.parseInt(start);
-    int startMin = startTimeInt % 60;
-    int startHr = (startTimeInt - startMin) / 60;
+    int startMin = startTimeInt % 100;
+    int startHr = (startTimeInt - startMin) / 100;
+    int days = 0;
 
     int endMin = mins + startMin;
     int endHr = hours + startHr;
-    if (endMin > 59) {
+    while (endMin > 59) {
       endMin -= 60;
       endHr += 1;
     }
-    if (endHr > 17) {
-      throw new IllegalArgumentException("Cannot fit event!");
+    while (endHr > 23) {
+      endHr -= 24;
+      days += 1;
     }
-    return getTimeString(endHr, endMin);
-  }
-
-  private String getTimeString(int hours, int mins) {
-    String hrsString;
-    String minsString;
-    if (hours < 10) {
-      hrsString = "0" + hours;
-    } else {
-      hrsString = String.valueOf(hours);
-    }
-
-    if (mins < 10) {
-      minsString = "0" + mins;
-    } else {
-      minsString = String.valueOf(mins);
-    }
-    return hrsString + minsString;
+    Map<String, Integer> result = new HashMap<>();
+    result.put(getTimeString(endHr, endMin), days);
+    return result;
   }
 }

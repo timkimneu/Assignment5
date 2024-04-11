@@ -78,7 +78,7 @@ public class SchedulePlanner implements Schedule {
     Time e1Time = e1.time();
     Time e2Time = e2.time();
     if (e1Time.anyOverlap(e2Time)) {
-      throw new IllegalStateException("Schedule contains overlapping events!");
+      throw new IllegalStateException("Schedule contains overlapping events!" + e1.time().toString() + e2.time().toString());
     }
   }
 }

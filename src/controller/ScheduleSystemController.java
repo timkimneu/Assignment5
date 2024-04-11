@@ -44,7 +44,7 @@ public class ScheduleSystemController implements ScheduleSystem {
    * schedule, users can also write/create a new XML file to write a new schedule into the system.
    * System also can provide the current list of schedules contained in the system.
    *
-   * @param view
+   * @param view View that the controller will listen to and communicate changes to the model to.
    */
   public ScheduleSystemController(ScheduleSystemView view) {
     this.view = view;
@@ -110,9 +110,6 @@ public class ScheduleSystemController implements ScheduleSystem {
     System.out.println(currSch.events());
     if (!this.model.schedules().contains(currSch)) {
       this.model.schedules().add(currSch);
-//      for (int i = 0; i < model.schedules().size(); i++) {
-//        System.out.println(model.schedules().get(i).events().get(i).name());
-//      }
     }
     view.refresh();
   }
@@ -228,10 +225,4 @@ public class ScheduleSystemController implements ScheduleSystem {
     this.model.scheduleEvent(name, location, duration, users);
     view.refresh();
   }
-
-  @Override
-  public void handleCellClick(int row, int col) {
-
-  }
-
 }

@@ -80,3 +80,33 @@ preloaded users' schedules that read from prof.xml and School Schedule.xml. It a
 was initialized, called schedules1.
 
 Screenshots and jar file is in the main folder (Outside of src)
+
+Changes since HW 6 (changes for part 3):
+New classes/additions: For our third submission of our planner we created the following classes that did not previously
+exist, starting from the controller package to the model package and then to the view package: PlannerMock,
+ScheduleCreator, WorkTimePlannerModel, EventDurationFrame. Starting with the PlannerMock class, this class inside the
+controller package serves the purpose of testing the input a model would receive from our controller by returning
+readable strings of the argument objects to confirm that the correct information has been passed from our controller to
+a hypothetical model. The ScheduleCreator allows for the creation and choice of different PlannerModel classes which
+vary by the strategy each model implements for scheduling event given a duration. There are 2 current implemented
+strategies, being "anytime" and "worktime". "Anytime" allows for new events to be scheduled at any available time on
+the schedule, while "worktime" allows for new events to be schedules only during weekdays and between 9 AM and 5 PM.
+Our WorkTimePlannerModel in the model package represents the PlannerModel that implements the "worktime" strategy in
+contrast to the NUPlannerModel class which implements the "anytime" strategy described above. The WorkTimePlannerModel
+extends (inherits) all of its functionality from the NUPlannerModel class and only overrides the scheduleEvent method
+to implement the "worktime" strategy. The EventDurationFrame in our view package is a JFrame that allows the user to
+communicate with the controller and thus model to create an event with a name, location, list of attendees, and a
+duration to schedule an event at an available time using one of the two strategies detailed above.
+
+Changes to existing classes:
+Major changes since last update include the scheduling functionality where users can create an event without specifying
+an explicit starting/ending day and starting/ending time. We added the method scheduleEvent to the PlannerModel
+interface to implement scheduling in our NUPlannerModel and later the WorkTimePlannerModel. Several private helper
+methods are all added to implement this scheduleEvent method.
+
+Extra Credit:
+The frame is fully resizable. The lines for these can be found in the SchedulePanel class, where the method repaint
+was overridden. Resize changes the dimensions of the boxes according to the dimensions of the entire frame using
+simple algebra to essentially normalize box dimensions to consistently take up a specific percent of the screen.
+
+

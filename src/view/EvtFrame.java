@@ -21,4 +21,5 @@ public interface EvtFrame {
 
   void getUnmodifiedEvent(Event event);
 
+  void setHost(User host);
 }

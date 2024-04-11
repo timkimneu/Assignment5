@@ -1,15 +1,10 @@
 package model;
 
-import org.testng.internal.collections.Pair;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 /**
  * Represents the full planner or schedule system that allows for interaction between different
@@ -34,7 +29,7 @@ public class NUPlannerModel implements PlannerModel {
   /**
    * Planner model that takes in an initial list of schedules and creates
    * a new planner with this list of schedules.
-   * 
+   *
    * @param schedules a list of schedules to be initialized with a new planner model.
    */
   public NUPlannerModel(List<SchedulePlanner> schedules) {
@@ -79,46 +74,37 @@ public class NUPlannerModel implements PlannerModel {
 
   @Override
   public void scheduleEvent(String name, Location location, int duration, List<User> users) {
+    List<String> daysOfTheWeek = Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday",
+        "Thursday", "Friday", "Saturday");
     int mins = duration % 60;
     int hours = ((duration - mins) / 60) % 24;
     int days = (((duration - mins) / 60) - hours) / 24;
     String endTime = null;
     int value = 0;
 
-    Map<String, Integer> map = getEndingTime("0000", hours, mins);
-    for (Map.Entry<String, Integer> entry : map.entrySet()) {
-      endTime = entry.getKey();
-      value = entry.getValue();
-    }
-
-    System.out.println("ENDDDD: " + endTime);
-    System.out.println("VALUEEE: " + value);
-    Time potentialTime = new Time(DaysOfTheWeek.SUNDAY, "0000",
-        getNextDOTW(DaysOfTheWeek.SUNDAY, days + value), endTime);
-    Event potentialEvent = new Event(name, potentialTime, location, users);
-
-    if (!attemptEvent(potentialEvent, users)) {
-      for (Schedule sch : this.schedules()) {
-        for (int i = 0 ; i < sch.events().size(); i++) {
-          String eventEndTime = sch.events().get(i).time().endTime();
-          String eventEndTimePlusOne = String.valueOf(Integer.parseInt(eventEndTime) + 1);
-          DaysOfTheWeek eventEndDay = sch.events().get(i).time().endDay();
-          Map<String, Integer> map1 = getEndingTime(eventEndTimePlusOne, hours, mins);
-          for (Map.Entry<String, Integer> entry : map1.entrySet()) {
-            endTime = entry.getKey();
-            value = entry.getValue();
-          }
-          Time potTime = new Time(eventEndDay, eventEndTimePlusOne, getNextDOTW(eventEndDay, days + value), endTime);
-          Event potEvent = new Event(name, potTime, location, users);
-          if (attemptEvent(potEvent, users)) {
-            System.out.println("!!PLp");
-            return;
-          }
+    for (int day = 0; day < 7; day++) {
+      for (int min = 0; min < 1440; min++) {
+        int startMins = min % 60;
+        int startHours = (min - startMins) / 60;
+        String startTime = this.getTimeString(startHours, startMins);
+        Map<String, Integer> map = getEndingTime(startTime, hours, mins);
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+          endTime = entry.getKey();
+          value = entry.getValue();
+        }
+        DaysOfTheWeek startingDay = DaysOfTheWeek.valueOf(daysOfTheWeek.get(day).toUpperCase());
+        Time potentialTime = new Time(startingDay, startTime,
+            getNextDOTW(startingDay, days + value), endTime);
+        Event potentialEvent = new Event(name, potentialTime, location, users);
+        if (attemptEvent(potentialEvent, users)) {
+          return;
         }
       }
     }
+    throw new IllegalArgumentException("Cannot schedule");
   }
 
+  // helper method to attempt to add an event and check for exceptions
   private boolean attemptEvent(Event event, List<User> users) {
     for (User u : users) {
       try {
@@ -141,6 +127,7 @@ public class NUPlannerModel implements PlannerModel {
     return true;
   }
 
+  // returns a map of the string days and integer of the day index of the list
   private Map<String, Integer> getEndingTime(String start, int hours, int mins) {
     int startTimeInt = Integer.parseInt(start);
     int startMin = startTimeInt % 100;
@@ -155,13 +142,14 @@ public class NUPlannerModel implements PlannerModel {
     }
     while (endHr > 23) {
       endHr -= 24;
-      days = 1;
+      days += 1;
     }
     Map<String, Integer> result = new HashMap<>();
     result.put(getTimeString(endHr, endMin), days);
     return result;
   }
 
+  // retrieves the next day of the week if an incrememt is necessary
   private DaysOfTheWeek getNextDOTW(DaysOfTheWeek start, int days) {
     List<String> daysOfTheWeek = Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday",
         "Thursday", "Friday", "Saturday");
@@ -176,20 +164,10 @@ public class NUPlannerModel implements PlannerModel {
     return day;
   }
 
+  // retrieves the time string in hours and minutes
   private String getTimeString(int hours, int mins) {
-    String hrsString;
-    String minsString;
-    if (hours < 10) {
-      hrsString = "0" + hours;
-    } else {
-      hrsString = String.valueOf(hours);
-    }
-
-    if (mins < 10) {
-      minsString = "0" + mins;
-    } else {
-      minsString = String.valueOf(mins);
-    }
+    String hrsString = String.format("%02d", hours);
+    String minsString = String.format("%02d", mins);
     return hrsString + minsString;
   }
 
@@ -229,3 +207,4 @@ public class NUPlannerModel implements PlannerModel {
   }
 
 }
+

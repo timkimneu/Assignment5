@@ -25,6 +25,11 @@ public class User {
     return this.name;
   }
 
+  /**
+   * Overwrites the equals method for the User class
+   *
+   * @param other that represents the other object
+   */
   @Override
   public boolean equals(Object other) {
     if (other == this) {
@@ -37,6 +42,9 @@ public class User {
     return this.name.equals(user.name);
   }
 
+  /**
+   * Overwrites the hashCode method for the User class
+   */
   @Override
   public int hashCode() {
     return Objects.hashCode(this.name);
