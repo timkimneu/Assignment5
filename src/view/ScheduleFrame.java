@@ -1,8 +1,8 @@
 package view;
 
 import controller.ScheduleSystem;
-import model.ReadOnlyPlannerModel;
-import model.User;
+import model.IReadOnlyPlannerModel;
+import model.UserImpl;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -26,7 +26,7 @@ import java.util.List;
  * different users to view the appropriate schedule pertaining to that user.
  */
 public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFrame {
-  private final ReadOnlyPlannerModel model;
+  private final IReadOnlyPlannerModel model;
   private final SchedulePanel panel;
   private EventFrame eventFrame;
   private EventDurationFrame durationFrame;
@@ -45,7 +45,7 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
    *
    * @param model Model to observe info from to display in view (GUI).
    */
-  public ScheduleFrame(ReadOnlyPlannerModel model) {
+  public ScheduleFrame(IReadOnlyPlannerModel model) {
     super();
     this.model = model;
     this.eventFrame = new EventFrame(model);
@@ -100,7 +100,7 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
       if (e.getSource() instanceof JComboBox) {
         JComboBox<String> user = (JComboBox<String>) e.getSource();
         String userStr = (String) user.getSelectedItem();
-        eventFrame.addSelectedUser(new User(userStr));
+        eventFrame.addSelectedUser(new UserImpl(userStr));
         panel.drawDates(userStr);
       }
     }

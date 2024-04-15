@@ -36,7 +36,7 @@ public class WorkTimePlannerModel extends NUPlannerModel {
   }
 
   @Override
-  public void scheduleEvent(String name, Location location, int duration, List<User> users) {
+  public void scheduleEvent(String name, LocationImpl location, int duration, List<UserImpl> users) {
     List<String> daysOfTheWeek = Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday",
             "Friday");
     int mins = duration % 60;
@@ -55,8 +55,8 @@ public class WorkTimePlannerModel extends NUPlannerModel {
           endTime = entry.getKey();
         }
         DaysOfTheWeek startingDay = DaysOfTheWeek.valueOf(daysOfTheWeek.get(day).toUpperCase());
-        Time potentialTime = new Time(startingDay, startTime, startingDay, endTime);
-        Event potentialEvent = new Event(name, potentialTime, location, users);
+        TimeImpl potentialTime = new TimeImpl(startingDay, startTime, startingDay, endTime);
+        EventImpl potentialEvent = new EventImpl(name, potentialTime, location, users);
         if (attemptEvent(potentialEvent, users)) {
           return;
         }
@@ -73,16 +73,16 @@ public class WorkTimePlannerModel extends NUPlannerModel {
   }
 
   // determines if event is valid
-  private boolean attemptEvent(Event event, List<User> users) {
-    for (User u : users) {
+  private boolean attemptEvent(EventImpl event, List<UserImpl> users) {
+    for (UserImpl u : users) {
       try {
-        for (Schedule sch : this.schedules()) {
+        for (ISchedule sch : this.schedules()) {
           if (u.name().equals(sch.scheduleID())) {
             sch.addEvent(event);
           }
         }
       } catch (IllegalArgumentException e) {
-        for (Schedule sch : this.schedules()) {
+        for (ISchedule sch : this.schedules()) {
           try {
             sch.removeEvent(event);
           } catch (IllegalArgumentException ex) {

@@ -1,10 +1,10 @@
 package controller;
 
-import model.Event;
-import model.Location;
-import model.PlannerModel;
+import model.EventImpl;
+import model.LocationImpl;
+import model.IPlannerModel;
 import model.SchedulePlanner;
-import model.User;
+import model.UserImpl;
 
 import java.util.List;
 
@@ -47,14 +47,14 @@ public interface ScheduleSystem {
    *
    * @param model Model to be initialized in the controller and displayed in the view.
    */
-  void launch(PlannerModel model);
+  void launch(IPlannerModel model);
 
   /**
    * Listener for when a user attempts to create an event in the view.
    *
    * @param e Event to be added and passed to be handled in the model.
    */
-  void addEvent(Event e);
+  void addEvent(EventImpl e);
 
   /**
    * Listener for when a user attempts to modify an event in the view.
@@ -63,7 +63,7 @@ public interface ScheduleSystem {
    * @param newEvent Event to replace older event which is passed into the model.
    * @param user     User that will be modifying the event for which is passed into the model.
    */
-  void modifyEvent(Event oldEvent, Event newEvent, User user);
+  void modifyEvent(EventImpl oldEvent, EventImpl newEvent, UserImpl user);
 
   /**
    * Listener for when a user attempts to remove an event in the view.
@@ -71,7 +71,7 @@ public interface ScheduleSystem {
    * @param e    Event to be removed which is passed into the model.
    * @param user User that designates the schedule that the event is being removed from.
    */
-  void removeEvent(Event e, User user);
+  void removeEvent(EventImpl e, UserImpl user);
 
   /**
    * Listener for when a user attempts to automatically schedule an event in the view.
@@ -81,5 +81,5 @@ public interface ScheduleSystem {
    * @param duration Integer duration to be passed into the model.
    * @param users    List of users to be passed into the model.
    */
-  void scheduleEvent(String name, Location location, int duration, List<User> users);
+  void scheduleEvent(String name, LocationImpl location, int duration, List<UserImpl> users);
 }

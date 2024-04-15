@@ -1,13 +1,13 @@
 package controller;
 
 import model.DaysOfTheWeek;
-import model.Event;
-import model.Location;
+import model.EventImpl;
+import model.LocationImpl;
 import model.NUPlannerModel;
-import model.PlannerModel;
+import model.IPlannerModel;
 import model.SchedulePlanner;
-import model.Time;
-import model.User;
+import model.TimeImpl;
+import model.UserImpl;
 import model.WorkTimePlannerModel;
 
 import org.junit.Assert;
@@ -44,40 +44,40 @@ public class ScheduleControllerTests {
   DaysOfTheWeek thursday;
   DaysOfTheWeek friday;
   DaysOfTheWeek saturday;
-  Time time1;
-  Time time2;
-  Time time3;
-  Time time4;
-  Time time5;
-  Location loc1;
-  Location loc2;
-  Location loc3;
-  Location loc4;
-  Location loc5;
-  User user1;
-  User user2;
-  User user3;
-  User classmate;
-  User friend;
-  User bestFriend;
-  List<User> users1;
-  List<User> users2;
-  List<User> users3;
-  Event church;
-  Event school;
-  Event vacation;
-  Event mondayAfternoonJog;
-  Event wednesdayDinner;
-  List<Event> mtEvents;
-  List<Event> events1;
-  List<Event> events2;
+  TimeImpl time1;
+  TimeImpl time2;
+  TimeImpl time3;
+  TimeImpl time4;
+  TimeImpl time5;
+  LocationImpl loc1;
+  LocationImpl loc2;
+  LocationImpl loc3;
+  LocationImpl loc4;
+  LocationImpl loc5;
+  UserImpl user1;
+  UserImpl user2;
+  UserImpl user3;
+  UserImpl classmate;
+  UserImpl friend;
+  UserImpl bestFriend;
+  List<UserImpl> users1;
+  List<UserImpl> users2;
+  List<UserImpl> users3;
+  EventImpl church;
+  EventImpl school;
+  EventImpl vacation;
+  EventImpl mondayAfternoonJog;
+  EventImpl wednesdayDinner;
+  List<EventImpl> mtEvents;
+  List<EventImpl> events1;
+  List<EventImpl> events2;
   SchedulePlanner sch1;
   SchedulePlanner sch2;
   SchedulePlanner sch3;
   SchedulePlanner sch4;
   ScheduleSystemController schSysMod;
   ScheduleSystemController ssc;
-  PlannerModel model1;
+  IPlannerModel model1;
   Appendable strOut;
 
   private void initData() {
@@ -88,31 +88,31 @@ public class ScheduleControllerTests {
     this.thursday = DaysOfTheWeek.THURSDAY;
     this.friday = DaysOfTheWeek.FRIDAY;
     this.saturday = DaysOfTheWeek.SATURDAY;
-    this.time1 = new Time(this.sunday, "1000", this.sunday, "1300");
-    this.time2 = new Time(this.monday, "0800", this.friday, "1500");
-    this.time3 = new Time(this.thursday, "1700", this.monday, "0900");
-    this.time4 = new Time(this.monday, "1200", this.monday, "1245");
-    this.time5 = new Time(this.wednesday, "1800", this.wednesday, "1830");
-    this.loc1 = new Location(false, "Mulberry Street");
-    this.loc2 = new Location(false, "Northeastern University");
-    this.loc3 = new Location(false, "Cancun Resort");
-    this.loc4 = new Location(false, "Outside");
-    this.loc5 = new Location(false, "Home");
-    this.user1 = new User("Me");
-    this.user2 = new User("Mom");
-    this.user3 = new User("Dad");
-    this.classmate = new User("Classmate");
-    this.friend = new User("Friend");
-    this.bestFriend = new User("Best Friend");
+    this.time1 = new TimeImpl(this.sunday, "1000", this.sunday, "1300");
+    this.time2 = new TimeImpl(this.monday, "0800", this.friday, "1500");
+    this.time3 = new TimeImpl(this.thursday, "1700", this.monday, "0900");
+    this.time4 = new TimeImpl(this.monday, "1200", this.monday, "1245");
+    this.time5 = new TimeImpl(this.wednesday, "1800", this.wednesday, "1830");
+    this.loc1 = new LocationImpl(false, "Mulberry Street");
+    this.loc2 = new LocationImpl(false, "Northeastern University");
+    this.loc3 = new LocationImpl(false, "Cancun Resort");
+    this.loc4 = new LocationImpl(false, "Outside");
+    this.loc5 = new LocationImpl(false, "Home");
+    this.user1 = new UserImpl("Me");
+    this.user2 = new UserImpl("Mom");
+    this.user3 = new UserImpl("Dad");
+    this.classmate = new UserImpl("Classmate");
+    this.friend = new UserImpl("Friend");
+    this.bestFriend = new UserImpl("Best Friend");
     this.users1 = new ArrayList<>(Arrays.asList(this.user1, this.user2, this.user3));
     this.users2 = new ArrayList<>(Arrays.asList(this.user1, this.classmate, this.bestFriend));
     this.users3 = new ArrayList<>(Arrays.asList(this.user1, this.friend, this.bestFriend));
-    this.church = new Event("Church", this.time1, this.loc1, this.users1);
-    this.school = new Event("Classes", this.time2, this.loc2, this.users2);
-    this.vacation = new Event("Cancun Trip", this.time3, this.loc3, this.users3);
-    this.mondayAfternoonJog = new Event("Afternoon Jog", this.time4, this.loc4,
+    this.church = new EventImpl("Church", this.time1, this.loc1, this.users1);
+    this.school = new EventImpl("Classes", this.time2, this.loc2, this.users2);
+    this.vacation = new EventImpl("Cancun Trip", this.time3, this.loc3, this.users3);
+    this.mondayAfternoonJog = new EventImpl("Afternoon Jog", this.time4, this.loc4,
             new ArrayList<>(Collections.singletonList(this.user1)));
-    this.wednesdayDinner = new Event("Wednesday Dinner", this.time5, this.loc5,
+    this.wednesdayDinner = new EventImpl("Wednesday Dinner", this.time5, this.loc5,
             new ArrayList<>(Collections.singletonList(this.user1)));
     this.mtEvents = new ArrayList<>();
     this.events1 = new ArrayList<>(Arrays.asList(this.church, this.school));
@@ -532,7 +532,7 @@ public class ScheduleControllerTests {
 
   private void initAppendable() {
     this.strOut = new StringBuilder();
-    PlannerModel mkModel = new PlannerMock(strOut);
+    IPlannerModel mkModel = new PlannerMock(strOut);
     ScheduleSystemView view = new ScheduleFrame(mkModel);
     ssc = new ScheduleSystemController(view);
     ssc.launch(mkModel);
@@ -562,7 +562,7 @@ public class ScheduleControllerTests {
   public void testMockScheduleEvent() {
     this.initData();
     this.initAppendable();
-    ssc.scheduleEvent("Evt Name", new Location(true, "home"), 1234, this.users1);
+    ssc.scheduleEvent("Evt Name", new LocationImpl(true, "home"), 1234, this.users1);
     Assert.assertEquals("name = Evt Name, online = true, place = home, duration = 1234",
             strOut.toString());
   }
@@ -582,16 +582,16 @@ public class ScheduleControllerTests {
   @Test
   public void testAnytimeStrategyAddingOneEventToEmptySchedule() {
     this.initData();
-    List<User> listUsers = new ArrayList<>();
-    listUsers.add(new User("Kat"));
-    listUsers.add(new User("Tim"));
-    Event sixFlags = new Event("Six Flags", new Time(this.sunday, "0800", this.sunday, "1200"),
-            new Location(false, "California"), listUsers);
+    List<UserImpl> listUsers = new ArrayList<>();
+    listUsers.add(new UserImpl("Kat"));
+    listUsers.add(new UserImpl("Tim"));
+    EventImpl sixFlags = new EventImpl("Six Flags", new TimeImpl(this.sunday, "0800", this.sunday, "1200"),
+            new LocationImpl(false, "California"), listUsers);
 
     SchedulePlanner timSch = new SchedulePlanner(new ArrayList<>(Arrays.asList(sixFlags)), "Tim");
-    PlannerModel anytimeModel = new NUPlannerModel(new ArrayList<>(Arrays.asList(timSch)));
+    IPlannerModel anytimeModel = new NUPlannerModel(new ArrayList<>(Arrays.asList(timSch)));
     String eventName = "Hi";
-    Location loc = new Location(true, "school");
+    LocationImpl loc = new LocationImpl(true, "school");
     int duration = 1500;
 
     anytimeModel.scheduleEvent(eventName, loc, duration, listUsers);
@@ -607,19 +607,19 @@ public class ScheduleControllerTests {
   @Test
   public void testAnytimeStrategyAddingOneEventToMoreEventsSchedule() {
     this.initData();
-    List<User> listUsers = new ArrayList<>();
-    listUsers.add(new User("Kat"));
-    listUsers.add(new User("Tim"));
-    Event sixFlags = new Event("Six Flags", new Time(this.sunday, "0800", this.sunday, "1200"),
-            new Location(false, "California"), listUsers);
+    List<UserImpl> listUsers = new ArrayList<>();
+    listUsers.add(new UserImpl("Kat"));
+    listUsers.add(new UserImpl("Tim"));
+    EventImpl sixFlags = new EventImpl("Six Flags", new TimeImpl(this.sunday, "0800", this.sunday, "1200"),
+            new LocationImpl(false, "California"), listUsers);
 
     SchedulePlanner timSch = new SchedulePlanner(new ArrayList<>(Arrays.asList(sixFlags)), "Tim");
     SchedulePlanner katSch = new SchedulePlanner(new ArrayList<>(Arrays.asList(sixFlags)), "Kat");
-    PlannerModel anytimeModel = new NUPlannerModel(new ArrayList<>(Arrays.asList(timSch, katSch)));
+    IPlannerModel anytimeModel = new NUPlannerModel(new ArrayList<>(Arrays.asList(timSch, katSch)));
     String eventName = "Hi";
     String eventName2 = "Hello";
-    Location loc = new Location(true, "school");
-    Location loc2 = new Location(true, "home");
+    LocationImpl loc = new LocationImpl(true, "school");
+    LocationImpl loc2 = new LocationImpl(true, "home");
     int duration = 1500;
     int duration2 = 2300;
 
@@ -656,20 +656,20 @@ public class ScheduleControllerTests {
   @Test
   public void testWorkHoursStrategyAddingOneEventToEmptySchedule() {
     this.initData();
-    List<User> listUsers = new ArrayList<>();
-    listUsers.add(new User("Kat"));
-    listUsers.add(new User("Tim"));
-    Event sixFlags = new Event("Six Flags", new Time(this.monday, "0900", this.monday, "1300"),
-            new Location(false, "California"), listUsers);
+    List<UserImpl> listUsers = new ArrayList<>();
+    listUsers.add(new UserImpl("Kat"));
+    listUsers.add(new UserImpl("Tim"));
+    EventImpl sixFlags = new EventImpl("Six Flags", new TimeImpl(this.monday, "0900", this.monday, "1300"),
+            new LocationImpl(false, "California"), listUsers);
 
     SchedulePlanner timSch = new SchedulePlanner(new ArrayList<>(List.of(sixFlags)), "Tim");
     SchedulePlanner katSch = new SchedulePlanner(new ArrayList<>(List.of(sixFlags)), "Kat");
-    PlannerModel workModel = new WorkTimePlannerModel(new ArrayList<>((List.of(timSch, katSch))));
+    IPlannerModel workModel = new WorkTimePlannerModel(new ArrayList<>((List.of(timSch, katSch))));
 
     String eventName = "Hi";
     String eventName2 = "Hello";
-    Location loc = new Location(true, "school");
-    Location loc2 = new Location(true, "home");
+    LocationImpl loc = new LocationImpl(true, "school");
+    LocationImpl loc2 = new LocationImpl(true, "home");
     int duration = 120;
     int duration2 = 240;
 

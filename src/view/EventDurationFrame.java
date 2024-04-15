@@ -1,10 +1,10 @@
 package view;
 
 import controller.ScheduleSystem;
-import model.Event;
-import model.Location;
-import model.ReadOnlyPlannerModel;
-import model.User;
+import model.EventImpl;
+import model.LocationImpl;
+import model.IReadOnlyPlannerModel;
+import model.UserImpl;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -30,7 +30,7 @@ import java.util.Objects;
  * ending day, ending time, and a list of users.
  */
 public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSystemView {
-  private final ReadOnlyPlannerModel model;
+  private final IReadOnlyPlannerModel model;
   private final JPanel mainPanel;
   private JTextField eventText;
   private JTextField durTime;
@@ -52,7 +52,7 @@ public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSyst
    * @param model Model to get to observe from to appropriately autofill boxes with.
    */
 
-  public EventDurationFrame(ReadOnlyPlannerModel model) {
+  public EventDurationFrame(IReadOnlyPlannerModel model) {
     this.model = model;
 
     usersTag = new JPanel();
@@ -159,10 +159,10 @@ public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSyst
     schEvent.addActionListener(e -> {
       try {
         String eventName = eventText.getText();
-        Location loc = new Location(getOnlineBool(Objects.requireNonNull(
+        LocationImpl loc = new LocationImpl(getOnlineBool(Objects.requireNonNull(
                 onlineBox.getSelectedItem())), place.getText());
         int duration = Integer.parseInt(durTime.getText());
-        List<User> listUsers = getUsers(usersBox.getSelectedValuesList());
+        List<UserImpl> listUsers = getUsers(usersBox.getSelectedValuesList());
         listener.scheduleEvent(eventName, loc, duration, listUsers);
         this.hidePanel();
       } catch (IllegalArgumentException ex) {
@@ -172,10 +172,10 @@ public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSyst
     );
   }
 
-  private List<User> getUsers(List<String> strUsers) {
-    List<User> newUsers = new ArrayList<>();
+  private List<UserImpl> getUsers(List<String> strUsers) {
+    List<UserImpl> newUsers = new ArrayList<>();
     for (String s : strUsers) {
-      User newUser = new User(s);
+      UserImpl newUser = new UserImpl(s);
       newUsers.add(newUser);
     }
     return newUsers;
@@ -205,17 +205,17 @@ public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSyst
   }
 
   @Override
-  public void addDefaultEvent(Event event) {
+  public void addDefaultEvent(EventImpl event) {
     this.refresh();
   }
 
   @Override
-  public void addSelectedUser(User user) {
+  public void addSelectedUser(UserImpl user) {
     //
   }
 
   @Override
-  public void getUnmodifiedEvent(Event event) {
+  public void getUnmodifiedEvent(EventImpl event) {
     //
   }
 }

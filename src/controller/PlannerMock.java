@@ -1,10 +1,10 @@
 package controller;
 
-import model.Event;
-import model.Location;
-import model.PlannerModel;
+import model.EventImpl;
+import model.LocationImpl;
+import model.IPlannerModel;
 import model.SchedulePlanner;
-import model.User;
+import model.UserImpl;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.List;
  * to the user through methods that determine the state of items in the
  * program.
  */
-public class PlannerMock implements PlannerModel {
+public class PlannerMock implements IPlannerModel {
   private final Appendable log;
 
   /**
@@ -30,7 +30,7 @@ public class PlannerMock implements PlannerModel {
   }
 
   @Override
-  public void addEvent(Event event) {
+  public void addEvent(EventImpl event) {
     try {
       this.log.append(String.format("name = %s, startDay = %s, endDay = %s, startTime = %s, " +
                       "endTime = %s, online = %s, place = %s", event.name(),
@@ -43,7 +43,7 @@ public class PlannerMock implements PlannerModel {
   }
 
   @Override
-  public void scheduleEvent(String name, Location location, int duration, List<User> users) {
+  public void scheduleEvent(String name, LocationImpl location, int duration, List<UserImpl> users) {
     try {
       this.log.append(String.format("name = %s, online = %s, place = %s, duration = %d",
               name, getOnlineBool(location.online()), location.place(), duration));
@@ -59,7 +59,7 @@ public class PlannerMock implements PlannerModel {
   }
 
   @Override
-  public void modifyEvent(Event event, Event newEvent, User user) {
+  public void modifyEvent(EventImpl event, EventImpl newEvent, UserImpl user) {
     try {
       // should not ever run, Controller calls remove then add for its modifyEvent method
       this.log.append(String.format("oldName = %s, oldStartDay = %s, oldEndDay = %s, " +
@@ -79,7 +79,7 @@ public class PlannerMock implements PlannerModel {
   }
 
   @Override
-  public void removeEvent(Event event, User user) {
+  public void removeEvent(EventImpl event, UserImpl user) {
     try {
       this.log.append(String.format("name = %s, startDay = %s, endDay = %s, startTime = %s, " +
                       "endTime = %s, online = %s, place = %s, user = %s", event.name(),
@@ -97,7 +97,7 @@ public class PlannerMock implements PlannerModel {
   }
 
   @Override
-  public List<Event> events(String name) {
+  public List<EventImpl> events(String name) {
     return new ArrayList<>();
   }
 

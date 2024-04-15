@@ -2,10 +2,10 @@ package view;
 
 import controller.ScheduleSystem;
 import model.DaysOfTheWeek;
-import model.Event;
-import model.ReadOnlyPlannerModel;
+import model.EventImpl;
+import model.IReadOnlyPlannerModel;
 import model.SchedulePlanner;
-import model.Time;
+import model.TimeImpl;
 
 import javax.swing.JPanel;
 
@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public class SchedulePanel extends JPanel implements SchPanel {
 
-  private final ReadOnlyPlannerModel model;
+  private final IReadOnlyPlannerModel model;
 
   private boolean userSelected;
 
@@ -42,7 +42,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
 
   private EventFrame eventFrame;
 
-  private final Map<ArrayList<Double>, Event> eventCoords;
+  private final Map<ArrayList<Double>, EventImpl> eventCoords;
 
 
   /**
@@ -52,7 +52,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
    *
    * @param model takes in a ReadOnlyPlannerModel to have access to a user's schedule.
    */
-  public SchedulePanel(ReadOnlyPlannerModel model, EventFrame eventFrame) {
+  public SchedulePanel(IReadOnlyPlannerModel model, EventFrame eventFrame) {
     super();
     this.model = model;
     this.eventFrame = eventFrame;
@@ -96,10 +96,10 @@ public class SchedulePanel extends JPanel implements SchPanel {
     for (int sch = 0; sch < listSch.size(); sch++) {
       SchedulePlanner currSch = listSch.get(sch);
       if (currSch.scheduleID() == this.id) {
-        List<model.Event> listEvents = currSch.events();
+        List<EventImpl> listEvents = currSch.events();
         for (int event = 0; event < listEvents.size(); event++) {
-          Event currEvent = listEvents.get(event);
-          Time currTime = currEvent.time();
+          EventImpl currEvent = listEvents.get(event);
+          TimeImpl currTime = currEvent.time();
           fillSquares(g2d, currTime.startTime(), currTime.endTime(), currTime.startDay(),
                   currTime.endDay(), currEvent);
         }
@@ -109,7 +109,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
 
   // searches through the start days and calls helper methods in order
   private void fillSquares(Graphics2D g2d, String startTime, String endTime,
-                           DaysOfTheWeek startDay, DaysOfTheWeek endDay, Event event) {
+                           DaysOfTheWeek startDay, DaysOfTheWeek endDay, EventImpl event) {
     g2d.setColor(Color.pink);
     switch (startDay) {
       case SUNDAY:
@@ -139,7 +139,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
   }
 
   private void fillRectSameDay(Graphics2D g2d, int col, String startTime, String endTime,
-                               Event event) {
+                               EventImpl event) {
     int startHour = Integer.parseInt(startTime) / 100;
     int startMin = Integer.parseInt(startTime) % 100;
     double mult = startHour + (startMin / 60.0);
@@ -162,7 +162,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
   }
 
   private void fillRemainingDays(Graphics2D g2d, int col, String startTime, String endTime,
-                                 DaysOfTheWeek startDay, DaysOfTheWeek endDay, Event event) {
+                                 DaysOfTheWeek startDay, DaysOfTheWeek endDay, EventImpl event) {
     if (startDay == endDay) {
       fillRectSameDay(g2d, col, startTime, endTime, event);
       return;
@@ -234,7 +234,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
       public void mouseClicked(MouseEvent e) {
         int row = e.getX();
         int col = e.getY();
-        for (Map.Entry<ArrayList<Double>, Event> entry : eventCoords.entrySet()) {
+        for (Map.Entry<ArrayList<Double>, EventImpl> entry : eventCoords.entrySet()) {
           ArrayList<Double> value = entry.getKey();
           if (row >= value.get(0) && row <= value.get(1)
                   && col >= value.get(2) && col <= value.get(3)) {

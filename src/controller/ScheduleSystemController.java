@@ -1,12 +1,12 @@
 package controller;
 
 import model.DaysOfTheWeek;
-import model.Event;
-import model.Location;
-import model.PlannerModel;
+import model.EventImpl;
+import model.LocationImpl;
+import model.IPlannerModel;
 import model.SchedulePlanner;
-import model.Time;
-import model.User;
+import model.TimeImpl;
+import model.UserImpl;
 import view.ScheduleSystemView;
 
 import org.w3c.dom.Document;
@@ -34,7 +34,7 @@ import java.util.List;
  * provide the current list of schedules contained in the system.
  */
 public class ScheduleSystemController implements ScheduleSystem {
-  private PlannerModel model;
+  private IPlannerModel model;
   private final ScheduleSystemView view;
 
   /**
@@ -51,7 +51,7 @@ public class ScheduleSystemController implements ScheduleSystem {
   }
 
   @Override
-  public void launch(PlannerModel model) {
+  public void launch(IPlannerModel model) {
     this.model = model;
     this.view.addListener(this);
     this.view.makeVisible();
@@ -60,7 +60,7 @@ public class ScheduleSystemController implements ScheduleSystem {
   // read XML file
   @Override
   public void readXML(String filePath) {
-    List<Event> listOfEvents = new ArrayList<>();
+    List<EventImpl> listOfEvents = new ArrayList<>();
     String id = null;
     Document doc = null;
     try {
@@ -84,26 +84,26 @@ public class ScheduleSystemController implements ScheduleSystem {
       Node start = doc.getElementsByTagName("start").item(eventIndx);
       Node endDay = doc.getElementsByTagName("end-day").item(eventIndx);
       Node end = doc.getElementsByTagName("end").item(eventIndx);
-      Time time = new Time(DaysOfTheWeek.valueOf(startDay.getTextContent().toUpperCase()),
+      TimeImpl time = new TimeImpl(DaysOfTheWeek.valueOf(startDay.getTextContent().toUpperCase()),
               start.getTextContent(), DaysOfTheWeek.valueOf(endDay.getTextContent().toUpperCase()),
               end.getTextContent());
 
       Node online = doc.getElementsByTagName("online").item(eventIndx);
       Node place = doc.getElementsByTagName("place").item(eventIndx);
-      Location loc = new Location(Boolean.parseBoolean(online.getTextContent()),
+      LocationImpl loc = new LocationImpl(Boolean.parseBoolean(online.getTextContent()),
               place.getTextContent());
 
-      List<User> listUsers = new ArrayList<>();
+      List<UserImpl> listUsers = new ArrayList<>();
       Node users = doc.getElementsByTagName("users").item(eventIndx);
       NodeList indUsers = users.getChildNodes();
       for (int user = 0; user < indUsers.getLength(); user++) {
         Node currNode = indUsers.item(user);
         if (currNode.getNodeName().equals("uid")) {
-          User currUser = new User(currNode.getTextContent());
+          UserImpl currUser = new UserImpl(currNode.getTextContent());
           listUsers.add(currUser);
         }
       }
-      Event currEvent = new Event(name.getTextContent(), time, loc, listUsers);
+      EventImpl currEvent = new EventImpl(name.getTextContent(), time, loc, listUsers);
       listOfEvents.add(currEvent);
     }
     SchedulePlanner currSch = new SchedulePlanner(listOfEvents, id);
@@ -122,7 +122,7 @@ public class ScheduleSystemController implements ScheduleSystem {
         Writer file = new FileWriter(beginPath + "src/" + sch.scheduleID() + ".xml");
         file.write("<?xml version=\"1.0\"?>\n");
         file.write("<schedule id=\"" + sch.scheduleID() + "\">\n");
-        for (Event e : sch.events()) {
+        for (EventImpl e : sch.events()) {
           this.writeEvent(file, e);
         }
         file.write("</schedule>");
@@ -134,7 +134,7 @@ public class ScheduleSystemController implements ScheduleSystem {
   }
 
   // writes an event to the XML file
-  private void writeEvent(Writer file, Event e) {
+  private void writeEvent(Writer file, EventImpl e) {
     try {
       file.write("\t<event>\n");
       file.write("\t\t<name>\"" + e.name() + "\"</name>\n");
@@ -148,7 +148,7 @@ public class ScheduleSystemController implements ScheduleSystem {
   }
 
   // writes the time to the XML file
-  private void writeTime(Writer file, Time t) {
+  private void writeTime(Writer file, TimeImpl t) {
     try {
       file.write("\t\t<time>\n");
       file.write("\t\t\t<start-day>" + t.startDay().observeDay() + "</start-day>\n");
@@ -162,7 +162,7 @@ public class ScheduleSystemController implements ScheduleSystem {
   }
 
   // writes the location to the XML file
-  private void writeLocation(Writer file, Location loc) {
+  private void writeLocation(Writer file, LocationImpl loc) {
     String locOnlineStr;
     if (loc.online()) {
       locOnlineStr = "true";
@@ -180,10 +180,10 @@ public class ScheduleSystemController implements ScheduleSystem {
   }
 
   // writes the users to the XML file
-  private void writeUsers(Writer file, List<User> users) {
+  private void writeUsers(Writer file, List<UserImpl> users) {
     try {
       file.write("\t\t<users>\n");
-      for (User u : users) {
+      for (UserImpl u : users) {
         file.write("\t\t\t<uid>\"" + u.name() + "\"</uid>\n");
       }
       file.write("\t\t</users>\n");
@@ -198,13 +198,13 @@ public class ScheduleSystemController implements ScheduleSystem {
   }
 
   @Override
-  public void addEvent(Event e) {
+  public void addEvent(EventImpl e) {
     this.model.addEvent(e);
     view.refresh();
   }
 
   @Override
-  public void modifyEvent(Event oldEvent, Event newEvent, User user) {
+  public void modifyEvent(EventImpl oldEvent, EventImpl newEvent, UserImpl user) {
     if (oldEvent.equals(newEvent)) {
       throw new IllegalArgumentException("Cannot replace old event with same event!");
     }
@@ -214,13 +214,13 @@ public class ScheduleSystemController implements ScheduleSystem {
   }
 
   @Override
-  public void removeEvent(Event e, User user) {
+  public void removeEvent(EventImpl e, UserImpl user) {
     this.model.removeEvent(e, user);
     view.refresh();
   }
 
   @Override
-  public void scheduleEvent(String name, Location location, int duration, List<User> users) {
+  public void scheduleEvent(String name, LocationImpl location, int duration, List<UserImpl> users) {
     this.model.scheduleEvent(name, location, duration, users);
     view.refresh();
   }

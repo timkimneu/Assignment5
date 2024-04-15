@@ -23,37 +23,37 @@ public class ScheduleModelTests {
   DaysOfTheWeek thursday;
   DaysOfTheWeek friday;
   DaysOfTheWeek saturday;
-  Time invalidTime;
-  Time time1;
-  Time time2;
-  Time time3;
-  Time time4;
-  Time time5;
-  Location loc1;
-  Location loc2;
-  Location loc3;
-  Location loc4;
-  Location loc5;
-  Location loc6;
-  User newUser;
-  User user1;
-  User user2;
-  User user3;
-  User classmate;
-  User friend;
-  User bestFriend;
-  User dinnerDude;
-  List<User> users1;
-  List<User> users2;
-  List<User> users3;
-  Event church;
-  Event school;
-  Event vacation;
-  Event mondayAfternoonJog;
-  Event wednesdayDinner;
-  List<Event> mtEvents;
-  List<Event> events1;
-  List<Event> events2;
+  TimeImpl invalidTime;
+  TimeImpl time1;
+  TimeImpl time2;
+  TimeImpl time3;
+  TimeImpl time4;
+  TimeImpl time5;
+  LocationImpl loc1;
+  LocationImpl loc2;
+  LocationImpl loc3;
+  LocationImpl loc4;
+  LocationImpl loc5;
+  LocationImpl loc6;
+  UserImpl newUser;
+  UserImpl user1;
+  UserImpl user2;
+  UserImpl user3;
+  UserImpl classmate;
+  UserImpl friend;
+  UserImpl bestFriend;
+  UserImpl dinnerDude;
+  List<UserImpl> users1;
+  List<UserImpl> users2;
+  List<UserImpl> users3;
+  EventImpl church;
+  EventImpl school;
+  EventImpl vacation;
+  EventImpl mondayAfternoonJog;
+  EventImpl wednesdayDinner;
+  List<EventImpl> mtEvents;
+  List<EventImpl> events1;
+  List<EventImpl> events2;
   SchedulePlanner mtSch;
   SchedulePlanner sch1;
   SchedulePlanner sch2;
@@ -80,37 +80,37 @@ public class ScheduleModelTests {
 
   private void initData() {
     this.initDOTW();
-    this.time1 = new Time(this.sunday, "1000", this.sunday, "1300");
-    this.time2 = new Time(this.monday, "0800", this.friday, "1500");
-    this.time3 = new Time(this.thursday, "1700", this.monday, "0900");
-    this.time4 = new Time(this.monday, "1200", this.monday, "1245");
-    this.time5 = new Time(this.wednesday, "1800", this.wednesday, "1830");
-    this.loc1 = new Location(false, "Mulberry Street");
-    this.loc2 = new Location(false, "Northeastern University");
-    this.loc3 = new Location(false, "Cancun Resort");
-    this.loc4 = new Location(false, "Outside");
-    this.loc5 = new Location(false, "Home");
-    this.loc6 = new Location(true, "Office");
-    this.newUser = new User("New User");
-    this.user1 = new User("Me");
-    this.user2 = new User("Mom");
-    this.user3 = new User("Dad");
-    this.classmate = new User("Classmate");
-    this.friend = new User("Friend");
-    this.bestFriend = new User("Best Friend");
-    this.dinnerDude = new User("Dinner Dude");
+    this.time1 = new TimeImpl(this.sunday, "1000", this.sunday, "1300");
+    this.time2 = new TimeImpl(this.monday, "0800", this.friday, "1500");
+    this.time3 = new TimeImpl(this.thursday, "1700", this.monday, "0900");
+    this.time4 = new TimeImpl(this.monday, "1200", this.monday, "1245");
+    this.time5 = new TimeImpl(this.wednesday, "1800", this.wednesday, "1830");
+    this.loc1 = new LocationImpl(false, "Mulberry Street");
+    this.loc2 = new LocationImpl(false, "Northeastern University");
+    this.loc3 = new LocationImpl(false, "Cancun Resort");
+    this.loc4 = new LocationImpl(false, "Outside");
+    this.loc5 = new LocationImpl(false, "Home");
+    this.loc6 = new LocationImpl(true, "Office");
+    this.newUser = new UserImpl("New User");
+    this.user1 = new UserImpl("Me");
+    this.user2 = new UserImpl("Mom");
+    this.user3 = new UserImpl("Dad");
+    this.classmate = new UserImpl("Classmate");
+    this.friend = new UserImpl("Friend");
+    this.bestFriend = new UserImpl("Best Friend");
+    this.dinnerDude = new UserImpl("Dinner Dude");
     this.users1 = new ArrayList<>(Arrays.asList(this.user1, this.user2, this.user3, this.newUser,
             this.friend));
     this.users2 = new ArrayList<>(Arrays.asList(this.user1, this.classmate, this.bestFriend,
             this.newUser));
     this.users3 = new ArrayList<>(Arrays.asList(this.user1, this.friend, this.bestFriend,
             this.newUser));
-    this.church = new Event("Church", this.time1, this.loc1, this.users1);
-    this.school = new Event("Classes", this.time2, this.loc2, this.users2);
-    this.vacation = new Event("Cancun Trip", this.time3, this.loc3, this.users3);
-    this.mondayAfternoonJog = new Event("Afternoon Jog", this.time4, this.loc4,
+    this.church = new EventImpl("Church", this.time1, this.loc1, this.users1);
+    this.school = new EventImpl("Classes", this.time2, this.loc2, this.users2);
+    this.vacation = new EventImpl("Cancun Trip", this.time3, this.loc3, this.users3);
+    this.mondayAfternoonJog = new EventImpl("Afternoon Jog", this.time4, this.loc4,
             new ArrayList<>(Collections.singletonList(this.friend)));
-    this.wednesdayDinner = new Event("Wednesday Dinner", this.time5, this.loc5,
+    this.wednesdayDinner = new EventImpl("Wednesday Dinner", this.time5, this.loc5,
             new ArrayList<>(Collections.singletonList(this.dinnerDude)));
     this.mtEvents = new ArrayList<>();
     this.events1 = new ArrayList<>(Arrays.asList(this.church, this.school));
@@ -134,22 +134,22 @@ public class ScheduleModelTests {
 
   private void initData1() {
     this.initDOTW();
-    this.time1 = new Time(this.monday, "1300", this.monday, "1500");
-    this.time2 = new Time(this.monday, "1200", this.monday, "1600");
-    this.time3 = new Time(this.wednesday, "1800", this.wednesday, "1830");
-    this.time4 = new Time(this.sunday, "0800", this.sunday, "1000");
-    this.loc1 = new Location(true, "At Home");
-    this.loc2 = new Location(false, "Campus");
-    this.loc3 = new Location(false, "Dinner Table");
-    this.loc4 = new Location(false, "Park Street");
-    this.user1 = new User("User 1");
-    this.user2 = new User("User 2");
-    this.user3 = new User("User 3");
+    this.time1 = new TimeImpl(this.monday, "1300", this.monday, "1500");
+    this.time2 = new TimeImpl(this.monday, "1200", this.monday, "1600");
+    this.time3 = new TimeImpl(this.wednesday, "1800", this.wednesday, "1830");
+    this.time4 = new TimeImpl(this.sunday, "0800", this.sunday, "1000");
+    this.loc1 = new LocationImpl(true, "At Home");
+    this.loc2 = new LocationImpl(false, "Campus");
+    this.loc3 = new LocationImpl(false, "Dinner Table");
+    this.loc4 = new LocationImpl(false, "Park Street");
+    this.user1 = new UserImpl("User 1");
+    this.user2 = new UserImpl("User 2");
+    this.user3 = new UserImpl("User 3");
     this.users1 = new ArrayList<>(Arrays.asList(this.user1, this.user2, this.user3));
-    this.vacation = new Event("Vacation", this.time1, this.loc1, this.users1);
-    this.school = new Event("School", this.time2, this.loc2, this.users1);
-    this.wednesdayDinner = new Event("Dinner", this.time3, this.loc3, this.users1);
-    this.church = new Event("Church", this.time4, this.loc4, this.users1);
+    this.vacation = new EventImpl("Vacation", this.time1, this.loc1, this.users1);
+    this.school = new EventImpl("School", this.time2, this.loc2, this.users1);
+    this.wednesdayDinner = new EventImpl("Dinner", this.time3, this.loc3, this.users1);
+    this.church = new EventImpl("Church", this.time4, this.loc4, this.users1);
     this.events1 = new ArrayList<>(Arrays.asList(this.vacation, this.wednesdayDinner));
     this.events2 = new ArrayList<>(Arrays.asList(this.vacation, this.wednesdayDinner));
     this.sch1 = new SchedulePlanner(this.events1, "User 1");
@@ -165,28 +165,28 @@ public class ScheduleModelTests {
     this.initData();
     // starting time is a non-number
     try {
-      this.invalidTime = new Time(this.monday, "abcd", this.tuesday, "0230");
+      this.invalidTime = new TimeImpl(this.monday, "abcd", this.tuesday, "0230");
       Assert.fail("Failed to catch exception!");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("String must only contain numbers!", e.getMessage());
     }
     // ending time is a non-number
     try {
-      this.invalidTime = new Time(this.monday, "1234", this.tuesday, "pqrs");
+      this.invalidTime = new TimeImpl(this.monday, "1234", this.tuesday, "pqrs");
       Assert.fail("Failed to catch exception!");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("String must only contain numbers!", e.getMessage());
     }
     // starting time contains a non-number
     try {
-      this.invalidTime = new Time(this.monday, "2a45", this.tuesday, "0230");
+      this.invalidTime = new TimeImpl(this.monday, "2a45", this.tuesday, "0230");
       Assert.fail("Failed to catch exception!");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("String must only contain numbers!", e.getMessage());
     }
     // ending time contains a non-number
     try {
-      this.invalidTime = new Time(this.monday, "1230", this.tuesday, "i045");
+      this.invalidTime = new TimeImpl(this.monday, "1230", this.tuesday, "i045");
       Assert.fail("Failed to catch exception!");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("String must only contain numbers!", e.getMessage());
@@ -200,35 +200,35 @@ public class ScheduleModelTests {
     this.initData();
     // has a bad starting time length and bad ending time length
     try {
-      this.invalidTime = new Time(this.monday, "123", this.tuesday, "00230");
+      this.invalidTime = new TimeImpl(this.monday, "123", this.tuesday, "00230");
       Assert.fail("Failed to catch exception!");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Time must be represented by a 4 digit String!", e.getMessage());
     }
     // has a bad starting time length that is too short
     try {
-      this.invalidTime = new Time(this.monday, "20", this.wednesday, "0331");
+      this.invalidTime = new TimeImpl(this.monday, "20", this.wednesday, "0331");
       Assert.fail("Failed to catch exception!");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Time must be represented by a 4 digit String!", e.getMessage());
     }
     // has a bad starting time length that is too long
     try {
-      this.invalidTime = new Time(this.friday, "012300", this.saturday, "0331");
+      this.invalidTime = new TimeImpl(this.friday, "012300", this.saturday, "0331");
       Assert.fail("Failed to catch exception!");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Time must be represented by a 4 digit String!", e.getMessage());
     }
     // has a bad ending time length that is too short
     try {
-      this.invalidTime = new Time(this.tuesday, "1111", this.friday, "331");
+      this.invalidTime = new TimeImpl(this.tuesday, "1111", this.friday, "331");
       Assert.fail("Failed to catch exception!");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Time must be represented by a 4 digit String!", e.getMessage());
     }
     // has a bad ending time length that is too long
     try {
-      this.invalidTime = new Time(this.monday, "2222", this.tuesday, "02345");
+      this.invalidTime = new TimeImpl(this.monday, "2222", this.tuesday, "02345");
       Assert.fail("Failed to catch exception!");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Time must be represented by a 4 digit String!", e.getMessage());
@@ -242,28 +242,28 @@ public class ScheduleModelTests {
     this.initData();
     // has a bad hour for starting time and bad minute for ending time
     try {
-      this.invalidTime = new Time(this.monday, "2400", this.tuesday, "0061");
+      this.invalidTime = new TimeImpl(this.monday, "2400", this.tuesday, "0061");
       Assert.fail("Failed to catch exception!");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Invalid number of hours!", e.getMessage());
     }
     // has a bad hour for starting time and bad hour for ending time
     try {
-      this.invalidTime = new Time(this.monday, "2400", this.tuesday, "2730");
+      this.invalidTime = new TimeImpl(this.monday, "2400", this.tuesday, "2730");
       Assert.fail("Failed to catch exception!");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Invalid number of hours!", e.getMessage());
     }
     // has a bad minute for starting time and bad minute for ending time
     try {
-      this.invalidTime = new Time(this.monday, "0278", this.tuesday, "0460");
+      this.invalidTime = new TimeImpl(this.monday, "0278", this.tuesday, "0460");
       Assert.fail("Failed to catch exception!");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Invalid number of minutes!", e.getMessage());
     }
     // has a bad minute for starting time and bad hour for ending time
     try {
-      this.invalidTime = new Time(this.monday, "2078", this.tuesday, "2759");
+      this.invalidTime = new TimeImpl(this.monday, "2078", this.tuesday, "2759");
       Assert.fail("Failed to catch exception!");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Invalid number of minutes!", e.getMessage());
@@ -398,10 +398,10 @@ public class ScheduleModelTests {
   @Test
   public void testScheduleEventsMethod() {
     this.initData();
-    Schedule sch = new SchedulePlanner(this.events1, "My Schedule");
+    ISchedule sch = new SchedulePlanner(this.events1, "My Schedule");
     Assert.assertEquals(new ArrayList<>(Arrays.asList(this.church, this.school)), sch.events());
 
-    Schedule sch0 = new SchedulePlanner(this.mtEvents, "New Schedule");
+    ISchedule sch0 = new SchedulePlanner(this.mtEvents, "New Schedule");
     assertTrue(sch0.events().isEmpty());
   }
 
@@ -410,7 +410,7 @@ public class ScheduleModelTests {
   @Test
   public void testAddEventAlreadyContainsEventError() {
     this.initData();
-    Schedule sch = new SchedulePlanner(this.mtEvents, "Bad Schedule");
+    ISchedule sch = new SchedulePlanner(this.mtEvents, "Bad Schedule");
     sch.addEvent(this.school);
     try {
       sch.addEvent(this.school);
@@ -442,7 +442,7 @@ public class ScheduleModelTests {
   @Test
   public void testAddEventOverlappingEventsError() {
     this.initData();
-    Schedule sch = new SchedulePlanner(this.mtEvents, "Bad Schedule");
+    ISchedule sch = new SchedulePlanner(this.mtEvents, "Bad Schedule");
     sch.addEvent(this.church);
     Assert.assertEquals(1, sch.events().size());
     try {
@@ -473,7 +473,7 @@ public class ScheduleModelTests {
   @Test
   public void testAddEvent() {
     this.initData();
-    Schedule sch = new SchedulePlanner(this.mtEvents, "My Schedule");
+    ISchedule sch = new SchedulePlanner(this.mtEvents, "My Schedule");
     // check that schedule is empty
     assertFalse(sch.events().contains(this.school));
     assertTrue(sch.events().isEmpty());
@@ -495,7 +495,7 @@ public class ScheduleModelTests {
   @Test
   public void testRemoveEventEventDoesNotExist() {
     this.initData();
-    Schedule sch = new SchedulePlanner(this.events1, "My Schedule");
+    ISchedule sch = new SchedulePlanner(this.events1, "My Schedule");
     Assert.assertEquals(2, sch.events().size());
     try {
       sch.removeEvent(this.vacation);
@@ -518,7 +518,7 @@ public class ScheduleModelTests {
   @Test
   public void testRemoveEvent() {
     this.initData();
-    Schedule sch = new SchedulePlanner(this.events1, "My Schedule");
+    ISchedule sch = new SchedulePlanner(this.events1, "My Schedule");
     Assert.assertEquals(2, sch.events().size());
     Assert.assertEquals(new ArrayList<>(Arrays.asList(this.church, this.school)), sch.events());
 
@@ -535,8 +535,8 @@ public class ScheduleModelTests {
   @Test
   public void testPlannerSchedules() {
     this.initData();
-    List<Schedule> schedules0 = new ArrayList<>(Collections.singletonList(this.mtSch));
-    List<Schedule> schedules1 = new ArrayList<>(Arrays.asList(this.sch1, this.sch2));
+    List<ISchedule> schedules0 = new ArrayList<>(Collections.singletonList(this.mtSch));
+    List<ISchedule> schedules1 = new ArrayList<>(Arrays.asList(this.sch1, this.sch2));
     Assert.assertEquals(new ArrayList<>(), this.mtModel.schedules());
     Assert.assertEquals(schedules0, this.model1.schedules());
     Assert.assertEquals(schedules1, this.model2.schedules());
@@ -726,8 +726,8 @@ public class ScheduleModelTests {
 
   @Test
   public void testOverlappingTimes() {
-    Time time1 = new Time(DaysOfTheWeek.MONDAY, "0920", DaysOfTheWeek.TUESDAY, "0200");
-    Time time2 = new Time(DaysOfTheWeek.TUESDAY, "0000", DaysOfTheWeek.TUESDAY, "0100");
+    TimeImpl time1 = new TimeImpl(DaysOfTheWeek.MONDAY, "0920", DaysOfTheWeek.TUESDAY, "0200");
+    TimeImpl time2 = new TimeImpl(DaysOfTheWeek.TUESDAY, "0000", DaysOfTheWeek.TUESDAY, "0100");
 
     boolean overlap = time1.anyOverlap(time2);
     assertTrue(overlap);
@@ -735,8 +735,8 @@ public class ScheduleModelTests {
 
   @Test
   public void testOverlappingTimes2() {
-    Time time1 = new Time(DaysOfTheWeek.SUNDAY, "0000", DaysOfTheWeek.MONDAY, "0920");
-    Time time2 = new Time(DaysOfTheWeek.MONDAY, "0720", DaysOfTheWeek.TUESDAY, "0000");
+    TimeImpl time1 = new TimeImpl(DaysOfTheWeek.SUNDAY, "0000", DaysOfTheWeek.MONDAY, "0920");
+    TimeImpl time2 = new TimeImpl(DaysOfTheWeek.MONDAY, "0720", DaysOfTheWeek.TUESDAY, "0000");
 
     boolean overlap = time1.anyOverlap(time2);
     assertTrue(overlap);
@@ -744,8 +744,8 @@ public class ScheduleModelTests {
 
   @Test
   public void testOverlappingTimes3() {
-    Time time1 = new Time(DaysOfTheWeek.TUESDAY, "0950", DaysOfTheWeek.TUESDAY, "1130");
-    Time time2 = new Time(DaysOfTheWeek.TUESDAY, "1315", DaysOfTheWeek.TUESDAY, "1515");
+    TimeImpl time1 = new TimeImpl(DaysOfTheWeek.TUESDAY, "0950", DaysOfTheWeek.TUESDAY, "1130");
+    TimeImpl time2 = new TimeImpl(DaysOfTheWeek.TUESDAY, "1315", DaysOfTheWeek.TUESDAY, "1515");
 
     boolean overlap = time1.anyOverlap(time2);
     assertFalse(overlap);

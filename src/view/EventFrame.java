@@ -19,11 +19,11 @@ import javax.swing.JOptionPane;
 
 import controller.ScheduleSystem;
 import model.DaysOfTheWeek;
-import model.Event;
-import model.Location;
-import model.ReadOnlyPlannerModel;
-import model.Time;
-import model.User;
+import model.EventImpl;
+import model.LocationImpl;
+import model.IReadOnlyPlannerModel;
+import model.TimeImpl;
+import model.UserImpl;
 
 /**
  * JFrame class extension that represents the screen that pops up when a user wants to
@@ -33,7 +33,7 @@ import model.User;
  */
 public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   private final JPanel mainPanel;
-  private final ReadOnlyPlannerModel model;
+  private final IReadOnlyPlannerModel model;
   private JComboBox<String> onlineBox;
   private JComboBox<String> startDOTW;
   private JComboBox<String> endDOTW;
@@ -45,21 +45,25 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   private JButton createEvent;
   private JButton modEvent;
   private JButton removeEvent;
-  private Event originalEvent;
-  private Event unmodifiedEvent;
+  private EventImpl originalEvent;
+  private EventImpl unmodifiedEvent;
   private final JPanel usersTag;// = new JPanel();
   private JLabel availUsers;// = new JLabel("\tAvailable Users: ");
   private GridLayout gridLayout;// = new GridLayout(0, 1);
   private JScrollPane scrollPane;// = new JScrollPane();
+<<<<<<< Updated upstream
   private User user;
   private String[] allUsers;
+=======
+  private UserImpl user;
+>>>>>>> Stashed changes
 
   /**
    * Constructor of the event frame. Sets the dimension of the frame and asks user for the name,
    * the location, starting day, starting time, ending day, ending time, and the list of attendees
    * for an event to be added, modified, or removed from the schedule.
    */
-  public EventFrame(ReadOnlyPlannerModel model) {
+  public EventFrame(IReadOnlyPlannerModel model) {
     super();
     this.model = model;
 
@@ -143,21 +147,26 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
     );
   }
 
-  private Event createEvent() {
-    Event newEvent = new Event(eventText.getText(),
-            new Time(DaysOfTheWeek.valueOf(startDOTW.getSelectedItem().toString()
+  private EventImpl createEvent() {
+    EventImpl newEvent = new EventImpl(eventText.getText(),
+            new TimeImpl(DaysOfTheWeek.valueOf(startDOTW.getSelectedItem().toString()
                     .toUpperCase()), startTimeTxt.getText(),
                     (DaysOfTheWeek.valueOf(endDOTW.getSelectedItem().toString().toUpperCase())),
                     endTimeTxt.getText()),
+<<<<<<< Updated upstream
             new Location(getOnlineBool(Objects.requireNonNull(onlineBox.getSelectedItem())),
                     place.getText()), getUsers(usersBox.getSelectedValuesList()));
+=======
+            new LocationImpl(getOnlineBool(Objects.requireNonNull(onlineBox.getSelectedItem())),
+                    place.getText()), getUsers(attendeesBox.getSelectedValuesList()));
+>>>>>>> Stashed changes
     return newEvent;
   }
 
-  private List<User> getUsers(List<String> strUsers) {
-    List<User> newUsers = new ArrayList<>();
+  private List<UserImpl> getUsers(List<String> strUsers) {
+    List<UserImpl> newUsers = new ArrayList<>();
     for (String s : strUsers) {
-      User newUser = new User(s);
+      UserImpl newUser = new UserImpl(s);
       newUsers.add(newUser);
     }
     return newUsers;
@@ -273,7 +282,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   }
 
   @Override
-  public void addDefaultEvent(Event event) {
+  public void addDefaultEvent(EventImpl event) {
     eventText.setText(event.name());
     if (event.location().online()) {
       onlineBox.setSelectedItem("Is online");
@@ -301,12 +310,12 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   }
 
   @Override
-  public void addSelectedUser(User user) {
+  public void addSelectedUser(UserImpl user) {
     this.user = user;
   }
 
   @Override
-  public void getUnmodifiedEvent(Event event) {
+  public void getUnmodifiedEvent(EventImpl event) {
     this.unmodifiedEvent = event;
   }
 }

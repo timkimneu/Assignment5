@@ -1,8 +1,8 @@
 package view;
 
 import controller.ScheduleSystem;
-import model.Event;
-import model.User;
+import model.EventImpl;
+import model.UserImpl;
 
 /**
  * Class interface that represents the screen that pops up
@@ -25,19 +25,19 @@ public interface EvtFrame {
    *
    * @param event Event to be autofilled in for.
    */
-  void addDefaultEvent(Event event);
+  void addDefaultEvent(EventImpl event);
 
   /**
    * Adds the selected user to the drop-down list in the event panel.
    *
    * @param user User to be added to the drop-down list.
    */
-  void addSelectedUser(User user);
+  void addSelectedUser(UserImpl user);
 
   /**
    * Gets the plain event.
    *
    * @param event Event to pass back.
    */
-  void getUnmodifiedEvent(Event event);
+  void getUnmodifiedEvent(EventImpl event);
 }

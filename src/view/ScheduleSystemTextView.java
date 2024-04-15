@@ -2,11 +2,11 @@ package view;
 
 import controller.ScheduleSystem;
 import model.DaysOfTheWeek;
-import model.Event;
-import model.Location;
+import model.EventImpl;
+import model.LocationImpl;
 import model.SchedulePlanner;
-import model.Time;
-import model.User;
+import model.TimeImpl;
+import model.UserImpl;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -45,7 +45,7 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
       viewer += "User: ";
       viewer += schedules.get(sch).scheduleID() + "\n";
       SchedulePlanner currSch = schedules.get(sch);
-      List<Event> listEvents = currSch.events();
+      List<EventImpl> listEvents = currSch.events();
       addEventsForDay(listEvents, sch);
     }
     return viewer;
@@ -75,27 +75,27 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
   private void getWhichDays(String day, int sch) {
     viewer += day + ": \n";
     SchedulePlanner currSch = schedules.get(sch);
-    List<Event> listEvents = currSch.events();
+    List<EventImpl> listEvents = currSch.events();
 
     for (int event = 0; event < listEvents.size(); event++) {
-      Event currEvent = listEvents.get(event);
-      Time currTime = currEvent.time();
+      EventImpl currEvent = listEvents.get(event);
+      TimeImpl currTime = currEvent.time();
       DaysOfTheWeek startDay = currTime.startDay();
 
       if (Objects.equals(startDay.toString(), day.toUpperCase())) {
         viewer += "\t";
         viewer += "name: " + listEvents.get(event).name() + "\n\t";
 
-        Time time = listEvents.get(event).time();
+        TimeImpl time = listEvents.get(event).time();
         viewer += "time: " + time.startDay().observeDay() + ": " + time.startTime() +
                 " -> " + time.endDay().observeDay() + ": " + time.endTime() + "\n\t";
 
-        Location location = listEvents.get(event).location();
+        LocationImpl location = listEvents.get(event).location();
         viewer += "location: " + location.place() + "\n\t";
         viewer += "online: " + location.online() + "\n\t";
 
         viewer += "invitees: ";
-        List<User> users = listEvents.get(event).users();
+        List<UserImpl> users = listEvents.get(event).users();
         for (int user = 0; user < users.size(); user++) {
           if (user != users.size() - 1) {
             viewer += users.get(user).name().replaceAll("\"", "") + "\n\t";
@@ -108,7 +108,7 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
   }
 
   // determines which days have one or more events
-  private void addEventsForDay(List<Event> listEvents, int sch) {
+  private void addEventsForDay(List<EventImpl> listEvents, int sch) {
     Dictionary<String, Integer> dict = new Hashtable<>();
     dict.put("SUNDAY", 0);
     dict.put("MONDAY", 0);
@@ -119,8 +119,8 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
     dict.put("SATURDAY", 0);
 
     for (int event = 0; event < listEvents.size(); event++) {
-      Event currEvent = listEvents.get(event);
-      Time currTime = currEvent.time();
+      EventImpl currEvent = listEvents.get(event);
+      TimeImpl currTime = currEvent.time();
       DaysOfTheWeek startDay = currTime.startDay();
       dict.put(startDay.toString(), dict.get(startDay.toString()) + 1);
     }

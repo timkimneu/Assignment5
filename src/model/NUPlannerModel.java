@@ -16,7 +16,7 @@ import java.util.Map;
  * planner system and can also observe the list of events for a specific user if the user exists,
  * otherwise throws an error.
  */
-public class NUPlannerModel implements PlannerModel {
+public class NUPlannerModel implements IPlannerModel {
   private final List<SchedulePlanner> schedules;
 
   /**
@@ -42,8 +42,8 @@ public class NUPlannerModel implements PlannerModel {
   }
 
   @Override
-  public List<Event> events(String id) {
-    for (Schedule sch : this.schedules()) {
+  public List<EventImpl> events(String id) {
+    for (ISchedule sch : this.schedules()) {
       if (sch.scheduleID().equals(id)) {
         return sch.events();
       }
@@ -54,15 +54,15 @@ public class NUPlannerModel implements PlannerModel {
   @Override
   public List<String> users() {
     List<String> allUsers = new ArrayList<>();
-    for (Schedule sch : this.schedules()) {
+    for (ISchedule sch : this.schedules()) {
       allUsers.add(sch.scheduleID());
     }
     return allUsers;
   }
 
   @Override
-  public void addEvent(Event event) {
-    for (User u : event.users()) {
+  public void addEvent(EventImpl event) {
+    for (UserImpl u : event.users()) {
       for (SchedulePlanner sch : this.schedules()) {
         String scheduleID = sch.scheduleID();
         if (u.name().equals(scheduleID)) {
@@ -73,7 +73,7 @@ public class NUPlannerModel implements PlannerModel {
   }
 
   @Override
-  public void scheduleEvent(String name, Location location, int duration, List<User> users) {
+  public void scheduleEvent(String name, LocationImpl location, int duration, List<UserImpl> users) {
     List<String> daysOfTheWeek = Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday",
             "Thursday", "Friday", "Saturday");
     int mins = duration % 60;
@@ -93,9 +93,9 @@ public class NUPlannerModel implements PlannerModel {
           value = entry.getValue();
         }
         DaysOfTheWeek startingDay = DaysOfTheWeek.valueOf(daysOfTheWeek.get(day).toUpperCase());
-        Time potentialTime = new Time(startingDay, startTime,
+        TimeImpl potentialTime = new TimeImpl(startingDay, startTime,
                 getNextDOTW(startingDay, days + value), endTime);
-        Event potentialEvent = new Event(name, potentialTime, location, users);
+        EventImpl potentialEvent = new EventImpl(name, potentialTime, location, users);
         if (attemptEvent(potentialEvent, users)) {
           return;
         }
@@ -105,16 +105,16 @@ public class NUPlannerModel implements PlannerModel {
   }
 
   // helper method to attempt to add an event and check for exceptions
-  private boolean attemptEvent(Event event, List<User> users) {
-    for (User u : users) {
+  private boolean attemptEvent(EventImpl event, List<UserImpl> users) {
+    for (UserImpl u : users) {
       try {
-        for (Schedule sch : this.schedules()) {
+        for (ISchedule sch : this.schedules()) {
           if (u.name().equals(sch.scheduleID())) {
             sch.addEvent(event);
           }
         }
       } catch (IllegalArgumentException e) {
-        for (Schedule sch : this.schedules()) {
+        for (ISchedule sch : this.schedules()) {
           try {
             sch.removeEvent(event);
           } catch (IllegalArgumentException ex) {
@@ -172,11 +172,11 @@ public class NUPlannerModel implements PlannerModel {
   }
 
   @Override
-  public void modifyEvent(Event event, Event newEvent, User user) {
+  public void modifyEvent(EventImpl event, EventImpl newEvent, UserImpl user) {
     if (event.equals(newEvent)) {
       throw new IllegalArgumentException("Cannot replace old event with same event!");
     }
-    for (User u : event.users()) {
+    for (UserImpl u : event.users()) {
       for (SchedulePlanner sch : this.schedules) {
         String schID = sch.scheduleID();
         if (u.name().equals(schID)) {
@@ -188,17 +188,17 @@ public class NUPlannerModel implements PlannerModel {
   }
 
   @Override
-  public void removeEvent(Event event, User user) {
+  public void removeEvent(EventImpl event, UserImpl user) {
     if (event.isHost(user)) {
-      for (User u : event.users()) {
-        for (Schedule sch : this.schedules()) {
+      for (UserImpl u : event.users()) {
+        for (ISchedule sch : this.schedules()) {
           if (u.name().equals(sch.scheduleID())) {
             sch.removeEvent(event);
           }
         }
       }
     } else {
-      for (Schedule sch : this.schedules()) {
+      for (ISchedule sch : this.schedules()) {
         if (user.name().equals(sch.scheduleID())) {
           sch.removeEvent(event);
         }
