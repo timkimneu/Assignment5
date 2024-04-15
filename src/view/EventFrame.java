@@ -41,7 +41,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   private JTextField eventText;
   private JTextField startTimeTxt;
   private JTextField endTimeTxt;
-  private JList<String> attendeesBox;
+  private JList<String> usersBox;
   private JButton createEvent;
   private JButton modEvent;
   private JButton removeEvent;
@@ -52,6 +52,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   private GridLayout gridLayout;// = new GridLayout(0, 1);
   private JScrollPane scrollPane;// = new JScrollPane();
   private User user;
+  private String[] allUsers;
 
   /**
    * Constructor of the event frame. Sets the dimension of the frame and asks user for the name,
@@ -149,7 +150,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
                     (DaysOfTheWeek.valueOf(endDOTW.getSelectedItem().toString().toUpperCase())),
                     endTimeTxt.getText()),
             new Location(getOnlineBool(Objects.requireNonNull(onlineBox.getSelectedItem())),
-                    place.getText()), getUsers(attendeesBox.getSelectedValuesList()));
+                    place.getText()), getUsers(usersBox.getSelectedValuesList()));
     return newEvent;
   }
 
@@ -262,9 +263,9 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
 
     mainPanel.add(usersTag);
 
-    String[] allUsers = this.model.users().toArray(new String[0]);
+    allUsers = this.model.users().toArray(new String[0]);
+    usersBox = new JList<>(allUsers);
 
-    JList<String> usersBox = new JList<>(allUsers);
     scrollPane.setViewportView(usersBox);
     usersBox.setLayoutOrientation(JList.VERTICAL);
 
@@ -286,17 +287,12 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
     endTimeTxt.setText(event.time().endTime());
 
     // add select users
-    this.availableUsersPanel();
-    String[] allAttendees = new String[event.users().size()];
-
     for (int user = 0; user < event.users().size(); user++) {
       String us = String.valueOf(event.users().get(user).name()).replaceAll("\"", "");
-      allAttendees[user] = us;
+      this.model.users().add(us);
     }
-    attendeesBox = new JList<>(allAttendees);
-    scrollPane.setViewportView(attendeesBox);
-    String selectedName = user.name().replaceAll("\"", "");
-    attendeesBox.setSelectedValue(selectedName, true);
+
+    this.availableUsersPanel();
 
     this.originalEvent = event;
 
