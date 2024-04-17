@@ -3,10 +3,23 @@ package model;
 import provider.model.WeekDay;
 import provider.model.WeekTime;
 
+/**
+ * Represents the week times that are found in each event in the schedule planner.
+ * Implements the provider's WeekTime interface, and composes of our DayOfTheWeek
+ * enum in order to return the start and end time methods.
+ */
 public class WeekTimeAdapter implements WeekTime {
   private final DaysOfTheWeek dotw;
   private final String time;
 
+  /**
+   * Represents the week times that are found in each event in the schedule planner.
+   * Implements the provider's WeekTime interface, and composes of our DayOfTheWeek
+   * enum in order to return the start and end time methods.
+   *
+   * @param dotw Sets enum that will be used for the start and end days.
+   * @param time Sets the four letter string that will be used for the times.
+   */
   public WeekTimeAdapter(DaysOfTheWeek dotw, String time) {
     this.dotw = dotw;
     this.time = time;
@@ -24,12 +37,12 @@ public class WeekTimeAdapter implements WeekTime {
 
   @Override
   public int getHour() {
-    return ((Integer.parseInt(time) - getMinute()) / 60) % 24;
+    return ((Integer.parseInt(time) - getMinute()) / 100);
   }
 
   @Override
   public int getMinute() {
-    return Integer.parseInt(time) % 60;
+    return Integer.parseInt(time) % 100;
   }
 
   @Override

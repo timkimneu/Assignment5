@@ -1,15 +1,29 @@
-package model;import provider.model.EventTime;
+package model;
+import provider.model.EventTime;
+import provider.model.User;
 import provider.model.WeekTime;
 
 import java.util.Objects;
 
+/**
+ * Represents the times that are found in each event in the schedule planner.
+ * Implements our time interface, and uses the provider's EventTime interface
+ * and WeekTime enum in order to convert and compare the times.
+ */
 public final class ITimeAdapter implements ITime {
   private final EventTime eventTime;
   private final WeekTime startTime;
   private final WeekTime endTime;
 
+  /**
+   * Represents the times that are found in each event in the schedule planner.
+   * Implements our time interface, and uses the provider's EventTime interface
+   * and WeekTime enum in order to convert and compare the times.
+   *
+   * @param eventTime Sets the start and end times of the event.
+   */
   public ITimeAdapter(EventTime eventTime) {
-    this.eventTime = eventTime;
+    this.eventTime = Objects.requireNonNull(eventTime);
     this.startTime = eventTime.getStartTime();
     this.endTime = eventTime.getEndTime();
   }

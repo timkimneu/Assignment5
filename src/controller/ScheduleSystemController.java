@@ -108,7 +108,6 @@ public class ScheduleSystemController implements ScheduleSystem {
       listOfEvents.add(currEvent);
     }
     SchedulePlanner currSch = new SchedulePlanner(listOfEvents, id);
-    System.out.println(currSch.events());
     if (!this.model.schedules().contains(currSch)) {
       this.model.schedules().add(currSch);
     }

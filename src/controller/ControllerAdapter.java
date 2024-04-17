@@ -2,6 +2,7 @@ package controller;
 
 import model.DaysOfTheWeek;
 import model.EventAdapter;
+import model.EventBuilderAdapter;
 import model.EventImpl;
 import model.IPlannerModel;
 import model.LocationImpl;
@@ -20,11 +21,25 @@ import view.ViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents the model of the Schedule system or collection of events over a calendar.
+ * Implements the provider's Features class, which implement features that are requested
+ * by a model using some input data collected from the user, and the resulting features
+ * modify the view and/or the model accordingly. Composes of our controller, their view,
+ * and our model in order to listen to and communicate changes to the model.
+ */
 public class ControllerAdapter implements Features {
   private final ScheduleSystem system;
   private final CentralSystemView csview;
   private final IPlannerModel model;
 
+  /**
+   * Initializes the controller adapter that takes in our controller, their view, and our model.
+   *
+   * @param system ScheduleSystem controller implementation.
+   * @param view Provider's view that our controller will take in.
+   * @param model Changes are implemented to the full planner system.
+   */
   public ControllerAdapter(ScheduleSystem system, CentralSystemView view, IPlannerModel model) {
     this.system = system;
     this.csview = view;
@@ -48,7 +63,6 @@ public class ControllerAdapter implements Features {
 
   @Override
   public void displayCurrentSchedule() {
-    System.out.println("HI");
 //    csview.displayAvailableUsers(csview.getListOfAvailableUsers());
     ViewAdapter view = new ViewAdapter(csview, model);
     view.refresh();
@@ -71,7 +85,6 @@ public class ControllerAdapter implements Features {
           TimeImpl reqTimeImpl = new TimeImpl(reqDotw, reqTime, endDotw, endTime);
 
           if (event.time().anyOverlap(reqTimeImpl)) {
-            System.out.println("mlmlmlml");
             csview.displayExistingEvent(new EventAdapter(event));
           }
         }
@@ -114,6 +127,8 @@ public class ControllerAdapter implements Features {
 
   @Override
   public boolean addEvent(EventBuilder eventBuilder) {
+    //EventBuilder builder = new EventBuilderAdapter();
+    //builder.setEventTime();
     Event oldEvent = eventBuilder.buildEvent();
     try {
       system.addEvent(convertEvent(oldEvent));

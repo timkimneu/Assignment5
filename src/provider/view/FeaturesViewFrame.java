@@ -175,8 +175,6 @@ public class FeaturesViewFrame<T extends JPanel & SchedulePanel>
 
   @Override
   public void displayAvailableUsers(List<User> users) {
-    System.out.println("FEAUTRES FRAME");
-    System.out.println(users);
     this.displayAvailableUsersHelp(users);
   }
 
@@ -184,8 +182,6 @@ public class FeaturesViewFrame<T extends JPanel & SchedulePanel>
   public User currentSelectedUser() {
     // userOptions presents the data within userOptionsList. The indexes are guaranteed
     // to match up properly.
-    System.out.println(userOptions.getSelectedIndex());
-    System.out.println(userOptionsList.getElementAt(userOptions.getSelectedIndex()));
     return userOptionsList.getElementAt(userOptions.getSelectedIndex());
   }
 
@@ -302,9 +298,7 @@ public class FeaturesViewFrame<T extends JPanel & SchedulePanel>
     User selectedUser = userOptionsList.getElementAt(userOptions.getSelectedIndex());
     this.userOptionsList.removeAllElements();
     this.userOptionsList.addAll(users);
-    System.out.println(selectedUser);
     this.userOptions.setSelectedItem(selectedUser);
-    System.out.println(userOptions.getSelectedIndex());
   }
 
   @Override

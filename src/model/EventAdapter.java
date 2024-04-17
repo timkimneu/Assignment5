@@ -7,9 +7,20 @@ import provider.model.EventTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents the events that are represented by colored boxes on the view. Implements
+ * methods that observe information about an event such as name, location, etc. Implements
+ * the provider's Event interface, and composes of our EventImpl implementation.
+ */
 public class EventAdapter implements Event {
   private final EventImpl event;
 
+  /**
+   * Represents the events that are represented by colored boxes on the view. Implements
+   * methods that observe information about an event such as name, location, etc.
+   *
+   * @param event Sets the event to be our event implementation.
+   */
   public EventAdapter(EventImpl event) {
     this.event = event;
   }

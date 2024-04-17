@@ -14,16 +14,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Adapter for the view in order to illustrate the provider's view of the schedule.
+ * Implements our implementation of schedule view, and imposes of the provider's
+ * CentralSystemView interface. Takes in the model and responses accordingly to
+ * listeners and refresh methods.
  */
 public class ViewAdapter implements ScheduleSystemView {
   private final CentralSystemView providerView;
   private final IPlannerModel model;
 
   /**
+   * Adapter for the view in order to illustrate the provider's view of the schedule.
+   * Implements our implementation of schedule view, and imposes of the provider's
+   * CentralSystemView interface. Takes in the model and responses accordingly to
+   * listeners and refresh methods.
    *
-   * @param providerView
-   * @param model
+   * @param providerView Provider's central view that will be illustrated.
+   * @param model Our model that will respond to certain requests and changes.
    */
   public ViewAdapter(CentralSystemView providerView, IPlannerModel model) {
     this.providerView = providerView;
@@ -58,12 +65,10 @@ public class ViewAdapter implements ScheduleSystemView {
       finalUser.add(user, new UserAdapter(new UserImpl(model.users().get(user))));
     }
     providerView.displayAvailableUsers(finalUser);
-    //
 
     User selectedUser = providerView.currentSelectedUser();
     for (SchedulePlanner sch : this.model.schedules()) {
       if (selectedUser != null && selectedUser.toString().equals(sch.scheduleID())) {
-        System.out.println("User in refresh" + selectedUser.toString());
         providerView.displaySchedule(new ReadOnlyAdapter(sch));
       }
     }
