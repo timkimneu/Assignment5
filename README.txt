@@ -114,3 +114,14 @@ was overridden. Resize changes the dimensions of the boxes according to the dime
 simple algebra to essentially normalize box dimensions to consistently take up a specific percent of the screen.
 
 
+Changes for Homework 8:
+In the end, we got most of the features working and were able to successfully view the provider’s
+given view according to the screenshots that were sent to us. The only issue that we had was when
+we were implementing EventBuilderAdapter. The way the providers scheduled an event was through an
+EventBuilder class, where they initialized all the fields. However, our design was a bit different
+because we only have an Event Class that had its fields initialized in the constructor. Therefore,
+when trying to create an event and schedule an event, we received a Null Pointer Exception because
+their Builder class takes in no arguments in their constructor. This was a result of tight coupling
+in their code, and therefore, we were not able to schedule an event through the buttons.
+
+

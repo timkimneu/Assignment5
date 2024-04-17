@@ -39,6 +39,8 @@ public final class TimeAdapter implements EventTime {
 
   @Override
   public boolean contains(WeekTime time) {
-    return false;
+    WeekTime startTime = new WeekTimeAdapter(timeImpl.startDay(), timeImpl.startTime());
+    WeekTime endTime = new WeekTimeAdapter(timeImpl.endDay(), timeImpl.endTime());
+    return startTime.isBefore(time) && endTime.isAfter(time);
   }
 }

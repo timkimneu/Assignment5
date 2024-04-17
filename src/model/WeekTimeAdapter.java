@@ -50,13 +50,11 @@ public class WeekTimeAdapter implements WeekTime {
     if (this.getWeekDay().getDayOrder() < other.getWeekDay().getDayOrder()) {
       return true;
     }
-    else if (this.getWeekDay().getDayOrder() == other.getWeekDay().getDayOrder() && this.getHour() < other.getHour()) {
+    else if (this.getWeekDay().getDayOrder() == other.getWeekDay().getDayOrder()
+            && this.getHour() < other.getHour()) {
       return true;
     }
-    else if (this.getHour() == (other.getHour()) && this.getMinute() < other.getMinute()) {
-      return true;
-    }
-    return false;
+    else return this.getHour() == (other.getHour()) && this.getMinute() < other.getMinute();
   }
 
   @Override
@@ -64,13 +62,11 @@ public class WeekTimeAdapter implements WeekTime {
     if (this.getWeekDay().getDayOrder() > other.getWeekDay().getDayOrder()) {
       return true;
     }
-    else if (this.getWeekDay().getDayOrder() == other.getWeekDay().getDayOrder() && this.getHour() > other.getHour()) {
+    else if (this.getWeekDay().getDayOrder() == other.getWeekDay().getDayOrder()
+            && this.getHour() > other.getHour()) {
       return true;
     }
-    else if (this.getHour() == (other.getHour()) && this.getMinute() > other.getMinute()) {
-      return true;
-    }
-    return false;
+    else return this.getHour() == (other.getHour()) && this.getMinute() > other.getMinute();
   }
 
   @Override

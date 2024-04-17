@@ -121,7 +121,6 @@ public class EventBuilderAdapter implements EventBuilder {
     } catch (NullPointerException e) {
       // ignore
     }
-    System.out.println("THISSS" + this.online);
     DaysOfTheWeek startDay = DaysOfTheWeek.valueOf(startTime.getWeekDay().toString().toUpperCase());
     DaysOfTheWeek endDay = DaysOfTheWeek.valueOf(endTime.getWeekDay().toString().toUpperCase());
     String startingTime = startTime.getTime();

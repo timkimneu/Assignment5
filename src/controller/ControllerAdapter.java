@@ -2,11 +2,11 @@ package controller;
 
 import model.DaysOfTheWeek;
 import model.EventAdapter;
-import model.EventBuilderAdapter;
 import model.EventImpl;
 import model.IPlannerModel;
 import model.LocationImpl;
 import model.SchedulePlanner;
+import model.TimeAdapter;
 import model.TimeImpl;
 import model.UserImpl;
 import provider.controller.Features;
@@ -58,16 +58,19 @@ public class ControllerAdapter implements Features {
 
   @Override
   public boolean scheduleEvent(EventBuilder builder, int duration) {
-    return false;
+    try {
+      EventImpl event = convertEvent(builder.buildEvent());
+      system.scheduleEvent(event.name(), event.location(), duration, event.users());
+      return true;
+    } catch (IllegalArgumentException e) {
+      return false;
+    }
   }
 
   @Override
   public void displayCurrentSchedule() {
-//    csview.displayAvailableUsers(csview.getListOfAvailableUsers());
     ViewAdapter view = new ViewAdapter(csview, model);
     view.refresh();
-    //this.csview.refresh();
-    //system.
   }
 
   @Override
@@ -76,15 +79,8 @@ public class ControllerAdapter implements Features {
     for (SchedulePlanner sch : model.schedules()) {
       if (sch.scheduleID().equals(selectedUser.toString())) {
         for (EventImpl event : sch.events()) {
-
-          DaysOfTheWeek reqDotw = DaysOfTheWeek.valueOf(requestedTime.getWeekDay().toString().toUpperCase());
-          String reqTime = requestedTime.getTime();
-
-          DaysOfTheWeek endDotw = event.time().endDay();
-          String endTime = event.time().endTime();
-          TimeImpl reqTimeImpl = new TimeImpl(reqDotw, reqTime, endDotw, endTime);
-
-          if (event.time().anyOverlap(reqTimeImpl)) {
+          TimeAdapter eventTime = new TimeAdapter(event.time());
+          if (eventTime.contains(requestedTime)) {
             csview.displayExistingEvent(new EventAdapter(event));
           }
         }
@@ -94,9 +90,9 @@ public class ControllerAdapter implements Features {
 
   private EventImpl convertEvent(Event event) {
     DaysOfTheWeek startDay = DaysOfTheWeek.valueOf(event.getEventTime().getStartTime()
-        .getWeekDay().toString());
+        .getWeekDay().toString().toUpperCase());
     DaysOfTheWeek endDay = DaysOfTheWeek.valueOf(event.getEventTime().getEndTime()
-        .getWeekDay().toString());
+        .getWeekDay().toString().toUpperCase());
     String startTime = event.getEventTime().getStartTime().getTime();
     String endTime = event.getEventTime().getEndTime().getTime();
     TimeImpl timeImpl = new TimeImpl(startDay, startTime, endDay, endTime);
@@ -112,7 +108,13 @@ public class ControllerAdapter implements Features {
 
   @Override
   public boolean modifyEvent(Event oldEvent, EventBuilder eventBuilder) {
-    return false;
+    try {
+      system.modifyEvent(convertEvent(oldEvent), convertEvent(eventBuilder.buildEvent()),
+              new UserImpl(eventBuilder.getHost().toString()));
+      return true;
+    } catch (IllegalArgumentException e) {
+      return false;
+    }
   }
 
   @Override
