@@ -63,7 +63,7 @@ public class TimeImpl implements ITime {
   }
 
   @Override
-  public boolean anyOverlap(TimeImpl t) {
+  public boolean anyOverlap(ITime t) {
     boolean check1 = false;
     boolean check2 = false;
     if (this.startDay().compareTo(t.startDay()) < 0) {
@@ -77,7 +77,8 @@ public class TimeImpl implements ITime {
     return check1 || check2 || this.hasOverlapCrossWeek(t);
   }
 
-  private boolean hasOverlapContainedWeek(TimeImpl t) {
+  @Override
+  public boolean hasOverlapContainedWeek(ITime t) {
     // check if start day of other Time object is before the ending day of this Time object
     int firstStartHr = this.getHours(this.startTime());
     int firstEndingHr = this.getHours(this.endTime());
@@ -107,7 +108,7 @@ public class TimeImpl implements ITime {
 
   // checks for any overlaps that may occur between 2 Time
   // objects when one or both roll over into a new week
-  private boolean hasOverlapCrossWeek(TimeImpl t) {
+  private boolean hasOverlapCrossWeek(ITime t) {
     // check that if both time objects roll over to next week (both roll over = overlap)
     if (this.startDay().compareTo(this.endDay()) > 0 && t.startDay().compareTo(t.endDay()) > 0) {
       return true;
@@ -143,7 +144,7 @@ public class TimeImpl implements ITime {
   }
 
   // get the number of hours for the given String time
-  private int getHours(String time) {
+  public int getHours(String time) {
     int timeInt = this.checkNumberStringTime(time);
     int minutes = this.getMinutes(time);
     return (timeInt - minutes) / 100;

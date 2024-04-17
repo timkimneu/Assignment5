@@ -9,7 +9,7 @@ import java.util.Objects;
  */
 public class EventImpl implements IEvent {
   private final String name;
-  private final TimeImpl time;
+  private final ITime time;
   private final LocationImpl location;
   private final List<UserImpl> users;
   private UserImpl host;
@@ -25,7 +25,7 @@ public class EventImpl implements IEvent {
    * @param loc   Has information of whether the place and whether it is online or not
    * @param users Includes a list of users that are a part of the event
    */
-  public EventImpl(String name, TimeImpl time, LocationImpl loc, List<UserImpl> users) {
+  public EventImpl(String name, ITime time, LocationImpl loc, List<UserImpl> users) {
     this.name = name;
     this.time = time;
     this.location = loc;
@@ -37,65 +37,31 @@ public class EventImpl implements IEvent {
     }
   }
 
-  /**
-   * Observer in order to observe the name field.
-   *
-   * @return a String that has the name of the event
-   */
   @Override
   public String name() {
     return this.name;
   }
 
-  /**
-   * Observes the Time of the event, which includes the starting and ending day and the starting
-   * and ending time of the event.
-   *
-   * @return Time object that represents beginning and ending time of an event.
-   */
   @Override
-  public TimeImpl time() {
+  public ITime time() {
     return this.time;
   }
 
-  /**
-   * Observer in order to observe the name location. Includes information
-   * of the place and whether the event is online or not.
-   *
-   * @return instance of Location field
-   */
   @Override
   public LocationImpl location() {
     return this.location;
   }
 
-  /**
-   * Observer in order to observe the list of users. Includes information
-   * of the place and whether the event is online or not.
-   *
-   * @return instance of list of users field
-   */
   @Override
   public List<UserImpl> users() {
     return this.users;
   }
 
-  /**
-   * Observer in order to observe the host user.
-   *
-   * @return User that represents the host
-   */
   @Override
   public UserImpl host() {
     return this.host;
   }
 
-  /**
-   * Method that returns a boolean to determine if user is the host.
-   *
-   * @param user User that may represent the host
-   * @return
-   */
   @Override
   public boolean isHost(UserImpl user) {
     return this.host.equals(user);

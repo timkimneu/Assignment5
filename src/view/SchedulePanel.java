@@ -4,6 +4,7 @@ import controller.ScheduleSystem;
 import model.DaysOfTheWeek;
 import model.EventImpl;
 import model.IReadOnlyPlannerModel;
+import model.ITime;
 import model.SchedulePlanner;
 import model.TimeImpl;
 
@@ -99,7 +100,7 @@ public class SchedulePanel extends JPanel implements SchPanel {
         List<EventImpl> listEvents = currSch.events();
         for (int event = 0; event < listEvents.size(); event++) {
           EventImpl currEvent = listEvents.get(event);
-          TimeImpl currTime = currEvent.time();
+          ITime currTime = currEvent.time();
           fillSquares(g2d, currTime.startTime(), currTime.endTime(), currTime.startDay(),
                   currTime.endDay(), currEvent);
         }

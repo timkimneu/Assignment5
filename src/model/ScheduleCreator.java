@@ -12,7 +12,10 @@ public class ScheduleCreator {
    * Creates an enum according to the given game and displays them as a string.
    */
   public enum ScheduleType {
-    ANYTIME("anytime"), WORKHOURS("workhours");
+    ANYTIME("anytime"),
+    WORKHOURS("workhours"),
+    PROVIDERANYTIME("provideranytime"),
+    PROVIDERWORKHOURS("providerworkhours");
     private final String display;
 
     ScheduleType(String display) {
@@ -33,6 +36,12 @@ public class ScheduleCreator {
       return new NUPlannerModel();
     }
     if (type == ScheduleType.WORKHOURS) {
+      return new WorkTimePlannerModel();
+    }
+    if (type == ScheduleType.PROVIDERANYTIME) {
+      return new NUPlannerModel();
+    }
+    if (type == ScheduleType.PROVIDERWORKHOURS) {
       return new WorkTimePlannerModel();
     }
     throw new IllegalArgumentException("Schedule does not exist");

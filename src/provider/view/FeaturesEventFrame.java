@@ -22,10 +22,11 @@ import provider.controller.Features;
 import provider.model.Event;
 import provider.model.EventBuilder;
 import provider.model.User;
+import provider.model.WeekDay;
 import provider.model.WeekTime;
 //import provider.model.impl.LocalEventBuilder;
-//import provider.model.impl.LocalWeekTime;
-//import provider.model.impl.WeekDay;
+import provider.model.LocalWeekTime;
+//import cs3500.nuplanner.model.impl.WeekDay;
 import provider.view.EventFrame;
 
 /**
@@ -73,7 +74,7 @@ public class FeaturesEventFrame extends JFrame implements EventFrame {
   private final User currentUser;
 
   // To build new events with
-  private final EventBuilder eventBuilder = new LocalEventBuilder();
+  private final EventBuilder eventBuilder;
   private Features features;
 
   /**
@@ -86,13 +87,16 @@ public class FeaturesEventFrame extends JFrame implements EventFrame {
    * @param existingEvent An event whose information should be displayed, and who should be
    *                      modified if the client requests so.
    */
-  public FeaturesEventFrame(Event existingEvent, User currentUser) {
+  public FeaturesEventFrame(Event existingEvent, User currentUser, EventBuilder builder) {
     if (existingEvent == null) {
       throw new IllegalArgumentException("The old event cannot be null");
     } else if (currentUser == null) {
       throw new IllegalArgumentException("The current user cannot be null");
+    } else if (builder == null) {
+      throw new IllegalArgumentException("The builder cannot be null");
     }
 
+    this.eventBuilder = builder;
     // The host of the event must stay the host.
     this.oldEvent = existingEvent;
     this.host = existingEvent.getHost();
@@ -124,10 +128,14 @@ public class FeaturesEventFrame extends JFrame implements EventFrame {
    * displays a GUI for creating a new event. The currentUser will be the host of any event
    * created, and is not shown in the list of available users as this is implied.
    */
-  public FeaturesEventFrame(User currentUser) {
+  public FeaturesEventFrame(User currentUser, EventBuilder builder) {
     if (currentUser == null) {
       throw new IllegalArgumentException("A new event requires a host");
+    } else if (builder == null) {
+      throw new IllegalArgumentException("The builder cannot be null");
     }
+
+    this.eventBuilder = builder;
 
     // The host of the event will be the current user.
     this.oldEvent = null;

@@ -2,15 +2,35 @@ package model;
 
 import provider.model.User;
 
-public class UserAdapter implements IUser {
-  private final User user;
+import java.util.Objects;
 
-  public UserAdapter(User user) {
+public class UserAdapter implements User {
+  private final IUser user;
+
+  public UserAdapter(IUser user) {
     this.user = user;
   }
 
   @Override
-  public String name() {
-    return user.getUsername();
+  public String getUsername() {
+    return user.name();
+  }
+
+  @Override
+  public String toString() {
+    return user.name();
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    if (other instanceof User) {
+      return this.user.name().equals(((User) other).getUsername());
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(((User)this).getUsername());
   }
 }

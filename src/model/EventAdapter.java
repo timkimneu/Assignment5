@@ -7,51 +7,57 @@ import provider.model.EventTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventAdapter implements IEvent {
-  private final Event event;
+public class EventAdapter implements Event {
+  private final EventImpl event;
 
-  public EventAdapter(Event event) {
+  public EventAdapter(EventImpl event) {
     this.event = event;
   }
 
   @Override
-  public String name() {
-    return event.getName();
+  public String getName() {
+    return event.name();
   }
 
   @Override
-  public TimeImpl time() {
-    EventTime eventTime = event.getEventTime();
-    TimeAdapter timeAdapter = new TimeAdapter(eventTime);
-    DaysOfTheWeek startDay = timeAdapter.startDay();
-    DaysOfTheWeek endDay = timeAdapter.endDay();
-    String startTime = timeAdapter.startTime();
-    String endTime = timeAdapter.endTime();
-    return new TimeImpl(startDay, startTime, endDay, endTime);
-  }
-
-  @Override
-  public LocationImpl location() {
-    return new LocationImpl(event.isOnline(), event.getLocation());
-  }
-
-  @Override
-  public List<UserImpl> users() {
-    List<UserImpl> adaptedUsers = new ArrayList<>();
-    for (User u : event.getAllAttendees()) {
-      UserImpl userImpl = new UserImpl(u.getUsername());
-      adaptedUsers.add(userImpl);
+  public List<User> getAllAttendees() {
+    List<User> allUsers = new ArrayList<>();
+    for (UserImpl ui : event.users()) {
+      User user = new UserAdapter(ui);
+      allUsers.add(user);
     }
-    return adaptedUsers;
+    return allUsers;
   }
 
   @Override
-  public UserImpl host() {
-    return new UserImpl(event.getHost().toString());
+  public List<User> getAttendeesNoHost() {
+    List<User> noHost = getAllAttendees();
+    noHost.remove(getHost());
+    return noHost;
   }
 
   @Override
-  public boolean isHost(UserImpl user) {
-    return host().equals(user);
+  public String getLocation() {
+    return event.location().place();
+  }
+
+  @Override
+  public boolean isOnline() {
+    return event.location().online();
+  }
+
+  @Override
+  public User getHost() {
+    return new UserAdapter(event.host());
+  }
+
+  @Override
+  public EventTime getEventTime() {
+    return new TimeAdapter(event.time());
+  }
+
+  @Override
+  public boolean sameEvent(Event other) {
+    return this.equals(other);
   }
 }

@@ -3,6 +3,7 @@ package view;
 import controller.ScheduleSystem;
 import model.DaysOfTheWeek;
 import model.EventImpl;
+import model.ITime;
 import model.LocationImpl;
 import model.SchedulePlanner;
 import model.TimeImpl;
@@ -79,14 +80,14 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
 
     for (int event = 0; event < listEvents.size(); event++) {
       EventImpl currEvent = listEvents.get(event);
-      TimeImpl currTime = currEvent.time();
+      ITime currTime = currEvent.time();
       DaysOfTheWeek startDay = currTime.startDay();
 
       if (Objects.equals(startDay.toString(), day.toUpperCase())) {
         viewer += "\t";
         viewer += "name: " + listEvents.get(event).name() + "\n\t";
 
-        TimeImpl time = listEvents.get(event).time();
+        ITime time = listEvents.get(event).time();
         viewer += "time: " + time.startDay().observeDay() + ": " + time.startTime() +
                 " -> " + time.endDay().observeDay() + ": " + time.endTime() + "\n\t";
 
@@ -120,7 +121,7 @@ public class ScheduleSystemTextView implements ScheduleSystemView {
 
     for (int event = 0; event < listEvents.size(); event++) {
       EventImpl currEvent = listEvents.get(event);
-      TimeImpl currTime = currEvent.time();
+      ITime currTime = currEvent.time();
       DaysOfTheWeek startDay = currTime.startDay();
       dict.put(startDay.toString(), dict.get(startDay.toString()) + 1);
     }

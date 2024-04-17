@@ -51,12 +51,8 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   private JLabel availUsers;// = new JLabel("\tAvailable Users: ");
   private GridLayout gridLayout;// = new GridLayout(0, 1);
   private JScrollPane scrollPane;// = new JScrollPane();
-<<<<<<< Updated upstream
-  private User user;
   private String[] allUsers;
-=======
   private UserImpl user;
->>>>>>> Stashed changes
 
   /**
    * Constructor of the event frame. Sets the dimension of the frame and asks user for the name,
@@ -153,13 +149,8 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
                     .toUpperCase()), startTimeTxt.getText(),
                     (DaysOfTheWeek.valueOf(endDOTW.getSelectedItem().toString().toUpperCase())),
                     endTimeTxt.getText()),
-<<<<<<< Updated upstream
-            new Location(getOnlineBool(Objects.requireNonNull(onlineBox.getSelectedItem())),
-                    place.getText()), getUsers(usersBox.getSelectedValuesList()));
-=======
             new LocationImpl(getOnlineBool(Objects.requireNonNull(onlineBox.getSelectedItem())),
-                    place.getText()), getUsers(attendeesBox.getSelectedValuesList()));
->>>>>>> Stashed changes
+                    place.getText()), getUsers(usersBox.getSelectedValuesList()));
     return newEvent;
   }
 

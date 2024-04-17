@@ -24,6 +24,7 @@ import javax.swing.JMenuItem;
 
 import provider.controller.Features;
 import provider.model.Event;
+import provider.model.EventBuilder;
 import provider.model.ReadOnlySchedule;
 import provider.model.User;
 import provider.view.CentralSystemView;
@@ -64,6 +65,8 @@ public class FeaturesViewFrame<T extends JPanel & SchedulePanel>
   // To delegate to for functionality
   private Features features;
 
+  private final EventBuilder builder;
+
   /**
    * Constructs a new LocalScheduleView with a given model and schedule panel. The model
    * enables this view to work without a controller, and the schedule is a panel for which
@@ -71,12 +74,16 @@ public class FeaturesViewFrame<T extends JPanel & SchedulePanel>
    *
    * @throws IllegalArgumentException if any given argument is null
    */
-  public FeaturesViewFrame(T schedule)
+  public FeaturesViewFrame(T schedule, EventBuilder builder)
           throws IllegalArgumentException {
     // Check for null arguments
     if (schedule == null) {
       throw new IllegalArgumentException("Schedule cannot be null.");
+    } else if (builder == null) {
+      throw new IllegalArgumentException("Builder cannot be null");
     }
+
+    this.builder = builder;
 
     // Set up file menu
     JMenuBar menuBar = new JMenuBar();
@@ -160,7 +167,7 @@ public class FeaturesViewFrame<T extends JPanel & SchedulePanel>
     // Create a new event frame from looking at the existing event with the current selected
     // user.
     FeaturesEventFrame event = new FeaturesEventFrame(existingEvent,
-            userOptionsList.getElementAt(userOptions.getSelectedIndex()));
+            userOptionsList.getElementAt(userOptions.getSelectedIndex()), builder);
     event.addFeatures(features);
     event.displayAvailableUsers(getListOfAvailableUsers());
     event.setVisible(true);
@@ -168,6 +175,8 @@ public class FeaturesViewFrame<T extends JPanel & SchedulePanel>
 
   @Override
   public void displayAvailableUsers(List<User> users) {
+    System.out.println("FEAUTRES FRAME");
+    System.out.println(users);
     this.displayAvailableUsersHelp(users);
   }
 
@@ -175,6 +184,8 @@ public class FeaturesViewFrame<T extends JPanel & SchedulePanel>
   public User currentSelectedUser() {
     // userOptions presents the data within userOptionsList. The indexes are guaranteed
     // to match up properly.
+    System.out.println(userOptions.getSelectedIndex());
+    System.out.println(userOptionsList.getElementAt(userOptions.getSelectedIndex()));
     return userOptionsList.getElementAt(userOptions.getSelectedIndex());
   }
 
@@ -236,7 +247,8 @@ public class FeaturesViewFrame<T extends JPanel & SchedulePanel>
       }
 
       FeaturesEventFrame event =
-              new FeaturesEventFrame(userOptionsList.getElementAt(userOptions.getSelectedIndex()));
+              new FeaturesEventFrame(userOptionsList.getElementAt(userOptions.getSelectedIndex()),
+                      builder);
       event.addFeatures(features);
       event.displayAvailableUsers(getListOfAvailableUsers());
       event.setVisible(true);
@@ -261,7 +273,7 @@ public class FeaturesViewFrame<T extends JPanel & SchedulePanel>
 
       FeaturesScheduleFrame event =
               new FeaturesScheduleFrame(
-                      userOptionsList.getElementAt(userOptions.getSelectedIndex()));
+                      userOptionsList.getElementAt(userOptions.getSelectedIndex()), builder);
       event.addFeatures(features);
       event.displayAvailableUsers(getListOfAvailableUsers());
       event.setVisible(true);
@@ -290,15 +302,13 @@ public class FeaturesViewFrame<T extends JPanel & SchedulePanel>
     User selectedUser = userOptionsList.getElementAt(userOptions.getSelectedIndex());
     this.userOptionsList.removeAllElements();
     this.userOptionsList.addAll(users);
+    System.out.println(selectedUser);
     this.userOptions.setSelectedItem(selectedUser);
+    System.out.println(userOptions.getSelectedIndex());
   }
 
-  /**
-   * Converts the users in the JListModel into a List form.
-   *
-   * @return a List of the available users.
-   */
-  private List<User> getListOfAvailableUsers() {
+  @Override
+  public List<User> getListOfAvailableUsers() {
     List<User> sendUsers = new ArrayList<>();
     for (int userIdx = 0; userIdx < userOptionsList.getSize(); userIdx++) {
       sendUsers.add(userOptionsList.getElementAt(userIdx));

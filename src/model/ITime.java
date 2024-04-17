@@ -52,5 +52,19 @@ public interface ITime {
    * @param t Other Time object to be compared to this Time object.
    * @return True if there exists an overlap between the two Time objects and false otherwise.
    */
-  boolean anyOverlap(TimeImpl t);
+  boolean anyOverlap(ITime t);
+
+  /**
+   *
+   * @param time
+   * @return
+   */
+  boolean hasOverlapContainedWeek(ITime time);
+
+  /**
+   *
+   * @param s
+   * @return
+   */
+  int getHours(String s);
 }

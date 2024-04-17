@@ -3,40 +3,30 @@ package model;
 import provider.model.EventTime;
 import provider.model.WeekTime;
 
-public final class TimeAdapter implements ITime {
-  private final WeekTime startWkTime;
-  private final WeekTime endWkTime;
+public final class TimeAdapter implements EventTime {
+  private final ITime timeImpl;
 
-  public TimeAdapter(EventTime eventTime) {
-    this.startWkTime = eventTime.getStartTime();
-    this.endWkTime = eventTime.getEndTime();
+  public TimeAdapter(ITime time) {
+    this.timeImpl = time;
   }
 
   @Override
-  public DaysOfTheWeek startDay() {
-    String startDayStr = startWkTime.getWeekDay().toString();
-    return DaysOfTheWeek.valueOf(startDayStr);
+  public WeekTime getStartTime() {
+    return new WeekTimeAdapter(timeImpl.startDay(), timeImpl.startTime());
   }
 
   @Override
-  public DaysOfTheWeek endDay() {
-    String endDayStr = endWkTime.getWeekDay().toString();
-    return DaysOfTheWeek.valueOf(endDayStr);
+  public WeekTime getEndTime() {
+    return new WeekTimeAdapter(timeImpl.endDay(), timeImpl.endTime());
   }
 
   @Override
-  public String startTime() {
-    return startWkTime.getTime();
+  public boolean overlapsWith(EventTime other) {
+    return timeImpl.anyOverlap(new ITimeAdapter(other));
   }
 
   @Override
-  public String endTime() {
-    return endWkTime.getTime();
-  }
-
-  @Override
-  public boolean anyOverlap(TimeImpl t) {
-    TimeImpl thisTime = new TimeImpl(startDay(), startTime(), endDay(), endTime());
-    return thisTime.anyOverlap(t);
+  public boolean contains(WeekTime time) {
+    return false;
   }
 }

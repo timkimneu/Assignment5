@@ -2,6 +2,7 @@ package controller;
 
 import model.DaysOfTheWeek;
 import model.EventImpl;
+import model.ITime;
 import model.LocationImpl;
 import model.IPlannerModel;
 import model.SchedulePlanner;
@@ -148,7 +149,7 @@ public class ScheduleSystemController implements ScheduleSystem {
   }
 
   // writes the time to the XML file
-  private void writeTime(Writer file, TimeImpl t) {
+  private void writeTime(Writer file, ITime t) {
     try {
       file.write("\t\t<time>\n");
       file.write("\t\t\t<start-day>" + t.startDay().observeDay() + "</start-day>\n");

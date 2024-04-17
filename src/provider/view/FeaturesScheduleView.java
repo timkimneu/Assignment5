@@ -15,10 +15,12 @@ import javax.swing.JPanel;
 
 import provider.controller.Features;
 import provider.model.Event;
+import provider.model.LocalWeekTime;
 import provider.model.ReadOnlySchedule;
+import provider.model.WeekDay;
 import provider.model.WeekTime;
-import provider.model.impl.LocalWeekTime;
-import provider.model.impl.WeekDay;
+//import provider.model.impl.LocalWeekTime;
+//import provider.model.impl.WeekDay;
 import provider.view.SchedulePanel;
 
 /**

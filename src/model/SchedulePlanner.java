@@ -75,8 +75,8 @@ public class SchedulePlanner implements ISchedule {
 
   // checks to see if two given events overlap each other
   private void checkForOverlap(EventImpl e1, EventImpl e2) throws IllegalStateException {
-    TimeImpl e1Time = e1.time();
-    TimeImpl e2Time = e2.time();
+    ITime e1Time = e1.time();
+    ITime e2Time = e2.time();
     if (e1Time.anyOverlap(e2Time)) {
       throw new IllegalStateException("Schedule contains overlapping events!" + e1.time().toString()
               + e2.time().toString());

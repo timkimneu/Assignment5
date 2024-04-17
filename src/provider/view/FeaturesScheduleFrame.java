@@ -52,7 +52,7 @@ public class FeaturesScheduleFrame extends JFrame implements EventFrame {
   private final User currentUser;
 
   // To build new events with
-  private final EventBuilder eventBuilder = new LocalEventBuilder();
+  private final EventBuilder eventBuilder;
   private Features features;
 
   /**
@@ -60,11 +60,14 @@ public class FeaturesScheduleFrame extends JFrame implements EventFrame {
    * displays a GUI for creating a new event. The currentUser will be the host of any event
    * created, and is not shown in the list of available users as this is implied.
    */
-  public FeaturesScheduleFrame(User currentUser) {
+  public FeaturesScheduleFrame(User currentUser, EventBuilder builder) {
     if (currentUser == null) {
       throw new IllegalArgumentException("A new event requires a host");
+    } else if (builder == null) {
+      throw new IllegalArgumentException("Builder cannot be null");
     }
 
+    eventBuilder = builder;
     this.currentUser = currentUser;
 
     // This Frame's Layout

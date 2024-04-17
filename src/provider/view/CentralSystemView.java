@@ -69,4 +69,11 @@ public interface CentralSystemView {
    * @throws IllegalArgumentException if the features are null
    */
   void addFeatures(Features features);
+
+  /**
+   * Converts the users in the JListModel into a List form.
+   *
+   * @return a List of the available users.
+   */
+  List<User> getListOfAvailableUsers();
 }
