@@ -10,10 +10,6 @@ import view.ScheduleFrame;
 import view.ScheduleSystemView;
 import view.ViewAdapter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Main class to run planner GUI. Allows events to be added, modified, and removed
  * and can import schedules via XML to create new schedules. GUI currently has no
@@ -33,7 +29,8 @@ public final class PlannerRunner {
   public static void main(String[] args) {
 
     if (args.length == 0) {
-      System.out.println("Please provide an argument: anytime, workhours, provideranytime, or providerworkhours");
+      System.out.println("Please provide an argument: anytime, workhours, provideranytime, " +
+              "or providerworkhours");
       return;
     }
     String schedule = args[0];
@@ -41,12 +38,14 @@ public final class PlannerRunner {
         ScheduleCreator.ScheduleType.valueOf(schedule.strip().toUpperCase()));
 
     if (schedule.equals("provideranytime")) {
-      CentralSystemView csview = new FeaturesViewFrame<>(new FeaturesScheduleView(), new EventBuilderAdapter());
+      CentralSystemView csview = new FeaturesViewFrame<>(new FeaturesScheduleView(),
+              new EventBuilderAdapter());
       ScheduleSystem controller = new ScheduleSystemController(new ViewAdapter(csview, model));
       controller.launch(model);
     }
     else if (schedule.equals("providerworkhours")) {
-      CentralSystemView csview = new FeaturesViewFrame<>(new FeaturesScheduleView(), new EventBuilderAdapter());
+      CentralSystemView csview = new FeaturesViewFrame<>(new FeaturesScheduleView(),
+              new EventBuilderAdapter());
       ScheduleSystem controller = new ScheduleSystemController(new ViewAdapter(csview, model));
       controller.launch(model);
     }
