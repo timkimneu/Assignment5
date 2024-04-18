@@ -1,15 +1,8 @@
 import controller.ScheduleSystem;
 import controller.ScheduleSystemController;
-import model.DaysOfTheWeek;
 import model.EventBuilderAdapter;
-import model.EventImpl;
 import model.IPlannerModel;
-import model.LocationImpl;
-import model.NUPlannerModel;
 import model.ScheduleCreator;
-import model.SchedulePlanner;
-import model.TimeImpl;
-import model.UserImpl;
 import provider.view.CentralSystemView;
 import provider.view.FeaturesScheduleView;
 import provider.view.FeaturesViewFrame;

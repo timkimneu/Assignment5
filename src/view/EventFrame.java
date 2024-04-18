@@ -51,7 +51,6 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   private JLabel availUsers;// = new JLabel("\tAvailable Users: ");
   private GridLayout gridLayout;// = new GridLayout(0, 1);
   private JScrollPane scrollPane;// = new JScrollPane();
-  private String[] allUsers;
   private UserImpl user;
 
   /**
@@ -263,7 +262,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
 
     mainPanel.add(usersTag);
 
-    allUsers = this.model.users().toArray(new String[0]);
+    String[] allUsers = this.model.users().toArray(new String[0]);
     usersBox = new JList<>(allUsers);
 
     scrollPane.setViewportView(usersBox);

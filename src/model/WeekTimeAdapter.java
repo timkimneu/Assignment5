@@ -54,7 +54,9 @@ public class WeekTimeAdapter implements WeekTime {
             && this.getHour() < other.getHour()) {
       return true;
     }
-    else return this.getHour() == (other.getHour()) && this.getMinute() < other.getMinute();
+    else {
+      return this.getHour() == (other.getHour()) && this.getMinute() < other.getMinute();
+    }
   }
 
   @Override
@@ -66,7 +68,9 @@ public class WeekTimeAdapter implements WeekTime {
             && this.getHour() > other.getHour()) {
       return true;
     }
-    else return this.getHour() == (other.getHour()) && this.getMinute() > other.getMinute();
+    else {
+      return this.getHour() == (other.getHour()) && this.getMinute() > other.getMinute();
+    }
   }
 
   @Override

@@ -144,6 +144,7 @@ public class TimeImpl implements ITime {
   }
 
   // get the number of hours for the given String time
+  @Override
   public int getHours(String time) {
     int timeInt = this.checkNumberStringTime(time);
     int minutes = this.getMinutes(time);

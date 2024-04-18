@@ -4,6 +4,9 @@ import provider.model.User;
 
 import java.util.Objects;
 
+/**
+ * Adapter to convert User type from provider into original IUser type.
+ */
 public class UserAdapter implements User {
   private final IUser user;
 

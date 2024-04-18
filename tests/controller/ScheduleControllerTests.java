@@ -585,8 +585,8 @@ public class ScheduleControllerTests {
     List<UserImpl> listUsers = new ArrayList<>();
     listUsers.add(new UserImpl("Kat"));
     listUsers.add(new UserImpl("Tim"));
-    EventImpl sixFlags = new EventImpl("Six Flags", new TimeImpl(this.sunday, "0800", this.sunday, "1200"),
-            new LocationImpl(false, "California"), listUsers);
+    EventImpl sixFlags = new EventImpl("Six Flags", new TimeImpl(this.sunday, "0800", this.sunday,
+            "1200"), new LocationImpl(false, "California"), listUsers);
 
     SchedulePlanner timSch = new SchedulePlanner(new ArrayList<>(Arrays.asList(sixFlags)), "Tim");
     IPlannerModel anytimeModel = new NUPlannerModel(new ArrayList<>(Arrays.asList(timSch)));
@@ -610,8 +610,8 @@ public class ScheduleControllerTests {
     List<UserImpl> listUsers = new ArrayList<>();
     listUsers.add(new UserImpl("Kat"));
     listUsers.add(new UserImpl("Tim"));
-    EventImpl sixFlags = new EventImpl("Six Flags", new TimeImpl(this.sunday, "0800", this.sunday, "1200"),
-            new LocationImpl(false, "California"), listUsers);
+    EventImpl sixFlags = new EventImpl("Six Flags", new TimeImpl(this.sunday, "0800", this.sunday,
+            "1200"), new LocationImpl(false, "California"), listUsers);
 
     SchedulePlanner timSch = new SchedulePlanner(new ArrayList<>(Arrays.asList(sixFlags)), "Tim");
     SchedulePlanner katSch = new SchedulePlanner(new ArrayList<>(Arrays.asList(sixFlags)), "Kat");
@@ -659,8 +659,8 @@ public class ScheduleControllerTests {
     List<UserImpl> listUsers = new ArrayList<>();
     listUsers.add(new UserImpl("Kat"));
     listUsers.add(new UserImpl("Tim"));
-    EventImpl sixFlags = new EventImpl("Six Flags", new TimeImpl(this.monday, "0900", this.monday, "1300"),
-            new LocationImpl(false, "California"), listUsers);
+    EventImpl sixFlags = new EventImpl("Six Flags", new TimeImpl(this.monday, "0900", this.monday,
+            "1300"), new LocationImpl(false, "California"), listUsers);
 
     SchedulePlanner timSch = new SchedulePlanner(new ArrayList<>(List.of(sixFlags)), "Tim");
     SchedulePlanner katSch = new SchedulePlanner(new ArrayList<>(List.of(sixFlags)), "Kat");

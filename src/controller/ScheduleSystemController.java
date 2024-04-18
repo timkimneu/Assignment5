@@ -220,7 +220,8 @@ public class ScheduleSystemController implements ScheduleSystem {
   }
 
   @Override
-  public void scheduleEvent(String name, LocationImpl location, int duration, List<UserImpl> users) {
+  public void scheduleEvent(String name, LocationImpl location, int duration, List<UserImpl> users)
+  {
     this.model.scheduleEvent(name, location, duration, users);
     view.refresh();
   }

@@ -55,16 +55,19 @@ public interface ITime {
   boolean anyOverlap(ITime t);
 
   /**
+   * Checks if this time overlaps with the given time in the same contained week.
    *
-   * @param time
-   * @return
+   * @param time Time to compare to.
+   * @return boolean indicating the presence of an overlap.
    */
   boolean hasOverlapContainedWeek(ITime time);
 
   /**
+   * Returns the number of hours contained in the given string
+   * (assuming formatted in military time).
    *
-   * @param s
-   * @return
+   * @param s String resembling a time in military format.
+   * @return an integer resembling the number of hours in the given time.
    */
   int getHours(String s);
 }

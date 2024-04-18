@@ -21,21 +21,11 @@ public class LocationImpl implements ILocation {
     this.place = place;
   }
 
-  /**
-   * Observes the state of the event, and whether it is online or not.
-   *
-   * @return Boolean according to whether the event is online or not.
-   */
   @Override
   public boolean online() {
     return this.online;
   }
 
-  /**
-   * Observes the place of the event.
-   *
-   * @return A string representing the place of the event.
-   */
   @Override
   public String place() {
     return this.place;

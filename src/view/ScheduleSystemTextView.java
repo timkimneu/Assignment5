@@ -6,7 +6,6 @@ import model.EventImpl;
 import model.ITime;
 import model.LocationImpl;
 import model.SchedulePlanner;
-import model.TimeImpl;
 import model.UserImpl;
 
 import java.util.Dictionary;

@@ -73,7 +73,8 @@ public class NUPlannerModel implements IPlannerModel {
   }
 
   @Override
-  public void scheduleEvent(String name, LocationImpl location, int duration, List<UserImpl> users) {
+  public void scheduleEvent(String name, LocationImpl location, int duration, List<UserImpl> users)
+  {
     List<String> daysOfTheWeek = Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday",
             "Thursday", "Friday", "Saturday");
     int mins = duration % 60;

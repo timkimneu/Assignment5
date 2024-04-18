@@ -6,7 +6,6 @@ import model.EventImpl;
 import model.IReadOnlyPlannerModel;
 import model.ITime;
 import model.SchedulePlanner;
-import model.TimeImpl;
 
 import javax.swing.JPanel;
 

@@ -1,6 +1,6 @@
 package model;
+
 import provider.model.EventTime;
-import provider.model.User;
 import provider.model.WeekTime;
 
 import java.util.Objects;
@@ -27,6 +27,7 @@ public final class ITimeAdapter implements ITime {
     this.startTime = eventTime.getStartTime();
     this.endTime = eventTime.getEndTime();
   }
+
   @Override
   public DaysOfTheWeek startDay() {
     return DaysOfTheWeek.valueOf(startTime.getWeekDay().toString());
@@ -61,6 +62,14 @@ public final class ITimeAdapter implements ITime {
   @Override
   public int getHours(String s) {
     return (Integer.parseInt(s) - (Integer.parseInt(s) % 60)) / 60;
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    if (other instanceof ITime) {
+      return this.equals(other);
+    }
+    return false;
   }
 
   @Override
