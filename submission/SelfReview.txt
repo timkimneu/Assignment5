@@ -1,0 +1,8 @@
+Self Review:
+Something I wish we had done differently in our original design was to add more interfaces for
+our model classes. Originally, when we had to send the files to our customers, these files needed
+to be created because they needed to have interfaces in order to implement adapters. Therefore,
+our original design was not as flexible as we had thought. Our experience with our providers were
+very pleasant, since they were very responsive and had very quick response times. They were able to
+thoroughly answer any questions we had with our implementations and correct any misconceptions
+about their design.

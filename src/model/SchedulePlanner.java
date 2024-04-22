@@ -5,8 +5,8 @@ import java.util.List;
 /**
  * Represents a list of events for a single user with an identification number.
  */
-public class SchedulePlanner implements ISchedule {
-  final private List<EventImpl> events;
+public class SchedulePlanner implements ISchedule<DaysOfTheWeek> {
+  final private List<IEvent<DaysOfTheWeek>> events;
   final private String id;
 
   /**
@@ -16,7 +16,7 @@ public class SchedulePlanner implements ISchedule {
    * @param events List of events that will form a schedule
    * @param id     String to show the unique id of the event
    */
-  public SchedulePlanner(List<EventImpl> events, String id) {
+  public SchedulePlanner(List<IEvent<DaysOfTheWeek>> events, String id) {
     this.events = events;
     this.id = id;
     this.checkAnyOverlap(this.events());
@@ -28,12 +28,12 @@ public class SchedulePlanner implements ISchedule {
   }
 
   @Override
-  public List<EventImpl> events() {
+  public List<IEvent<DaysOfTheWeek>> events() {
     return this.events;
   }
 
   @Override
-  public void addEvent(EventImpl e) {
+  public void addEvent(IEvent<DaysOfTheWeek> e) {
     if (this.events().contains(e)) {
       throw new IllegalArgumentException("Schedule already contains given event!");
     } else {
@@ -49,11 +49,11 @@ public class SchedulePlanner implements ISchedule {
   }
 
   @Override
-  public void removeEvent(EventImpl e) {
+  public void removeEvent(IEvent<DaysOfTheWeek> e) {
     if (!this.events().contains(e)) {
       throw new IllegalArgumentException("Event to be removed not found!");
     } else {
-      for (EventImpl event : this.events()) {
+      for (IEvent<DaysOfTheWeek> event : this.events()) {
         if (e.equals(event)) {
           this.events().remove(e);
           break;
@@ -63,9 +63,9 @@ public class SchedulePlanner implements ISchedule {
   }
 
   // method to check if the events have any overlap
-  private void checkAnyOverlap(List<EventImpl> events) throws IllegalStateException {
-    for (EventImpl e1 : events) {
-      for (EventImpl e2 : events) {
+  private void checkAnyOverlap(List<IEvent<DaysOfTheWeek>> events) throws IllegalStateException {
+    for (IEvent<DaysOfTheWeek> e1 : events) {
+      for (IEvent<DaysOfTheWeek> e2 : events) {
         if (!e1.equals(e2)) {
           checkForOverlap(e1, e2);
         }
@@ -74,9 +74,10 @@ public class SchedulePlanner implements ISchedule {
   }
 
   // checks to see if two given events overlap each other
-  private void checkForOverlap(EventImpl e1, EventImpl e2) throws IllegalStateException {
-    ITime e1Time = e1.time();
-    ITime e2Time = e2.time();
+  private void checkForOverlap(IEvent<DaysOfTheWeek> e1, IEvent<DaysOfTheWeek> e2)
+      throws IllegalStateException {
+    ITime<DaysOfTheWeek> e1Time = e1.time();
+    ITime<DaysOfTheWeek> e2Time = e2.time();
     if (e1Time.anyOverlap(e2Time)) {
       throw new IllegalStateException("Schedule contains overlapping events!" + e1.time().toString()
               + e2.time().toString());

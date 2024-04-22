@@ -9,7 +9,7 @@ import provider.model.WeekTime;
  * in order to return the start and end time methods.
  */
 public final class TimeAdapter implements EventTime {
-  private final ITime timeImpl;
+  private final ITime<DaysOfTheWeek> timeImpl;
 
   /**
    * Represents the times that are found in each event in the schedule planner.
@@ -18,7 +18,7 @@ public final class TimeAdapter implements EventTime {
    *
    * @param time Sets the time of the event in the schedule.
    */
-  public TimeAdapter(ITime time) {
+  public TimeAdapter(ITime<DaysOfTheWeek> time) {
     this.timeImpl = time;
   }
 

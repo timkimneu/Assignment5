@@ -10,7 +10,21 @@ import java.util.List;
  * planner system. Throws errors if there are time conflicts between events for any attendee of the
  * modified event.
  */
-public interface IPlannerModel extends IReadOnlyPlannerModel {
+public interface IPlannerModel<T> extends IReadOnlyPlannerModel<T> {
+  /**
+   *
+   * @param startDay
+   * @param endDay
+   * @param startTime
+   * @param endTime
+   * @param loc
+   * @param users
+   * @param eventName
+   * @param id
+   */
+  void addSchedule(List<String> startDay, List<String> endDay, List<String> startTime,
+                   List<String> endTime, List<LocationImpl> loc, List<List<UserImpl>> users,
+                   List<String> eventName, String id);
   /**
    * Adds the given event to all users in the planner system provided by the list of users
    * pertaining to the given event. In other words, adds this event to a user's schedule if they
@@ -20,7 +34,7 @@ public interface IPlannerModel extends IReadOnlyPlannerModel {
    *
    * @param event Event class that represents the event to be added.
    */
-  void addEvent(EventImpl event);
+  void addEvent(IEvent<T> event);
 
   /**
    * Makes an event with the provided parameters provided, and schedules the event.
@@ -49,7 +63,7 @@ public interface IPlannerModel extends IReadOnlyPlannerModel {
    * @param newEvent New Event to replace with old event.
    * @param user     User that is attending the event.
    */
-  void modifyEvent(EventImpl event, EventImpl newEvent, UserImpl user);
+  void modifyEvent(IEvent<T> event, IEvent<T> newEvent, UserImpl user);
 
   /**
    * Removes an existing event from all schedules in the system. Throw an error if the event to be
@@ -58,5 +72,5 @@ public interface IPlannerModel extends IReadOnlyPlannerModel {
    * @param event Event that will be removed.
    * @param user  User that is attending the event.
    */
-  void removeEvent(EventImpl event, UserImpl user);
+  void removeEvent(IEvent<T> event, UserImpl user);
 }

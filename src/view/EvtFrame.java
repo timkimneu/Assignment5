@@ -1,7 +1,9 @@
 package view;
 
 import controller.ScheduleSystem;
+import model.DaysOfTheWeek;
 import model.EventImpl;
+import model.IEvent;
 import model.UserImpl;
 
 /**
@@ -18,14 +20,14 @@ public interface EvtFrame {
    *
    * @param listener Controller to connect to view.
    */
-  void addListener(ScheduleSystem listener);
+  void addListener(ScheduleSystem<DaysOfTheWeek> listener);
 
   /**
    * Event to be autofilled for a selected event.
    *
    * @param event Event to be autofilled in for.
    */
-  void addDefaultEvent(EventImpl event);
+  void addDefaultEvent(IEvent<DaysOfTheWeek> event);
 
   /**
    * Adds the selected user to the drop-down list in the event panel.
@@ -39,5 +41,5 @@ public interface EvtFrame {
    *
    * @param event Event to pass back.
    */
-  void getUnmodifiedEvent(EventImpl event);
+  void getUnmodifiedEvent(IEvent<DaysOfTheWeek> event);
 }

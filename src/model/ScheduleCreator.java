@@ -15,7 +15,8 @@ public class ScheduleCreator {
     ANYTIME("anytime"),
     WORKHOURS("workhours"),
     PROVIDERANYTIME("provideranytime"),
-    PROVIDERWORKHOURS("providerworkhours");
+    PROVIDERWORKHOURS("providerworkhours"),
+    SATURDAY("saturday");
     private final String display;
 
     ScheduleType(String display) {
@@ -31,7 +32,7 @@ public class ScheduleCreator {
   /**
    * Creates an enum according to the given strategy and displays them as a string.
    */
-  public static NUPlannerModel createSchedule(ScheduleType type) {
+  public static IPlannerModel createSchedule(ScheduleType type) {
     if (type == ScheduleType.ANYTIME) {
       return new NUPlannerModel();
     }
@@ -43,6 +44,9 @@ public class ScheduleCreator {
     }
     if (type == ScheduleType.PROVIDERWORKHOURS) {
       return new WorkTimePlannerModel();
+    }
+    if (type == ScheduleType.SATURDAY) {
+      return new SatPlannerModel();
     }
     throw new IllegalArgumentException("Schedule does not exist");
   }

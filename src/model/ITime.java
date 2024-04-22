@@ -15,20 +15,20 @@ package model;
  * first number is 0 or 1 and from 0 to 3 when the first number is 2. The third number ranges from
  * 0 to 5 and the fourth number ranges from 0 to 9.
  */
-public interface ITime {
+public interface ITime<T> {
   /**
    * Observes the day of the week that an event begins on.
    *
    * @return the day of the week enum which the event begins on.
    */
-  DaysOfTheWeek startDay();
+  T startDay();
 
   /**
    * Observes the day of the week that an event ends on.
    *
    * @return the day of the week enum which the event ends on.
    */
-  DaysOfTheWeek endDay();
+  T endDay();
 
   /**
    * Observes the military time that an event begins on as a String.
@@ -52,7 +52,7 @@ public interface ITime {
    * @param t Other Time object to be compared to this Time object.
    * @return True if there exists an overlap between the two Time objects and false otherwise.
    */
-  boolean anyOverlap(ITime t);
+  boolean anyOverlap(ITime<T> t);
 
   /**
    * Checks if this time overlaps with the given time in the same contained week.
@@ -60,14 +60,14 @@ public interface ITime {
    * @param time Time to compare to.
    * @return boolean indicating the presence of an overlap.
    */
-  boolean hasOverlapContainedWeek(ITime time);
+  boolean hasOverlapContainedWeek(ITime<T> time);
 
   /**
    * Returns the number of hours contained in the given string
    * (assuming formatted in military time).
    *
-   * @param s String resembling a time in military format.
+   * @param time String resembling a time in military format.
    * @return an integer resembling the number of hours in the given time.
    */
-  int getHours(String s);
+  int getHours(String time);
 }

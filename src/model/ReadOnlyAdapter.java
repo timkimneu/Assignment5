@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class ReadOnlyAdapter implements ReadOnlySchedule {
 
-  private final SchedulePlanner schPlanner;
+  private final ISchedule<DaysOfTheWeek> schPlanner;
 
   /**
    * Represents a part of the full planner or schedule system that allows for interaction between
@@ -27,7 +27,7 @@ public class ReadOnlyAdapter implements ReadOnlySchedule {
    * planner system and can also observe the list of events for a specific user if the user exists,
    * otherwise throws an error.
    */
-  public ReadOnlyAdapter(SchedulePlanner schPlanner) {
+  public ReadOnlyAdapter(ISchedule<DaysOfTheWeek> schPlanner) {
     this.schPlanner = schPlanner;
   }
 
@@ -39,7 +39,7 @@ public class ReadOnlyAdapter implements ReadOnlySchedule {
 
   @Override
   public List<Event> getEvents() {
-    List<EventImpl> listEvents = schPlanner.events();
+    List<IEvent<DaysOfTheWeek>> listEvents = schPlanner.events();
     List<Event> finalEvent = new ArrayList<>();
 
     for (int event = 0; event < listEvents.size(); event++) {

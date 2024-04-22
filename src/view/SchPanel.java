@@ -1,6 +1,10 @@
 package view;
 
 import controller.ScheduleSystem;
+import model.DaysOfTheWeek;
+import model.EventImpl;
+
+import java.awt.*;
 
 /**
  * Creates an interface in order to visualize the users'
@@ -8,7 +12,13 @@ import controller.ScheduleSystem;
  * that is chosen, and will draw red blocks according
  * to the events in their schedules.
  */
-public interface SchPanel {
+public interface SchPanel<T> {
+  /**
+   *
+   * @param g2d
+   */
+  void drawScheduleState(Graphics2D g2d);
+
   /**
    * Draws the dates provided by the frame onto the panel.
    *
@@ -21,5 +31,5 @@ public interface SchPanel {
    *
    * @param controller Listener to allow for the handling of events and changes to model.
    */
-  void addListener(ScheduleSystem controller);
+  void addListener(ScheduleSystem<T> controller);
 }

@@ -1,6 +1,9 @@
 package view;
 
 import controller.ScheduleSystem;
+import model.EventImpl;
+import model.ISchedule;
+import model.SchedulePlanner;
 
 /**
  * Creates an interface to view the schedule in a formatted manner, with
@@ -8,7 +11,7 @@ import controller.ScheduleSystem;
  * helps the user keep track of what events have been scheduled throughout
  * the week.
  */
-public interface ScheduleSystemView {
+public interface ScheduleSystemView<T> {
 
   /**
    * Creates a Viewer to view the schedule in a formatted manner, with
@@ -34,7 +37,7 @@ public interface ScheduleSystemView {
    *
    * @param listener Controller to allow listening on view.
    */
-  void addListener(ScheduleSystem listener);
+  void addListener(ScheduleSystem<T> listener);
 
   /**
    * Repaints the view to update changes from the model.

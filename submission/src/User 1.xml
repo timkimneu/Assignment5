@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<schedule id="User 1">
+	<event>
+		<name>"Vacation"</name>
+		<time>
+			<start-day>Monday</start-day>
+			<start>1300</start>
+			<end-day>Tuesday</end-day>
+			<end>1500</end>
+		</time>
+		<time>
+			<online>true</online>
+			<place>At Home</place>
+		</time>
+		<users>
+			<uid>"User 1"</uid>
+			<uid>"User 2"</uid>
+			<uid>"User 3"</uid>
+		</users>
+	</event>
+	<event>
+		<name>"Dinner"</name>
+		<time>
+			<start-day>Wednesday</start-day>
+			<start>1800</start>
+			<end-day>Wednesday</end-day>
+			<end>1830</end>
+		</time>
+		<time>
+			<online>false</online>
+			<place>Dinner Table</place>
+		</time>
+		<users>
+			<uid>"User 1"</uid>
+			<uid>"User 2"</uid>
+			<uid>"User 3"</uid>
+		</users>
+	</event>
+	<event>
+		<name>"hi"</name>
+		<time>
+			<start-day>Saturday</start-day>
+			<start>0950</start>
+			<end-day>Saturday</end-day>
+			<end>1130</end>
+		</time>
+		<time>
+			<online>true</online>
+			<place>hi</place>
+		</time>
+		<users>
+			<uid>"User 1"</uid>
+		</users>
+	</event>
+</schedule>

@@ -9,14 +9,14 @@ import java.util.List;
  * planner system and can also observe the list of events for a specific user if the user exists,
  * otherwise throws an error.
  */
-public interface IReadOnlyPlannerModel {
+public interface IReadOnlyPlannerModel<T> {
 
   /**
    * Observes all the schedules contained in the planner.
    *
    * @return a list of all the schedules in the planner.
    */
-  List<SchedulePlanner> schedules();
+  List<ISchedule<T>> schedules();
 
   /**
    * Observes all the events for a provided user's id. Throws an IllegalArgumentException if
@@ -25,7 +25,7 @@ public interface IReadOnlyPlannerModel {
    * @param name Name or id of the owner of a schedule in the planner system.
    * @return a list of Event objects that belong to the given user's schedule.
    */
-  List<EventImpl> events(String name);
+  List<IEvent<T>> events(String name);
 
   /**
    * Returns the names of all the users who have a schedule in the planner system.

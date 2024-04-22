@@ -1,7 +1,9 @@
 package view;
 
 import controller.ScheduleSystem;
+import model.DaysOfTheWeek;
 import model.EventImpl;
+import model.IEvent;
 import model.LocationImpl;
 import model.IReadOnlyPlannerModel;
 import model.UserImpl;
@@ -29,8 +31,8 @@ import java.util.Objects;
  * asks a user to input the name of the event, a location, starting day, starting time,
  * ending day, ending time, and a list of users.
  */
-public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSystemView {
-  private final IReadOnlyPlannerModel model;
+public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSystemView<DaysOfTheWeek> {
+  private final IReadOnlyPlannerModel<DaysOfTheWeek> model;
   private final JPanel mainPanel;
   private JTextField eventText;
   private JTextField durTime;
@@ -52,7 +54,7 @@ public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSyst
    * @param model Model to get to observe from to appropriately autofill boxes with.
    */
 
-  public EventDurationFrame(IReadOnlyPlannerModel model) {
+  public EventDurationFrame(IReadOnlyPlannerModel<DaysOfTheWeek> model) {
     this.model = model;
 
     usersTag = new JPanel();
@@ -130,7 +132,7 @@ public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSyst
 
     mainPanel.add(usersTag);
 
-    String[] allUsers = this.model.users().toArray(new String[0]);
+    String[] allUsers = (String[]) this.model.users().toArray(new String[0]);
 
     usersBox = new JList<>(allUsers);
     scrollPane.setViewportView(usersBox);
@@ -155,7 +157,7 @@ public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSyst
   }
 
   @Override
-  public void addListener(ScheduleSystem listener) {
+  public void addListener(ScheduleSystem<DaysOfTheWeek> listener) {
     schEvent.addActionListener(e -> {
       try {
         String eventName = eventText.getText();
@@ -205,7 +207,7 @@ public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSyst
   }
 
   @Override
-  public void addDefaultEvent(EventImpl event) {
+  public void addDefaultEvent(IEvent<DaysOfTheWeek> event) {
     this.refresh();
   }
 
@@ -215,7 +217,7 @@ public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSyst
   }
 
   @Override
-  public void getUnmodifiedEvent(EventImpl event) {
+  public void getUnmodifiedEvent(IEvent<DaysOfTheWeek> event) {
     //
   }
 }

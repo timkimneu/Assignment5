@@ -3,7 +3,9 @@ package controller;
 import model.DaysOfTheWeek;
 import model.EventAdapter;
 import model.EventImpl;
+import model.IEvent;
 import model.IPlannerModel;
+import model.ISchedule;
 import model.LocationImpl;
 import model.SchedulePlanner;
 import model.TimeAdapter;
@@ -29,9 +31,9 @@ import java.util.List;
  * and our model in order to listen to and communicate changes to the model.
  */
 public class ControllerAdapter implements Features {
-  private final ScheduleSystem system;
+  private final ScheduleSystem<DaysOfTheWeek> system;
   private final CentralSystemView csview;
-  private final IPlannerModel model;
+  private final IPlannerModel<DaysOfTheWeek> model;
 
   /**
    * Initializes the controller adapter that takes in our controller, their view, and our model.
@@ -40,7 +42,8 @@ public class ControllerAdapter implements Features {
    * @param view Provider's view that our controller will take in.
    * @param model Changes are implemented to the full planner system.
    */
-  public ControllerAdapter(ScheduleSystem system, CentralSystemView view, IPlannerModel model) {
+  public ControllerAdapter(ScheduleSystem<DaysOfTheWeek> system, CentralSystemView view,
+                           IPlannerModel<DaysOfTheWeek> model) {
     this.system = system;
     this.csview = view;
     this.model = model;
@@ -76,9 +79,9 @@ public class ControllerAdapter implements Features {
   @Override
   public void displayEventAt(WeekTime requestedTime) {
     User selectedUser = csview.currentSelectedUser();
-    for (SchedulePlanner sch : model.schedules()) {
+    for (ISchedule<DaysOfTheWeek> sch : model.schedules()) {
       if (sch.scheduleID().equals(selectedUser.toString())) {
-        for (EventImpl event : sch.events()) {
+        for (IEvent<DaysOfTheWeek> event : sch.events()) {
           TimeAdapter eventTime = new TimeAdapter(event.time());
           if (eventTime.contains(requestedTime)) {
             csview.displayExistingEvent(new EventAdapter(event));

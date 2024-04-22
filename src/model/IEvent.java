@@ -6,7 +6,7 @@ import java.util.List;
  * Represents a social gathering that has a name, a specified starting and ending time,
  * a location, and a list of attendees along with the host of the event.
  */
-public interface IEvent {
+public interface IEvent<T> {
 
   /**
    * Observer in order to observe the name field.
@@ -21,7 +21,7 @@ public interface IEvent {
    *
    * @return Time object that represents beginning and ending time of an event.
    */
-  ITime time();
+  ITime<T> time();
 
   /**
    * Observer in order to observe the name location. Includes information
@@ -53,6 +53,6 @@ public interface IEvent {
    *
    * @return a boolean indicating if the given user is the host of this event.
    */
-  boolean isHost(UserImpl user);
+  boolean isHost(String user);
 
 }

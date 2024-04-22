@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<schedule id="Summer Schedule">
+	<event>
+		<name>"Cancun Trip"</name>
+		<time>
+			<start-day>Thursday</start-day>
+			<start>1700</start>
+			<end-day>Monday</end-day>
+			<end>0900</end>
+		</time>
+		<time>
+			<online>false</online>
+			<place>Cancun Resort</place>
+		</time>
+		<users>
+			<uid>"Me"</uid>
+			<uid>"Friend"</uid>
+			<uid>"Best Friend"</uid>
+		</users>
+	</event>
+	<event>
+		<name>"Afternoon Jog"</name>
+		<time>
+			<start-day>Monday</start-day>
+			<start>1200</start>
+			<end-day>Monday</end-day>
+			<end>1245</end>
+		</time>
+		<time>
+			<online>false</online>
+			<place>Outside</place>
+		</time>
+		<users>
+			<uid>"Me"</uid>
+		</users>
+	</event>
+</schedule>

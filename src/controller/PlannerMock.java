@@ -1,6 +1,9 @@
 package controller;
 
+import model.DaysOfTheWeek;
 import model.EventImpl;
+import model.IEvent;
+import model.ISchedule;
 import model.LocationImpl;
 import model.IPlannerModel;
 import model.SchedulePlanner;
@@ -16,7 +19,7 @@ import java.util.List;
  * to the user through methods that determine the state of items in the
  * program.
  */
-public class PlannerMock implements IPlannerModel {
+public class PlannerMock implements IPlannerModel<DaysOfTheWeek> {
   private final Appendable log;
 
   /**
@@ -30,7 +33,14 @@ public class PlannerMock implements IPlannerModel {
   }
 
   @Override
-  public void addEvent(EventImpl event) {
+  public void addSchedule(List<String> startDay, List<String> endDay, List<String> startTime,
+                          List<String> endTime, List<LocationImpl> loc, List<List<UserImpl>> users,
+                          List<String> eventName, String id) {
+    // ignore
+  }
+
+  @Override
+  public void addEvent(IEvent<DaysOfTheWeek> event) {
     try {
       this.log.append(String.format("name = %s, startDay = %s, endDay = %s, startTime = %s, " +
                       "endTime = %s, online = %s, place = %s", event.name(),
@@ -60,7 +70,7 @@ public class PlannerMock implements IPlannerModel {
   }
 
   @Override
-  public void modifyEvent(EventImpl event, EventImpl newEvent, UserImpl user) {
+  public void modifyEvent(IEvent<DaysOfTheWeek> event, IEvent<DaysOfTheWeek> newEvent, UserImpl user) {
     try {
       // should not ever run, Controller calls remove then add for its modifyEvent method
       this.log.append(String.format("oldName = %s, oldStartDay = %s, oldEndDay = %s, " +
@@ -80,7 +90,7 @@ public class PlannerMock implements IPlannerModel {
   }
 
   @Override
-  public void removeEvent(EventImpl event, UserImpl user) {
+  public void removeEvent(IEvent<DaysOfTheWeek> event, UserImpl user) {
     try {
       this.log.append(String.format("name = %s, startDay = %s, endDay = %s, startTime = %s, " +
                       "endTime = %s, online = %s, place = %s, user = %s", event.name(),
@@ -93,12 +103,12 @@ public class PlannerMock implements IPlannerModel {
   }
 
   @Override
-  public List<SchedulePlanner> schedules() {
+  public List<ISchedule<DaysOfTheWeek>> schedules() {
     return new ArrayList<>();
   }
 
   @Override
-  public List<EventImpl> events(String name) {
+  public List<IEvent<DaysOfTheWeek>> events(String name) {
     return new ArrayList<>();
   }
 

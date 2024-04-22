@@ -17,7 +17,7 @@ import java.util.Objects;
  * first number is 0 or 1 and from 0 to 3 when the first number is 2. The third number ranges from
  * 0 to 5 and the fourth number ranges from 0 to 9.
  */
-public class TimeImpl implements ITime {
+public class TimeImpl implements ITime<DaysOfTheWeek> {
   private final DaysOfTheWeek startDay;
   private final DaysOfTheWeek endDay;
   private final String startTime;
@@ -63,7 +63,7 @@ public class TimeImpl implements ITime {
   }
 
   @Override
-  public boolean anyOverlap(ITime t) {
+  public boolean anyOverlap(ITime<DaysOfTheWeek> t) {
     boolean check1 = false;
     boolean check2 = false;
     if (this.startDay().compareTo(t.startDay()) < 0) {
@@ -78,7 +78,7 @@ public class TimeImpl implements ITime {
   }
 
   @Override
-  public boolean hasOverlapContainedWeek(ITime t) {
+  public boolean hasOverlapContainedWeek(ITime<DaysOfTheWeek> t) {
     // check if start day of other Time object is before the ending day of this Time object
     int firstStartHr = this.getHours(this.startTime());
     int firstEndingHr = this.getHours(this.endTime());
@@ -108,7 +108,7 @@ public class TimeImpl implements ITime {
 
   // checks for any overlaps that may occur between 2 Time
   // objects when one or both roll over into a new week
-  private boolean hasOverlapCrossWeek(ITime t) {
+  private boolean hasOverlapCrossWeek(ITime<DaysOfTheWeek> t) {
     // check that if both time objects roll over to next week (both roll over = overlap)
     if (this.startDay().compareTo(this.endDay()) > 0 && t.startDay().compareTo(t.endDay()) > 0) {
       return true;

@@ -1,0 +1,40 @@
+Design Critique:
+The overall design of the provider's code was very neat and easy to understand the intention
+behind. However, there are two things we took issue too. The first design choice we had some
+trouble working around was the design choice surrounding the implementation of time in the
+planner system. Our model implemented the starting time and ending time of an event as a single
+class while the provider has split this, delegating into two different class objects that take
+in a day of the week and a String time. We had adapt to more methods we thought was necessary
+in order to get functionality to work on our end. Another critique we have of the provider's code
+is the use of an event "builder". The utilization of this class in the provider's view proved to be
+a headache to work around, requiring two adapters for essentially the same class. Although looking
+back it was not too bad to work with, it was somewhat inconvenient and not intuitive when
+attempting to fit into our design.
+
+Implementation Critique:
+The implementation of our provider is simply very excellent, minus one change that was needed due
+to tight coupling and retrieving a single implementation from the provider, it is clear that the
+implementation and design was very well-thought-out and the structure of the code reflects that.
+There is almost too many interfaces but the implementation of them still make them compatible with
+code that implements the basic functions of the event planner. However, one error that cannot allow
+for our program to run is the tight coupling between the event builder class and the view that
+throws an error whenever an attempt to make a new event is made, which needless to say is a main
+function to our program. Otherwise, the provider's code works seamlessly with our model and
+controller.
+
+Documentation Critique:
+There is heaps of documentation to be found in all places of the code, although the title says
+critique this section is definitely more praise than critique on the provider's documentation.
+There is java docs for all interface methods that are very well written and written in a way that
+easily conveys the functionality of that function. Even private helper methods have a minor comment
+above to describe the purpose of the method and what it achieves. A good portion of our confusion
+was solved after reading the provider's documentation.
+
+Design/Code Limitations and Suggestions:
+As previously mentioned above, the main design limitation that somewhat cripples our program is the
+tight coupling that occurs between the provider's EventBuilder and the provider's implementation of
+the view as the provider previously relied on a local class implementation of the builder to
+pass into the view and then the controller. A suggestion to this is to simply get rid of the
+builder just to simplify code and instead pass the arguments instead of creating a new object.
+This way no builder is needed and no local event class is required for the view functionality.
+Otherwise the provider has done a good job with the code.

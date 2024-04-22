@@ -7,9 +7,9 @@ import java.util.Objects;
  * Represents a social gathering that has a name, a specified starting and ending time,
  * a location, and a list of attendees along with the host of the event.
  */
-public class EventImpl implements IEvent {
+public class EventImpl implements IEvent<DaysOfTheWeek> {
   private final String name;
-  private final ITime time;
+  private final ITime<DaysOfTheWeek> time;
   private final LocationImpl location;
   private final List<UserImpl> users;
   private UserImpl host;
@@ -25,7 +25,7 @@ public class EventImpl implements IEvent {
    * @param loc   Has information of whether the place and whether it is online or not
    * @param users Includes a list of users that are a part of the event
    */
-  public EventImpl(String name, ITime time, LocationImpl loc, List<UserImpl> users) {
+  public EventImpl(String name, ITime<DaysOfTheWeek> time, LocationImpl loc, List<UserImpl> users) {
     this.name = name;
     this.time = time;
     this.location = loc;
@@ -43,7 +43,7 @@ public class EventImpl implements IEvent {
   }
 
   @Override
-  public ITime time() {
+  public ITime<DaysOfTheWeek> time() {
     return this.time;
   }
 
@@ -63,8 +63,8 @@ public class EventImpl implements IEvent {
   }
 
   @Override
-  public boolean isHost(UserImpl user) {
-    return this.host.equals(user);
+  public boolean isHost(String user) {
+    return this.host.toString().equals(user);
   }
 
   @Override

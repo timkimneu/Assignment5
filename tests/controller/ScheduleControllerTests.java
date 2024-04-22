@@ -2,6 +2,8 @@ package controller;
 
 import model.DaysOfTheWeek;
 import model.EventImpl;
+import model.IEvent;
+import model.ISchedule;
 import model.LocationImpl;
 import model.NUPlannerModel;
 import model.IPlannerModel;
@@ -9,6 +11,7 @@ import model.SchedulePlanner;
 import model.TimeImpl;
 import model.UserImpl;
 import model.WorkTimePlannerModel;
+import model.ITime;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -44,11 +47,11 @@ public class ScheduleControllerTests {
   DaysOfTheWeek thursday;
   DaysOfTheWeek friday;
   DaysOfTheWeek saturday;
-  TimeImpl time1;
-  TimeImpl time2;
-  TimeImpl time3;
-  TimeImpl time4;
-  TimeImpl time5;
+  ITime<DaysOfTheWeek> time1;
+  ITime<DaysOfTheWeek> time2;
+  ITime<DaysOfTheWeek> time3;
+  ITime<DaysOfTheWeek> time4;
+  ITime<DaysOfTheWeek> time5;
   LocationImpl loc1;
   LocationImpl loc2;
   LocationImpl loc3;
@@ -63,21 +66,21 @@ public class ScheduleControllerTests {
   List<UserImpl> users1;
   List<UserImpl> users2;
   List<UserImpl> users3;
-  EventImpl church;
-  EventImpl school;
-  EventImpl vacation;
-  EventImpl mondayAfternoonJog;
-  EventImpl wednesdayDinner;
-  List<EventImpl> mtEvents;
-  List<EventImpl> events1;
-  List<EventImpl> events2;
-  SchedulePlanner sch1;
-  SchedulePlanner sch2;
-  SchedulePlanner sch3;
-  SchedulePlanner sch4;
-  ScheduleSystemController schSysMod;
-  ScheduleSystemController ssc;
-  IPlannerModel model1;
+  IEvent<DaysOfTheWeek> church;
+  IEvent<DaysOfTheWeek> school;
+  IEvent<DaysOfTheWeek> vacation;
+  IEvent<DaysOfTheWeek> mondayAfternoonJog;
+  IEvent<DaysOfTheWeek> wednesdayDinner;
+  List<IEvent<DaysOfTheWeek>> mtEvents;
+  List<IEvent<DaysOfTheWeek>> events1;
+  List<IEvent<DaysOfTheWeek>> events2;
+  ISchedule<DaysOfTheWeek> sch1;
+  ISchedule<DaysOfTheWeek> sch2;
+  ISchedule<DaysOfTheWeek> sch3;
+  ISchedule<DaysOfTheWeek> sch4;
+  ScheduleSystemController<DaysOfTheWeek> schSysMod;
+  ScheduleSystemController<DaysOfTheWeek> ssc;
+  IPlannerModel<DaysOfTheWeek> model1;
   Appendable strOut;
 
   private void initData() {
@@ -124,8 +127,8 @@ public class ScheduleControllerTests {
     this.sch4 = new SchedulePlanner(new ArrayList<>(Collections.singletonList(
             this.wednesdayDinner)), "Dinner");
     this.model1 = new NUPlannerModel(Arrays.asList(this.sch1, this.sch2));
-    ScheduleSystemView view = new ScheduleFrame(this.model1);
-    this.schSysMod = new ScheduleSystemController(view);
+    ScheduleSystemView<DaysOfTheWeek> view = new ScheduleFrame(this.model1);
+    this.schSysMod = new ScheduleSystemController<>(view);
     this.schSysMod.launch(model1);
   }
 
@@ -316,13 +319,13 @@ public class ScheduleControllerTests {
 
   @Test
   public void testScheduleMode() {
-    List<SchedulePlanner> emptyList = new ArrayList<>();
+    List<ISchedule<DaysOfTheWeek>> emptyList = new ArrayList<>();
     NUPlannerModel mtModel = new NUPlannerModel(emptyList);
-    ScheduleSystemView view = new ScheduleFrame(mtModel);
-    ScheduleSystem schModel = new ScheduleSystemController(view);
+    ScheduleSystemView<DaysOfTheWeek> view = new ScheduleFrame(mtModel);
+    ScheduleSystem<DaysOfTheWeek> schModel = new ScheduleSystemController(view);
     schModel.launch(mtModel);
     schModel.readXML("src/prof.xml");
-    List<SchedulePlanner> listSchedules = schModel.returnSchedule();
+    List<ISchedule<DaysOfTheWeek>> listSchedules = schModel.returnSchedule();
     ScheduleSystemTextView schView = new ScheduleSystemTextView(listSchedules);
 
     assertEquals("User: Prof. Lucia\n" +
@@ -355,14 +358,14 @@ public class ScheduleControllerTests {
 
   @Test
   public void testScheduleMultipleUsers() {
-    List<SchedulePlanner> emptyList = new ArrayList<>();
+    List<ISchedule<DaysOfTheWeek>> emptyList = new ArrayList<>();
     NUPlannerModel mtModel = new NUPlannerModel(emptyList);
-    ScheduleSystemView view = new ScheduleFrame(mtModel);
-    ScheduleSystem schModel = new ScheduleSystemController(view);
+    ScheduleSystemView<DaysOfTheWeek> view = new ScheduleFrame(mtModel);
+    ScheduleSystem<DaysOfTheWeek> schModel = new ScheduleSystemController<DaysOfTheWeek>(view);
     schModel.launch(mtModel);
     schModel.readXML("src/prof.xml");
     schModel.readXML("src/prof.xml");
-    List<SchedulePlanner> listSchedules = schModel.returnSchedule();
+    List<ISchedule<DaysOfTheWeek>> listSchedules = schModel.returnSchedule();
     ScheduleSystemTextView schView = new ScheduleSystemTextView(listSchedules);
 
     assertEquals("User: Prof. Lucia\n" +
@@ -424,7 +427,7 @@ public class ScheduleControllerTests {
   public void testWriteXML() {
     this.initData();
     this.schSysMod.writeXML("");
-    List<SchedulePlanner> listSchedules = this.schSysMod.returnSchedule();
+    List<ISchedule<DaysOfTheWeek>> listSchedules = this.schSysMod.returnSchedule();
     ScheduleSystemTextView schView = new ScheduleSystemTextView(listSchedules);
 
     assertEquals("User: School Schedule\n" +
@@ -476,8 +479,8 @@ public class ScheduleControllerTests {
     this.initData();
     NUPlannerModel mtModel = new NUPlannerModel(new ArrayList<>(List.of(
             new SchedulePlanner(this.mtEvents, "Me"))));
-    ScheduleSystemView ssView = new ScheduleFrame(mtModel);
-    ScheduleSystemController schSysCon = new ScheduleSystemController(ssView);
+    ScheduleSystemView<DaysOfTheWeek> ssView = new ScheduleFrame(mtModel);
+    ScheduleSystemController<DaysOfTheWeek> schSysCon = new ScheduleSystemController<>(ssView);
     schSysCon.launch(mtModel);
     schSysCon.addEvent(this.mondayAfternoonJog);
     Assert.assertTrue(mtModel.schedules().get(0).events().contains(this.mondayAfternoonJog));
@@ -488,8 +491,8 @@ public class ScheduleControllerTests {
     this.initData();
     NUPlannerModel mtModel = new NUPlannerModel(new ArrayList<>(List.of(new SchedulePlanner(
             this.mtEvents, "Me"))));
-    ScheduleSystemView ssView = new ScheduleFrame(mtModel);
-    ScheduleSystemController schSysCon = new ScheduleSystemController(ssView);
+    ScheduleSystemView<DaysOfTheWeek> ssView = new ScheduleFrame(mtModel);
+    ScheduleSystemController<DaysOfTheWeek> schSysCon = new ScheduleSystemController<>(ssView);
     schSysCon.launch(mtModel);
     schSysCon.addEvent(this.mondayAfternoonJog);
     Assert.assertTrue(mtModel.schedules().get(0).events().contains(this.mondayAfternoonJog));
@@ -502,8 +505,8 @@ public class ScheduleControllerTests {
     this.initData();
     NUPlannerModel mtModel = new NUPlannerModel(new ArrayList<>(List.of(new SchedulePlanner(
             this.mtEvents, "Me"))));
-    ScheduleSystemView ssView = new ScheduleFrame(mtModel);
-    ScheduleSystemController schSysCon = new ScheduleSystemController(ssView);
+    ScheduleSystemView<DaysOfTheWeek> ssView = new ScheduleFrame(mtModel);
+    ScheduleSystemController<DaysOfTheWeek> schSysCon = new ScheduleSystemController<>(ssView);
     schSysCon.launch(mtModel);
     schSysCon.addEvent(this.mondayAfternoonJog);
     schSysCon.modifyEvent(this.mondayAfternoonJog, this.church, this.user1);
@@ -515,8 +518,8 @@ public class ScheduleControllerTests {
     this.initData();
     NUPlannerModel mtModel = new NUPlannerModel(new ArrayList<>(List.of(new SchedulePlanner(
             this.mtEvents, "Me"))));
-    ScheduleSystemView ssView = new ScheduleFrame(mtModel);
-    ScheduleSystemController schSysCon = new ScheduleSystemController(ssView);
+    ScheduleSystemView<DaysOfTheWeek> ssView = new ScheduleFrame(mtModel);
+    ScheduleSystemController<DaysOfTheWeek> schSysCon = new ScheduleSystemController<>(ssView);
     schSysCon.launch(mtModel);
     Assert.assertEquals(0, mtModel.schedules().get(0).events().size());
     schSysCon.scheduleEvent("Neat event", this.loc1, 120, this.users1);
@@ -532,9 +535,9 @@ public class ScheduleControllerTests {
 
   private void initAppendable() {
     this.strOut = new StringBuilder();
-    IPlannerModel mkModel = new PlannerMock(strOut);
-    ScheduleSystemView view = new ScheduleFrame(mkModel);
-    ssc = new ScheduleSystemController(view);
+    IPlannerModel<DaysOfTheWeek> mkModel = new PlannerMock(strOut);
+    ScheduleSystemView<DaysOfTheWeek> view = new ScheduleFrame(mkModel);
+    ssc = new ScheduleSystemController<>(view);
     ssc.launch(mkModel);
   }
 
@@ -589,14 +592,15 @@ public class ScheduleControllerTests {
             "1200"), new LocationImpl(false, "California"), listUsers);
 
     SchedulePlanner timSch = new SchedulePlanner(new ArrayList<>(Arrays.asList(sixFlags)), "Tim");
-    IPlannerModel anytimeModel = new NUPlannerModel(new ArrayList<>(Arrays.asList(timSch)));
+    IPlannerModel<DaysOfTheWeek> anytimeModel = new NUPlannerModel(
+        new ArrayList<>(Arrays.asList(timSch)));
     String eventName = "Hi";
     LocationImpl loc = new LocationImpl(true, "school");
     int duration = 1500;
 
     anytimeModel.scheduleEvent(eventName, loc, duration, listUsers);
 
-    SchedulePlanner curr = anytimeModel.schedules().get(0);
+    ISchedule<DaysOfTheWeek> curr = anytimeModel.schedules().get(0);
     assertEquals("Hi", curr.events().get(1).name());
     assertEquals(DaysOfTheWeek.SUNDAY, curr.events().get(1).time().startDay());
     assertEquals(DaysOfTheWeek.MONDAY, curr.events().get(1).time().endDay());
@@ -615,7 +619,8 @@ public class ScheduleControllerTests {
 
     SchedulePlanner timSch = new SchedulePlanner(new ArrayList<>(Arrays.asList(sixFlags)), "Tim");
     SchedulePlanner katSch = new SchedulePlanner(new ArrayList<>(Arrays.asList(sixFlags)), "Kat");
-    IPlannerModel anytimeModel = new NUPlannerModel(new ArrayList<>(Arrays.asList(timSch, katSch)));
+    IPlannerModel<DaysOfTheWeek> anytimeModel = new NUPlannerModel(
+        new ArrayList<>(Arrays.asList(timSch, katSch)));
     String eventName = "Hi";
     String eventName2 = "Hello";
     LocationImpl loc = new LocationImpl(true, "school");
@@ -626,7 +631,7 @@ public class ScheduleControllerTests {
     anytimeModel.scheduleEvent(eventName, loc, duration, listUsers);
     anytimeModel.scheduleEvent(eventName2, loc2, duration2, listUsers);
 
-    SchedulePlanner curr = anytimeModel.schedules().get(0);
+    ISchedule<DaysOfTheWeek> curr = anytimeModel.schedules().get(0);
     assertEquals("Hi", curr.events().get(1).name());
     assertEquals(DaysOfTheWeek.SUNDAY, curr.events().get(1).time().startDay());
     assertEquals(DaysOfTheWeek.MONDAY, curr.events().get(1).time().endDay());
@@ -639,7 +644,7 @@ public class ScheduleControllerTests {
     assertEquals("1300", curr.events().get(2).time().startTime());
     assertEquals("0320", curr.events().get(2).time().endTime());
 
-    SchedulePlanner curr1 = anytimeModel.schedules().get(1);
+    ISchedule<DaysOfTheWeek> curr1 = anytimeModel.schedules().get(1);
     assertEquals("Hi", curr1.events().get(1).name());
     assertEquals(DaysOfTheWeek.SUNDAY, curr1.events().get(1).time().startDay());
     assertEquals(DaysOfTheWeek.MONDAY, curr1.events().get(1).time().endDay());
@@ -664,7 +669,8 @@ public class ScheduleControllerTests {
 
     SchedulePlanner timSch = new SchedulePlanner(new ArrayList<>(List.of(sixFlags)), "Tim");
     SchedulePlanner katSch = new SchedulePlanner(new ArrayList<>(List.of(sixFlags)), "Kat");
-    IPlannerModel workModel = new WorkTimePlannerModel(new ArrayList<>((List.of(timSch, katSch))));
+    IPlannerModel<DaysOfTheWeek> workModel = new WorkTimePlannerModel(
+        new ArrayList<>((List.of(timSch, katSch))));
 
     String eventName = "Hi";
     String eventName2 = "Hello";
@@ -676,7 +682,7 @@ public class ScheduleControllerTests {
     workModel.scheduleEvent(eventName, loc, duration, listUsers);
     workModel.scheduleEvent(eventName2, loc2, duration2, listUsers);
 
-    SchedulePlanner curr = workModel.schedules().get(0);
+    ISchedule<DaysOfTheWeek> curr = workModel.schedules().get(0);
     assertEquals("Hi", curr.events().get(1).name());
     assertEquals(DaysOfTheWeek.MONDAY, curr.events().get(1).time().startDay());
     assertEquals(DaysOfTheWeek.MONDAY, curr.events().get(1).time().endDay());
@@ -689,7 +695,7 @@ public class ScheduleControllerTests {
     assertEquals("0900", curr.events().get(2).time().startTime());
     assertEquals("1300", curr.events().get(2).time().endTime());
 
-    SchedulePlanner curr1 = workModel.schedules().get(1);
+    ISchedule<DaysOfTheWeek> curr1 = workModel.schedules().get(1);
     assertEquals("Hi", curr1.events().get(1).name());
     assertEquals(DaysOfTheWeek.MONDAY, curr1.events().get(1).time().startDay());
     assertEquals(DaysOfTheWeek.MONDAY, curr1.events().get(1).time().endDay());

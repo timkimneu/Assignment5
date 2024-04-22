@@ -20,6 +20,8 @@ import javax.swing.JOptionPane;
 import controller.ScheduleSystem;
 import model.DaysOfTheWeek;
 import model.EventImpl;
+import model.IEvent;
+import model.ISchedule;
 import model.LocationImpl;
 import model.IReadOnlyPlannerModel;
 import model.TimeImpl;
@@ -31,9 +33,9 @@ import model.UserImpl;
  * asks a user to input the name of the event, a location, starting day, starting time,
  * ending day, ending time, and a list of users.
  */
-public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
+public class EventFrame extends JFrame implements ScheduleSystemView<DaysOfTheWeek>, EvtFrame {
   private final JPanel mainPanel;
-  private final IReadOnlyPlannerModel model;
+  private final IReadOnlyPlannerModel<DaysOfTheWeek> model;
   private JComboBox<String> onlineBox;
   private JComboBox<String> startDOTW;
   private JComboBox<String> endDOTW;
@@ -45,8 +47,8 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   private JButton createEvent;
   private JButton modEvent;
   private JButton removeEvent;
-  private EventImpl originalEvent;
-  private EventImpl unmodifiedEvent;
+  private IEvent<DaysOfTheWeek> originalEvent;
+  private IEvent<DaysOfTheWeek> unmodifiedEvent;
   private final JPanel usersTag;// = new JPanel();
   private JLabel availUsers;// = new JLabel("\tAvailable Users: ");
   private GridLayout gridLayout;// = new GridLayout(0, 1);
@@ -58,7 +60,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
    * the location, starting day, starting time, ending day, ending time, and the list of attendees
    * for an event to be added, modified, or removed from the schedule.
    */
-  public EventFrame(IReadOnlyPlannerModel model) {
+  public EventFrame(IReadOnlyPlannerModel<DaysOfTheWeek> model) {
     super();
     this.model = model;
 
@@ -111,7 +113,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   }
 
   @Override
-  public void addListener(ScheduleSystem listener) {
+  public void addListener(ScheduleSystem<DaysOfTheWeek> listener) {
     createEvent.addActionListener(e -> {
       try {
         listener.addEvent(createEvent());
@@ -262,7 +264,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
 
     mainPanel.add(usersTag);
 
-    String[] allUsers = this.model.users().toArray(new String[0]);
+    String[] allUsers = (String[]) this.model.users().toArray(new String[0]);
     usersBox = new JList<>(allUsers);
 
     scrollPane.setViewportView(usersBox);
@@ -272,7 +274,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   }
 
   @Override
-  public void addDefaultEvent(EventImpl event) {
+  public void addDefaultEvent(IEvent<DaysOfTheWeek> event) {
     eventText.setText(event.name());
     if (event.location().online()) {
       onlineBox.setSelectedItem("Is online");
@@ -305,7 +307,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView, EvtFrame {
   }
 
   @Override
-  public void getUnmodifiedEvent(EventImpl event) {
+  public void getUnmodifiedEvent(IEvent<DaysOfTheWeek> event) {
     this.unmodifiedEvent = event;
   }
 }

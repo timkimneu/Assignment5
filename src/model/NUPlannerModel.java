@@ -1,5 +1,7 @@
 package model;
 
+import org.hamcrest.core.Is;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,8 +18,8 @@ import java.util.Map;
  * planner system and can also observe the list of events for a specific user if the user exists,
  * otherwise throws an error.
  */
-public class NUPlannerModel implements IPlannerModel {
-  private final List<SchedulePlanner> schedules;
+public class NUPlannerModel implements IPlannerModel<DaysOfTheWeek> {
+  private final List<ISchedule<DaysOfTheWeek>> schedules;
 
   /**
    * Planner model that is initialized without a given list of schedules.
@@ -32,18 +34,36 @@ public class NUPlannerModel implements IPlannerModel {
    *
    * @param schedules a list of schedules to be initialized with a new planner model.
    */
-  public NUPlannerModel(List<SchedulePlanner> schedules) {
+  public NUPlannerModel(List<ISchedule<DaysOfTheWeek>> schedules) {
     this.schedules = schedules;
   }
 
   @Override
-  public List<SchedulePlanner> schedules() {
+  public void addSchedule(List<String> startDay, List<String> endDay, List<String> startTime,
+                          List<String> endTime, List<LocationImpl> loc, List<List<UserImpl>> users,
+                          List<String> eventName, String id) {
+    List<IEvent<DaysOfTheWeek>> events = new ArrayList<>();
+    for (int event = 0; event < eventName.size(); event++) {
+      TimeImpl timeImpl = new TimeImpl(DaysOfTheWeek.valueOf(startDay.get(event).toUpperCase()),
+          startTime.get(event), DaysOfTheWeek.valueOf(endDay.get(event)), endTime.get(event).toUpperCase());
+      IEvent<DaysOfTheWeek> eventImpl = new EventImpl(eventName.get(event), timeImpl,
+          loc.get(event), users.get(event));
+      events.add(eventImpl);
+    }
+    ISchedule<DaysOfTheWeek> schPlan = new SchedulePlanner(events, id);
+    if (!this.schedules().contains(schPlan)) {
+      this.schedules.add(schPlan);
+    }
+  }
+
+  @Override
+  public List<ISchedule<DaysOfTheWeek>> schedules() {
     return this.schedules;
   }
 
   @Override
-  public List<EventImpl> events(String id) {
-    for (ISchedule sch : this.schedules()) {
+  public List<IEvent<DaysOfTheWeek>> events(String id) {
+    for (ISchedule<DaysOfTheWeek> sch : this.schedules()) {
       if (sch.scheduleID().equals(id)) {
         return sch.events();
       }
@@ -54,16 +74,16 @@ public class NUPlannerModel implements IPlannerModel {
   @Override
   public List<String> users() {
     List<String> allUsers = new ArrayList<>();
-    for (ISchedule sch : this.schedules()) {
+    for (ISchedule<DaysOfTheWeek> sch : this.schedules()) {
       allUsers.add(sch.scheduleID());
     }
     return allUsers;
   }
 
   @Override
-  public void addEvent(EventImpl event) {
+  public void addEvent(IEvent<DaysOfTheWeek> event) {
     for (UserImpl u : event.users()) {
-      for (SchedulePlanner sch : this.schedules()) {
+      for (ISchedule<DaysOfTheWeek> sch : this.schedules()) {
         String scheduleID = sch.scheduleID();
         if (u.name().equals(scheduleID)) {
           sch.addEvent(event);
@@ -106,16 +126,16 @@ public class NUPlannerModel implements IPlannerModel {
   }
 
   // helper method to attempt to add an event and check for exceptions
-  private boolean attemptEvent(EventImpl event, List<UserImpl> users) {
+  private boolean attemptEvent(IEvent<DaysOfTheWeek> event, List<UserImpl> users) {
     for (UserImpl u : users) {
       try {
-        for (ISchedule sch : this.schedules()) {
+        for (ISchedule<DaysOfTheWeek> sch : this.schedules()) {
           if (u.name().equals(sch.scheduleID())) {
             sch.addEvent(event);
           }
         }
       } catch (IllegalArgumentException e) {
-        for (ISchedule sch : this.schedules()) {
+        for (ISchedule<DaysOfTheWeek> sch : this.schedules()) {
           try {
             sch.removeEvent(event);
           } catch (IllegalArgumentException ex) {
@@ -161,8 +181,7 @@ public class NUPlannerModel implements IPlannerModel {
       endIndexDOTW -= 7;
     }
     String endStrDOTW = daysOfTheWeek.get(endIndexDOTW);
-    DaysOfTheWeek day = DaysOfTheWeek.valueOf(endStrDOTW.toUpperCase());
-    return day;
+    return DaysOfTheWeek.valueOf(endStrDOTW.toUpperCase());
   }
 
   // retrieves the time string in hours and minutes
@@ -173,12 +192,12 @@ public class NUPlannerModel implements IPlannerModel {
   }
 
   @Override
-  public void modifyEvent(EventImpl event, EventImpl newEvent, UserImpl user) {
+  public void modifyEvent(IEvent<DaysOfTheWeek> event, IEvent<DaysOfTheWeek> newEvent, UserImpl user) {
     if (event.equals(newEvent)) {
       throw new IllegalArgumentException("Cannot replace old event with same event!");
     }
     for (UserImpl u : event.users()) {
-      for (SchedulePlanner sch : this.schedules) {
+      for (ISchedule<DaysOfTheWeek> sch : this.schedules) {
         String schID = sch.scheduleID();
         if (u.name().equals(schID)) {
           sch.removeEvent(event);
@@ -189,17 +208,17 @@ public class NUPlannerModel implements IPlannerModel {
   }
 
   @Override
-  public void removeEvent(EventImpl event, UserImpl user) {
-    if (event.isHost(user)) {
+  public void removeEvent(IEvent<DaysOfTheWeek> event, UserImpl user) {
+    if (event.isHost(user.toString())) {
       for (UserImpl u : event.users()) {
-        for (ISchedule sch : this.schedules()) {
+        for (ISchedule<DaysOfTheWeek> sch : this.schedules()) {
           if (u.name().equals(sch.scheduleID())) {
             sch.removeEvent(event);
           }
         }
       }
     } else {
-      for (ISchedule sch : this.schedules()) {
+      for (ISchedule<DaysOfTheWeek> sch : this.schedules()) {
         if (user.name().equals(sch.scheduleID())) {
           sch.removeEvent(event);
         }

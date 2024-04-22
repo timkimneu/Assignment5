@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Represents a list of events for a single user with an identification number.
  */
-public interface ISchedule {
+public interface ISchedule<T> {
   /**
    * Observes the state of the id.
    *
@@ -19,7 +19,7 @@ public interface ISchedule {
    *
    * @return the list of events currently contained in this schedule.
    */
-  List<EventImpl> events();
+  List<IEvent<T>> events();
 
   /**
    * Adds the given event to the current schedule of events. Checks if the new added event
@@ -27,7 +27,7 @@ public interface ISchedule {
    *
    * @param e Event to be added.
    */
-  void addEvent(EventImpl e);
+  void addEvent(IEvent<T> e);
 
   /**
    * Removes the given event from the current schedule of events if it exists.
@@ -35,5 +35,5 @@ public interface ISchedule {
    *
    * @param e Event to be removed.
    */
-  void removeEvent(EventImpl e);
+  void removeEvent(IEvent<T> e);
 }

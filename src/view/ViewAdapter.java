@@ -2,8 +2,12 @@ package view;
 
 import controller.ControllerAdapter;
 import controller.ScheduleSystem;
+import model.DaysOfTheWeek;
 import model.IPlannerModel;
+import model.EventImpl;
+import model.ISchedule;
 import model.ReadOnlyAdapter;
+import model.SatDOTW;
 import model.SchedulePlanner;
 import model.UserAdapter;
 import model.UserImpl;
@@ -19,9 +23,9 @@ import java.util.List;
  * CentralSystemView interface. Takes in the model and responses accordingly to
  * listeners and refresh methods.
  */
-public class ViewAdapter implements ScheduleSystemView {
+public class ViewAdapter implements ScheduleSystemView<DaysOfTheWeek> {
   private final CentralSystemView providerView;
-  private final IPlannerModel model;
+  private final IPlannerModel<DaysOfTheWeek> model;
 
   /**
    * Adapter for the view in order to illustrate the provider's view of the schedule.
@@ -32,7 +36,7 @@ public class ViewAdapter implements ScheduleSystemView {
    * @param providerView Provider's central view that will be illustrated.
    * @param model Our model that will respond to certain requests and changes.
    */
-  public ViewAdapter(CentralSystemView providerView, IPlannerModel model) {
+  public ViewAdapter(CentralSystemView providerView, IPlannerModel<DaysOfTheWeek> model) {
     this.providerView = providerView;
     this.model = model;
   }
@@ -54,7 +58,7 @@ public class ViewAdapter implements ScheduleSystemView {
   }
 
   @Override
-  public void addListener(ScheduleSystem listener) {
+  public void addListener(ScheduleSystem<DaysOfTheWeek> listener) {
     providerView.addFeatures(new ControllerAdapter(listener, providerView, model));
   }
 
@@ -67,7 +71,7 @@ public class ViewAdapter implements ScheduleSystemView {
     providerView.displayAvailableUsers(finalUser);
 
     User selectedUser = providerView.currentSelectedUser();
-    for (SchedulePlanner sch : this.model.schedules()) {
+    for (ISchedule<DaysOfTheWeek> sch : this.model.schedules()) {
       if (selectedUser != null && selectedUser.toString().equals(sch.scheduleID())) {
         providerView.displaySchedule(new ReadOnlyAdapter(sch));
       }

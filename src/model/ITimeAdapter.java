@@ -10,7 +10,7 @@ import java.util.Objects;
  * Implements our time interface, and uses the provider's EventTime interface
  * and WeekTime enum in order to convert and compare the times.
  */
-public final class ITimeAdapter implements ITime {
+public final class ITimeAdapter implements ITime<DaysOfTheWeek> {
   private final EventTime eventTime;
   private final WeekTime startTime;
   private final WeekTime endTime;
@@ -49,12 +49,12 @@ public final class ITimeAdapter implements ITime {
   }
 
   @Override
-  public boolean anyOverlap(ITime t) {
+  public boolean anyOverlap(ITime<DaysOfTheWeek> t) {
     return eventTime.overlapsWith(new TimeAdapter(t));
   }
 
   @Override
-  public boolean hasOverlapContainedWeek(ITime time) {
+  public boolean hasOverlapContainedWeek(ITime<DaysOfTheWeek> time) {
     return eventTime.contains(new WeekTimeAdapter(time.startDay(), time.startTime()))
       || eventTime.contains(new WeekTimeAdapter(time.endDay(), time.endTime()));
   }

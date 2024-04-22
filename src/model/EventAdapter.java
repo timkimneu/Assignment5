@@ -13,7 +13,7 @@ import java.util.List;
  * the provider's Event interface, and composes of our EventImpl implementation.
  */
 public class EventAdapter implements Event {
-  private final EventImpl event;
+  private final IEvent<DaysOfTheWeek> event;
 
   /**
    * Represents the events that are represented by colored boxes on the view. Implements
@@ -21,7 +21,7 @@ public class EventAdapter implements Event {
    *
    * @param event Sets the event to be our event implementation.
    */
-  public EventAdapter(EventImpl event) {
+  public EventAdapter(IEvent<DaysOfTheWeek> event) {
     this.event = event;
   }
 

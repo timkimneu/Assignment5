@@ -1,6 +1,7 @@
 package view;
 
 import controller.ScheduleSystem;
+import model.DaysOfTheWeek;
 import model.IReadOnlyPlannerModel;
 import model.UserImpl;
 
@@ -25,8 +26,9 @@ import java.util.List;
  * Represents the GUI for the schedule of a single user, but allowing for the selection of
  * different users to view the appropriate schedule pertaining to that user.
  */
-public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFrame {
-  private final IReadOnlyPlannerModel model;
+public class ScheduleFrame extends JFrame implements
+    ScheduleSystemView<DaysOfTheWeek>, SchFrame {
+  private final IReadOnlyPlannerModel<DaysOfTheWeek> model;
   private final SchedulePanel panel;
   private EventFrame eventFrame;
   private EventDurationFrame durationFrame;
@@ -35,7 +37,9 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
   private JMenuItem saveCalendar;
   private JButton createEvent;
   private JButton schEvent;
+  private JButton toggleEvent;
   private JComboBox<String> userBox;
+  private String userStr;
 
 
   /**
@@ -45,7 +49,7 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
    *
    * @param model Model to observe info from to display in view (GUI).
    */
-  public ScheduleFrame(IReadOnlyPlannerModel model) {
+  public ScheduleFrame(IReadOnlyPlannerModel<DaysOfTheWeek> model) {
     super();
     this.model = model;
     this.eventFrame = new EventFrame(model);
@@ -71,8 +75,8 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
     listUsers.setLayout(new BoxLayout(listUsers, BoxLayout.PAGE_AXIS));
     userBox = new JComboBox<>(new String[]{"<none>"});
     List<String> users = model.users();
-    for (int user = 0; user < users.size(); user++) {
-      userBox.addItem(users.get(user));
+    for (String s : users) {
+      userBox.addItem(s);
     }
     listUsers.add(userBox);
 
@@ -82,11 +86,15 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
     schEvent = new JButton("Schedule event");
     schEvent.setActionCommand("Schedule event");
 
+    toggleEvent = new JButton("Toggle event");
+    toggleEvent.setActionCommand("Toggle event");
+
     JPanel bottomButtons = new JPanel();
     bottomButtons.setLayout(new GridLayout(1, 5));
     bottomButtons.add(listUsers);
     bottomButtons.add(createEvent);
     bottomButtons.add(schEvent);
+    bottomButtons.add(toggleEvent);
     this.add(bottomButtons, BorderLayout.PAGE_END);
 
     eventButtonListener();
@@ -99,7 +107,7 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
     userBox.addActionListener(e -> {
       if (e.getSource() instanceof JComboBox) {
         JComboBox<String> user = (JComboBox<String>) e.getSource();
-        String userStr = (String) user.getSelectedItem();
+        userStr = (String) user.getSelectedItem();
         eventFrame.addSelectedUser(new UserImpl(userStr));
         panel.drawDates(userStr);
       }
@@ -113,9 +121,9 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
       currentUsers.add(userBox.getItemAt(user));
     }
     List<String> users = model.users();
-    for (int user = 0; user < users.size(); user++) {
-      if (!currentUsers.contains(users.get(user))) {
-        userBox.addItem(users.get(user));
+    for (String s : users) {
+      if (!currentUsers.contains(s)) {
+        userBox.addItem(s);
       }
     }
   }
@@ -139,7 +147,7 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
   }
 
   @Override
-  public void addListener(ScheduleSystem listener) {
+  public void addListener(ScheduleSystem<DaysOfTheWeek> listener) {
     eventFrame.addListener(listener);
     durationFrame.addListener(listener);
     panel.addListener(listener);
@@ -159,7 +167,12 @@ public class ScheduleFrame extends JFrame implements ScheduleSystemView, SchFram
 
     saveCalendar.addActionListener(e -> listener.writeXML(""));
     createEvent.addActionListener(e -> eventFrame.resetFrame());
-    schEvent.addActionListener(e -> durationFrame.resetFrame());
+    schEvent.addActionListener(e -> getDurationFrame().resetFrame());
+    toggleEvent.addActionListener(e -> System.out.println("TOGGLE"));
+  }
+
+  private EventDurationFrame getDurationFrame() {
+    return durationFrame;
   }
 
   @Override

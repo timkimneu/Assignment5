@@ -398,10 +398,10 @@ public class ScheduleModelTests {
   @Test
   public void testScheduleEventsMethod() {
     this.initData();
-    ISchedule sch = new SchedulePlanner(this.events1, "My Schedule");
+    ISchedule<EventImpl> sch = new SchedulePlanner(this.events1, "My Schedule");
     Assert.assertEquals(new ArrayList<>(Arrays.asList(this.church, this.school)), sch.events());
 
-    ISchedule sch0 = new SchedulePlanner(this.mtEvents, "New Schedule");
+    ISchedule<EventImpl> sch0 = new SchedulePlanner(this.mtEvents, "New Schedule");
     assertTrue(sch0.events().isEmpty());
   }
 
@@ -410,7 +410,7 @@ public class ScheduleModelTests {
   @Test
   public void testAddEventAlreadyContainsEventError() {
     this.initData();
-    ISchedule sch = new SchedulePlanner(this.mtEvents, "Bad Schedule");
+    ISchedule<EventImpl> sch = new SchedulePlanner(this.mtEvents, "Bad Schedule");
     sch.addEvent(this.school);
     try {
       sch.addEvent(this.school);
@@ -442,7 +442,7 @@ public class ScheduleModelTests {
   @Test
   public void testAddEventOverlappingEventsError() {
     this.initData();
-    ISchedule sch = new SchedulePlanner(this.mtEvents, "Bad Schedule");
+    ISchedule<EventImpl> sch = new SchedulePlanner(this.mtEvents, "Bad Schedule");
     sch.addEvent(this.church);
     Assert.assertEquals(1, sch.events().size());
     try {
@@ -473,7 +473,7 @@ public class ScheduleModelTests {
   @Test
   public void testAddEvent() {
     this.initData();
-    ISchedule sch = new SchedulePlanner(this.mtEvents, "My Schedule");
+    ISchedule<EventImpl> sch = new SchedulePlanner(this.mtEvents, "My Schedule");
     // check that schedule is empty
     assertFalse(sch.events().contains(this.school));
     assertTrue(sch.events().isEmpty());
@@ -495,7 +495,7 @@ public class ScheduleModelTests {
   @Test
   public void testRemoveEventEventDoesNotExist() {
     this.initData();
-    ISchedule sch = new SchedulePlanner(this.events1, "My Schedule");
+    ISchedule<EventImpl> sch = new SchedulePlanner(this.events1, "My Schedule");
     Assert.assertEquals(2, sch.events().size());
     try {
       sch.removeEvent(this.vacation);
@@ -518,7 +518,7 @@ public class ScheduleModelTests {
   @Test
   public void testRemoveEvent() {
     this.initData();
-    ISchedule sch = new SchedulePlanner(this.events1, "My Schedule");
+    ISchedule<EventImpl> sch = new SchedulePlanner(this.events1, "My Schedule");
     Assert.assertEquals(2, sch.events().size());
     Assert.assertEquals(new ArrayList<>(Arrays.asList(this.church, this.school)), sch.events());
 
@@ -535,8 +535,8 @@ public class ScheduleModelTests {
   @Test
   public void testPlannerSchedules() {
     this.initData();
-    List<ISchedule> schedules0 = new ArrayList<>(Collections.singletonList(this.mtSch));
-    List<ISchedule> schedules1 = new ArrayList<>(Arrays.asList(this.sch1, this.sch2));
+    List<ISchedule<EventImpl>> schedules0 = new ArrayList<>(Collections.singletonList(this.mtSch));
+    List<ISchedule<EventImpl>> schedules1 = new ArrayList<>(Arrays.asList(this.sch1, this.sch2));
     Assert.assertEquals(new ArrayList<>(), this.mtModel.schedules());
     Assert.assertEquals(schedules0, this.model1.schedules());
     Assert.assertEquals(schedules1, this.model2.schedules());

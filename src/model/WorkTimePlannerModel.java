@@ -17,7 +17,7 @@ import java.util.Map;
  * otherwise throws an error.
  */
 public class WorkTimePlannerModel extends NUPlannerModel {
-  private final List<SchedulePlanner> schedules;
+  private final List<ISchedule<DaysOfTheWeek>> schedules;
 
   /**
    * Planner model that is initialized without a given list of schedules.
@@ -30,7 +30,7 @@ public class WorkTimePlannerModel extends NUPlannerModel {
   /**
    * Planner model that is initialized with a given list of schedules.
    */
-  public WorkTimePlannerModel(List<SchedulePlanner> schedules) {
+  public WorkTimePlannerModel(List<ISchedule<DaysOfTheWeek>> schedules) {
     super(schedules);
     this.schedules = schedules;
   }
@@ -74,16 +74,16 @@ public class WorkTimePlannerModel extends NUPlannerModel {
   }
 
   // determines if event is valid
-  private boolean attemptEvent(EventImpl event, List<UserImpl> users) {
+  private boolean attemptEvent(IEvent<DaysOfTheWeek> event, List<UserImpl> users) {
     for (UserImpl u : users) {
       try {
-        for (ISchedule sch : this.schedules()) {
+        for (ISchedule<DaysOfTheWeek> sch : this.schedules()) {
           if (u.name().equals(sch.scheduleID())) {
             sch.addEvent(event);
           }
         }
       } catch (IllegalArgumentException e) {
-        for (ISchedule sch : this.schedules()) {
+        for (ISchedule<DaysOfTheWeek> sch : this.schedules()) {
           try {
             sch.removeEvent(event);
           } catch (IllegalArgumentException ex) {

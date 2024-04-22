@@ -1,11 +1,19 @@
 import controller.ScheduleSystem;
 import controller.ScheduleSystemController;
+import model.DaysOfTheWeek;
 import model.EventBuilderAdapter;
+import model.EventImpl;
 import model.IPlannerModel;
+import model.SatDOTW;
+import model.SatEventImpl;
+import model.SatSchedulePlanner;
 import model.ScheduleCreator;
+import model.SchedulePlanner;
 import provider.view.CentralSystemView;
 import provider.view.FeaturesScheduleView;
 import provider.view.FeaturesViewFrame;
+import view.EventFrame;
+import view.SatScheduleFrame;
 import view.ScheduleFrame;
 import view.ScheduleSystemView;
 import view.ViewAdapter;
@@ -40,18 +48,25 @@ public final class PlannerRunner {
     if (schedule.equals("provideranytime")) {
       CentralSystemView csview = new FeaturesViewFrame<>(new FeaturesScheduleView(),
               new EventBuilderAdapter());
-      ScheduleSystem controller = new ScheduleSystemController(new ViewAdapter(csview, model));
+      ScheduleSystem<DaysOfTheWeek> controller =
+          new ScheduleSystemController<DaysOfTheWeek>(new ViewAdapter(csview, model));
       controller.launch(model);
     }
     else if (schedule.equals("providerworkhours")) {
       CentralSystemView csview = new FeaturesViewFrame<>(new FeaturesScheduleView(),
               new EventBuilderAdapter());
-      ScheduleSystem controller = new ScheduleSystemController(new ViewAdapter(csview, model));
+      ScheduleSystem<DaysOfTheWeek> controller =
+          new ScheduleSystemController(new ViewAdapter(csview, model));
       controller.launch(model);
     }
-    else {
-      ScheduleSystemView view = new ScheduleFrame(model);
-      ScheduleSystem controller = new ScheduleSystemController(view);
+    else if (schedule.equals("anytime") | schedule.equals("workhours")){
+      ScheduleSystemView<DaysOfTheWeek> view = new ScheduleFrame(model);
+      ScheduleSystem<DaysOfTheWeek> controller = new ScheduleSystemController(view);
+      controller.launch(model);
+    }
+    else if (schedule.equals("saturday")){
+      ScheduleSystemView<SatDOTW> view = new SatScheduleFrame(model);
+      ScheduleSystem<SatDOTW> controller = new ScheduleSystemController<>(view);
       controller.launch(model);
     }
   }
