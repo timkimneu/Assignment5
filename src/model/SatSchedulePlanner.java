@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *
+ * Represents a list of events for a single user with an identification number.
  */
 public class SatSchedulePlanner implements ISchedule<SatDOTW> {
   final private List<IEvent<SatDOTW>> events;

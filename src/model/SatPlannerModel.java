@@ -1,13 +1,18 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import strategy.AnytimeStrategy;
 
+/**
+ * Represents a part of the full planner or schedule system that allows for interaction between
+ * different individual's schedules and the adding, modifying, and removing events from schedules
+ * within the system. Adding, modifying, and removing events should add, modify, or remove events
+ * according to the list of users of the specified event and according to the existing users in the
+ * planner system. Throws errors if there are time conflicts between events for any attendee of the
+ * modified event.
+ */
 public class SatPlannerModel implements IPlannerModel<SatDOTW> {
   private final List<ISchedule<SatDOTW>> schedules;
 
@@ -41,8 +46,10 @@ public class SatPlannerModel implements IPlannerModel<SatDOTW> {
     List<IEvent<SatDOTW>> events = new ArrayList<>();
     for (int event = 0; event < eventName.size(); event++) {
       SatTimeImpl timeImpl = new SatTimeImpl(SatDOTW.valueOf(startDay.get(event).toUpperCase()),
-          startTime.get(event), SatDOTW.valueOf(endDay.get(event)), endTime.get(event).toUpperCase());
-      IEvent<SatDOTW> eventImpl = new SatEventImpl(eventName.get(event), timeImpl, loc.get(event), users.get(event));
+          startTime.get(event), SatDOTW.valueOf(endDay.get(event)),
+              endTime.get(event).toUpperCase());
+      IEvent<SatDOTW> eventImpl = new SatEventImpl(eventName.get(event), timeImpl, loc.get(event),
+              users.get(event));
       events.add(eventImpl);
     }
     ISchedule<SatDOTW> schPlan = new SatSchedulePlanner(events, id);

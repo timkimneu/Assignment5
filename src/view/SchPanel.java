@@ -1,10 +1,8 @@
 package view;
 
 import controller.ScheduleSystem;
-import model.DaysOfTheWeek;
-import model.EventImpl;
 
-import java.awt.*;
+import java.awt.Graphics2D;
 
 /**
  * Creates an interface in order to visualize the users'
@@ -14,8 +12,10 @@ import java.awt.*;
  */
 public interface SchPanel<T> {
   /**
+   * Draws the current schedule state by filling each rectangle with a color to represent the
+   * presence of an event.
    *
-   * @param g2d
+   * @param g2d Graphics object to enable drawing.
    */
   void drawScheduleState(Graphics2D g2d);
 

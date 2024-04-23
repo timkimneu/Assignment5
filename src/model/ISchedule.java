@@ -8,8 +8,10 @@ import java.util.List;
 public interface ISchedule<T> {
 
   /**
+   * Returns the index of Monday to allow for proper alignment in the WorkTime strategy
+   * between schedules starting on different days (e.g. Sunday vs Saturday).
    *
-   * @return
+   * @return Returns the index of Monday for this calendar type.
    */
   int getFirstDay();
 
@@ -32,13 +34,13 @@ public interface ISchedule<T> {
    * Adds the given event to the current schedule of events. Checks if the new added event
    * overlaps with any existing event in the current list of events.
    *
-   * @param startDay
-   * @param startTime
-   * @param endDay
-   * @param endTime
-   * @param loc
-   * @param users
-   * @param eventName
+   * @param startDay Index of the day the event begins on.
+   * @param startTime String time resembling the starting time of the event.
+   * @param endDay Index of the day the event will end on.
+   * @param endTime String time resembling the ending time of the event.
+   * @param loc Location of the event.
+   * @param users List of attendees of the event.
+   * @param eventName Name of the event.
    */
   void addEvent(int startDay, String startTime, int endDay, String endTime, LocationImpl loc,
                 List<UserImpl> users, String eventName);
@@ -47,13 +49,13 @@ public interface ISchedule<T> {
    * Removes the given event from the current schedule of events if it exists.
    * If given event is not in schedule throw IllegalArgumentException.
    *
-   * @param startDay
-   * @param startTime
-   * @param endDay
-   * @param endTime
-   * @param loc
-   * @param users
-   * @param eventName
+   * @param startDay Index of the day the event begins on.
+   * @param startTime String time resembling the starting time of the event.
+   * @param endDay Index of the day the event will end on.
+   * @param endTime String time resembling the ending time of the event.
+   * @param loc Location of the event.
+   * @param users List of attendees of the event.
+   * @param eventName Name of the event.
    */
   void removeEvent(int startDay, String startTime, int endDay, String endTime,
                    LocationImpl loc, List<UserImpl> users, String eventName);

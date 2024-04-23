@@ -7,7 +7,6 @@ import model.IEvent;
 import model.IPlannerModel;
 import model.ISchedule;
 import model.LocationImpl;
-import model.SchedulePlanner;
 import model.TimeAdapter;
 import model.TimeImpl;
 import model.UserImpl;

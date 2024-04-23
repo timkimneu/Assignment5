@@ -3,6 +3,10 @@ package model;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Represents a social gathering that has a name, a specified starting and ending time,
+ * a location, and a list of attendees along with the host of the event.
+ */
 public class SatEventImpl implements IEvent<SatDOTW> {
   private final String name;
   private final ITime<SatDOTW> time;

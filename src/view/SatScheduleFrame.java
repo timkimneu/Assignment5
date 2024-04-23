@@ -5,12 +5,27 @@ import model.IReadOnlyPlannerModel;
 import model.SatDOTW;
 import model.UserImpl;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JFileChooser;
+import javax.swing.JMenuItem;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JPanel;
+import javax.swing.BoxLayout;
+import javax.swing.JOptionPane;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents the interface for the schedule of a single user, but allowing
+ * for the selection of different users to view the appropriate schedule
+ * pertaining to that user.
+ */
 public class SatScheduleFrame extends JFrame implements
     ScheduleSystemView<SatDOTW>, SchFrame {
   private final IReadOnlyPlannerModel<SatDOTW> model;
@@ -90,13 +105,13 @@ public class SatScheduleFrame extends JFrame implements
   private void eventButtonListener() {
     userBox.setActionCommand("User schedule");
     userBox.addActionListener(e -> {
-        if (e.getSource() instanceof JComboBox) {
-          JComboBox<String> user = (JComboBox<String>) e.getSource();
-          userStr = (String) user.getSelectedItem();
-          eventFrame.addSelectedUser(new UserImpl(userStr));
-          panel.drawDates(userStr);
-        }
+      if (e.getSource() instanceof JComboBox) {
+        JComboBox<String> user = (JComboBox<String>) e.getSource();
+        userStr = (String) user.getSelectedItem();
+        eventFrame.addSelectedUser(new UserImpl(userStr));
+        panel.drawDates(userStr);
       }
+    }
     );
   }
 

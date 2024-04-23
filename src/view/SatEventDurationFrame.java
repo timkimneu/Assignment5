@@ -1,11 +1,22 @@
 package view;
 
-import java.awt.*;
+import java.awt.GridLayout;
+import java.awt.BorderLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JList;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.BoxLayout;
+import javax.swing.JOptionPane;
 
 import controller.ScheduleSystem;
 import model.IEvent;
@@ -14,6 +25,12 @@ import model.LocationImpl;
 import model.SatDOTW;
 import model.UserImpl;
 
+/**
+ * Class interface that represents the screen that pops up when a user wants to add, modify, or
+ * remove an event to a selected schedule in the planner. The window asks a user to input the name
+ * of the event, a location, starting day, starting time, ending day, ending time, and a list of
+ * users.
+ */
 public class SatEventDurationFrame extends JFrame implements EvtFrame<SatDOTW>,
         ScheduleSystemView<SatDOTW> {
   private final IReadOnlyPlannerModel<SatDOTW> model;
@@ -143,18 +160,18 @@ public class SatEventDurationFrame extends JFrame implements EvtFrame<SatDOTW>,
   @Override
   public void addListener(ScheduleSystem<SatDOTW> listener) {
     schEvent.addActionListener(e -> {
-              try {
-                String eventName = eventText.getText();
-                LocationImpl loc = new LocationImpl(getOnlineBool(Objects.requireNonNull(
-                        onlineBox.getSelectedItem())), place.getText());
-                int duration = Integer.parseInt(durTime.getText());
-                java.util.List<UserImpl> listUsers = getUsers(usersBox.getSelectedValuesList());
-                listener.scheduleEvent(eventName, loc, duration, listUsers);
-                this.hidePanel();
-              } catch (IllegalArgumentException ex) {
-                JOptionPane.showMessageDialog(null, "Cannot schedule event");
-              }
-            }
+      try {
+        String eventName = eventText.getText();
+        LocationImpl loc = new LocationImpl(getOnlineBool(Objects.requireNonNull(
+                onlineBox.getSelectedItem())), place.getText());
+        int duration = Integer.parseInt(durTime.getText());
+        List<UserImpl> listUsers = getUsers(usersBox.getSelectedValuesList());
+        listener.scheduleEvent(eventName, loc, duration, listUsers);
+        this.hidePanel();
+      } catch (IllegalArgumentException ex) {
+        JOptionPane.showMessageDialog(null, "Cannot schedule event");
+      }
+    }
     );
   }
 

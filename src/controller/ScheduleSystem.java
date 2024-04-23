@@ -1,11 +1,9 @@
 package controller;
 
-import model.EventImpl;
 import model.IEvent;
 import model.ISchedule;
 import model.LocationImpl;
 import model.IPlannerModel;
-import model.SchedulePlanner;
 import model.UserImpl;
 
 import java.util.List;

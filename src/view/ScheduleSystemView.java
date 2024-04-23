@@ -1,9 +1,6 @@
 package view;
 
 import controller.ScheduleSystem;
-import model.EventImpl;
-import model.ISchedule;
-import model.SchedulePlanner;
 
 /**
  * Creates an interface to view the schedule in a formatted manner, with

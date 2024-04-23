@@ -7,8 +7,11 @@ import model.ISchedule;
 import model.ITime;
 import model.SatDOTW;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Graphics2D;
+import java.awt.Graphics;
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Line2D;
@@ -20,6 +23,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Creates an interface in order to visualize the users'
+ * schedules. Includes a method that takes in the user
+ * that is chosen, and will draw red blocks according
+ * to the events in their schedules.
+ */
 public class SatSchedulePanel extends JPanel implements SchPanel<SatDOTW> {
   private final IReadOnlyPlannerModel<SatDOTW> model;
   private boolean userSelected;
@@ -151,8 +160,8 @@ public class SatSchedulePanel extends JPanel implements SchPanel<SatDOTW> {
       fillRectSameDay(g2d, col, startTime, endTime, event);
       return;
     }
-    List<String> days = Arrays.asList("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
-            "Friday");
+    List<String> days = Arrays.asList("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday",
+            "Thursday", "Friday");
     g2d.setColor(color);
     int startInd = days.indexOf(startDay.observeDay());
     int endInd = days.indexOf(endDay.observeDay());

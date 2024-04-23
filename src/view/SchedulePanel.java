@@ -2,12 +2,10 @@ package view;
 
 import controller.ScheduleSystem;
 import model.DaysOfTheWeek;
-import model.EventImpl;
 import model.IEvent;
 import model.IReadOnlyPlannerModel;
 import model.ISchedule;
 import model.ITime;
-import model.SchedulePlanner;
 
 import javax.swing.JPanel;
 

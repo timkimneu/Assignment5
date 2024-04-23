@@ -1,12 +1,10 @@
 package controller;
 
 import model.DaysOfTheWeek;
-import model.EventImpl;
 import model.IEvent;
 import model.ISchedule;
 import model.LocationImpl;
 import model.IPlannerModel;
-import model.SchedulePlanner;
 import model.UserImpl;
 
 import java.io.IOException;
@@ -36,6 +34,7 @@ public class PlannerMock implements IPlannerModel<DaysOfTheWeek> {
   public int getFirstDay() {
     return 0;
   }
+
   @Override
   public void addSchedule(List<String> startDay, List<String> endDay, List<String> startTime,
                           List<String> endTime, List<LocationImpl> loc, List<List<UserImpl>> users,
@@ -74,7 +73,8 @@ public class PlannerMock implements IPlannerModel<DaysOfTheWeek> {
   }
 
   @Override
-  public void modifyEvent(IEvent<DaysOfTheWeek> event, IEvent<DaysOfTheWeek> newEvent, UserImpl user) {
+  public void modifyEvent(IEvent<DaysOfTheWeek> event, IEvent<DaysOfTheWeek> newEvent,
+                          UserImpl user) {
     try {
       // should not ever run, Controller calls remove then add for its modifyEvent method
       this.log.append(String.format("oldName = %s, oldStartDay = %s, oldEndDay = %s, " +

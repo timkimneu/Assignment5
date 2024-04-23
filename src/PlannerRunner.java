@@ -2,17 +2,12 @@ import controller.ScheduleSystem;
 import controller.ScheduleSystemController;
 import model.DaysOfTheWeek;
 import model.EventBuilderAdapter;
-import model.EventImpl;
 import model.IPlannerModel;
 import model.SatDOTW;
-import model.SatEventImpl;
-import model.SatSchedulePlanner;
 import model.ScheduleCreator;
-import model.SchedulePlanner;
 import provider.view.CentralSystemView;
 import provider.view.FeaturesScheduleView;
 import provider.view.FeaturesViewFrame;
-import view.EventFrame;
 import view.SatScheduleFrame;
 import view.ScheduleFrame;
 import view.ScheduleSystemView;
@@ -59,12 +54,12 @@ public final class PlannerRunner {
           new ScheduleSystemController(new ViewAdapter(csview, model));
       controller.launch(model);
     }
-    else if (schedule.equals("anytime") | schedule.equals("workhours")){
+    else if (schedule.equals("anytime") | schedule.equals("workhours")) {
       ScheduleSystemView<DaysOfTheWeek> view = new ScheduleFrame(model);
       ScheduleSystem<DaysOfTheWeek> controller = new ScheduleSystemController(view);
       controller.launch(model);
     }
-    else if (schedule.equals("saturdayanytime") | schedule.equals("saturdayworkhours")){
+    else if (schedule.equals("saturdayanytime") | schedule.equals("saturdayworkhours")) {
       ScheduleSystemView<SatDOTW> view = new SatScheduleFrame(model);
       ScheduleSystem<SatDOTW> controller = new ScheduleSystemController<>(view);
       controller.launch(model);

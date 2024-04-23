@@ -1,11 +1,21 @@
 package view;
 
-import java.awt.*;
+import java.awt.GridLayout;
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
+import javax.swing.JList;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JOptionPane;
+import javax.swing.BoxLayout;
 
 import controller.ScheduleSystem;
 import model.IEvent;
@@ -16,6 +26,12 @@ import model.SatEventImpl;
 import model.SatTimeImpl;
 import model.UserImpl;
 
+/**
+ * Class interface that represents the screen that pops up when a user wants to add, modify, or
+ * remove an event to a selected schedule in the planner. The window asks a user to input the name
+ * of the event, a location, starting day, starting time, ending day, ending time, and a list of
+ * users.
+ */
 public class SatEventFrame extends JFrame implements ScheduleSystemView<SatDOTW>,
         EvtFrame<SatDOTW> {
   private final JPanel mainPanel;
@@ -117,14 +133,14 @@ public class SatEventFrame extends JFrame implements ScheduleSystemView<SatDOTW>
       }
     });
     removeEvent.addActionListener(e -> {
-              try {
-                listener.removeEvent(originalEvent, user);
-                this.hidePanel();
-              } catch (IllegalArgumentException | NullPointerException ex) {
-                JOptionPane.showMessageDialog(null, "Cannot remove event");
-                System.out.println(ex.getMessage());
-              }
-            }
+      try {
+        listener.removeEvent(originalEvent, user);
+        this.hidePanel();
+      } catch (IllegalArgumentException | NullPointerException ex) {
+        JOptionPane.showMessageDialog(null, "Cannot remove event");
+        System.out.println(ex.getMessage());
+      }
+    }
     );
   }
 
@@ -217,7 +233,7 @@ public class SatEventFrame extends JFrame implements ScheduleSystemView<SatDOTW>
     startDay.add(new JLabel("\t" + d));
 
     String[] allDOTW = {"Sunday", "Monday", "Tuesday", "Wednesday",
-            "Thursday", "Friday", "Saturday"};
+        "Thursday", "Friday", "Saturday"};
 
     for (String aDOTW : allDOTW) {
       result.addItem(aDOTW);

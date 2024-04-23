@@ -2,15 +2,12 @@ package view;
 
 import controller.ScheduleSystem;
 import model.DaysOfTheWeek;
-import model.EventImpl;
 import model.IEvent;
 import model.ISchedule;
 import model.ITime;
 import model.LocationImpl;
-import model.SchedulePlanner;
 import model.UserImpl;
 
-import java.util.Date;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;

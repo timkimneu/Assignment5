@@ -12,34 +12,44 @@ import java.util.List;
  */
 public interface IPlannerModel<T> extends IReadOnlyPlannerModel<T> {
   /**
+   * Returns the index of Monday to allow for proper alignment in the WorkTime strategy
+   * between schedules starting on different days (e.g. Sunday vs Saturday).
    *
-   * @return
+   * @return Returns the index of Monday for this calendar type.
    */
   int getFirstDay();
 
   /**
+   * Adds a new schedule to this list of schedules with the given arguments.
    *
-   * @param startDay
-   * @param endDay
-   * @param startTime
-   * @param endTime
-   * @param loc
-   * @param users
-   * @param eventName
-   * @param id
+   * @param startDay List of starting days in the schedule.
+   * @param endDay List of ending days in the schedule
+   * @param startTime List of starting times in the schedule.
+   * @param endTime List of ending times in the schedule.
+   * @param loc List of locations in the schedule.
+   * @param users List of attendees in the schedule.
+   * @param eventName List of event names in the schedule.
+   * @param id The user to be attached to the newly created schedule.
    */
   void addSchedule(List<String> startDay, List<String> endDay, List<String> startTime,
                    List<String> endTime, List<LocationImpl> loc, List<List<UserImpl>> users,
                    List<String> eventName, String id);
 
   /**
+   * Makes an event with the provided parameters provided, and schedules the event.
+   * Adds the given event to all users in the planner system provided by the list of users
+   * pertaining to the given event. In other words, adds this event to a user's schedule if they
+   * are in the list of attendees in a new event. Throws an error if there exists any overlap
+   * with the new event with any existing event of any attendee. Throws an error if the given
+   * event is already scheduled in any attendee's schedule.
    *
-   * @param name
-   * @param location
-   * @param duration
-   * @param users
+   * @param name     String that represents the event name.
+   * @param location Location class that represents the place and whether event is online.
+   * @param duration How long the event is in minutes.
+   * @param users    List of users that are attending the event.
    */
   void scheduleEvent(String name, LocationImpl location, int duration, List<UserImpl> users);
+
   /**
    * Adds the given event to all users in the planner system provided by the list of users
    * pertaining to the given event. In other words, adds this event to a user's schedule if they

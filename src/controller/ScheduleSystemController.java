@@ -114,14 +114,9 @@ public class ScheduleSystemController<T> implements ScheduleSystem<T> {
       }
       userImpls.add(listUsers);
       eventNames.add(name.getTextContent());
-//      EventImpl currEvent = new EventImpl(name.getTextContent(), time, loc, listUsers);
-//      listOfEvents.add(currEvent);
     }
-//    SchedulePlanner currSch = new SchedulePlanner(listOfEvents, id);
-//    if (!this.model.schedules().contains(currSch)) {
-//      this.model.schedules().add(currSch);
-//    }
-    this.model.addSchedule(startDays, endDays, startTimes, endTimes, locs, userImpls, eventNames, id);
+    this.model.addSchedule(startDays, endDays, startTimes, endTimes, locs,
+            userImpls, eventNames, id);
     view.refresh();
   }
 
