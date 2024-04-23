@@ -179,9 +179,9 @@ public class SatEventFrame extends JFrame implements ScheduleSystemView<SatDOTW>
   public void resetFrame() {
     eventText.setText("");
     place.setText("");
-    startDOTW.setSelectedItem("Sunday");
+    startDOTW.setSelectedItem("Saturday");
     startTimeTxt.setText("");
-    endDOTW.setSelectedItem("Sunday");
+    endDOTW.setSelectedItem("Saturday");
     endTimeTxt.setText("");
 
     // add select users
@@ -232,8 +232,8 @@ public class SatEventFrame extends JFrame implements ScheduleSystemView<SatDOTW>
     JPanel startDay = new JPanel();
     startDay.add(new JLabel("\t" + d));
 
-    String[] allDOTW = {"Sunday", "Monday", "Tuesday", "Wednesday",
-        "Thursday", "Friday", "Saturday"};
+    String[] allDOTW = {"Saturday", "Sunday", "Monday", "Tuesday", "Wednesday",
+        "Thursday", "Friday"};
 
     for (String aDOTW : allDOTW) {
       result.addItem(aDOTW);
