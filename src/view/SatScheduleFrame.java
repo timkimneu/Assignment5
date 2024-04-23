@@ -90,13 +90,13 @@ public class SatScheduleFrame extends JFrame implements
   private void eventButtonListener() {
     userBox.setActionCommand("User schedule");
     userBox.addActionListener(e -> {
-          if (e.getSource() instanceof JComboBox) {
-            JComboBox<String> user = (JComboBox<String>) e.getSource();
-            userStr = (String) user.getSelectedItem();
-            eventFrame.addSelectedUser(new UserImpl(userStr));
-            panel.drawDates(userStr);
-          }
+        if (e.getSource() instanceof JComboBox) {
+          JComboBox<String> user = (JComboBox<String>) e.getSource();
+          userStr = (String) user.getSelectedItem();
+          eventFrame.addSelectedUser(new UserImpl(userStr));
+          panel.drawDates(userStr);
         }
+      }
     );
   }
 

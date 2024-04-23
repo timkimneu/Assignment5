@@ -268,6 +268,13 @@ public class SaturdayModelTests {
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Invalid number of minutes!", e.getMessage());
     }
+    // time starts on friday and ends on sunday
+    try {
+      this.invalidTime = new SatTimeImpl(this.friday, "1800", this.sunday, "1800");
+      Assert.fail("Cannot overlap the week!");
+    } catch (IllegalArgumentException e) {
+      //Assert.assertEquals("Invalid number of minutes!", e.getMessage());
+    }
   }
 
   // test startDay method for Time class

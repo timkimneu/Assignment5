@@ -6,15 +6,16 @@ package model;
  * week enum values. There is a method to return the display values as a string.
  */
 public enum DaysOfTheWeek {
-  SUNDAY("Sunday"),
-  MONDAY("Monday"),
-  TUESDAY("Tuesday"),
-  WEDNESDAY("Wednesday"),
-  THURSDAY("Thursday"),
-  FRIDAY("Friday"),
-  SATURDAY("Saturday");
+  SUNDAY("Sunday", 0),
+  MONDAY("Monday", 1),
+  TUESDAY("Tuesday", 2),
+  WEDNESDAY("Wednesday", 3),
+  THURSDAY("Thursday", 4),
+  FRIDAY("Friday", 5),
+  SATURDAY("Saturday", 6);
 
-  private final String day;
+  private String day;
+  private int dayOrder;
 
   /**
    * Represents days of the week to map out events as an enum. Possible days are all the seven days
@@ -23,8 +24,17 @@ public enum DaysOfTheWeek {
    *
    * @param day Day of the week as a String value.
    */
+  DaysOfTheWeek(String day, int dayOrder) {
+    this.day = day;
+    this.dayOrder = dayOrder;
+  }
+
   DaysOfTheWeek(String day) {
     this.day = day;
+  }
+
+  DaysOfTheWeek(int dayOrder) {
+    this.dayOrder = dayOrder;
   }
 
   /**
@@ -34,5 +44,9 @@ public enum DaysOfTheWeek {
    */
   public String observeDay() {
     return this.day;
+  }
+
+  public int getDayOrder() {
+    return this.dayOrder;
   }
 }

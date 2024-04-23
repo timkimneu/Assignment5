@@ -16,7 +16,8 @@ public class ScheduleCreator {
     WORKHOURS("workhours"),
     PROVIDERANYTIME("provideranytime"),
     PROVIDERWORKHOURS("providerworkhours"),
-    SATURDAY("saturday");
+    SATURDAYANYTIME("saturdayanytime"),
+    SATURDAYWORKHOURS("saturdayworkhours");
     private final String display;
 
     ScheduleType(String display) {
@@ -45,8 +46,11 @@ public class ScheduleCreator {
     if (type == ScheduleType.PROVIDERWORKHOURS) {
       return new WorkTimePlannerModel();
     }
-    if (type == ScheduleType.SATURDAY) {
+    if (type == ScheduleType.SATURDAYANYTIME) {
       return new SatPlannerModel();
+    }
+    if (type == ScheduleType.SATURDAYWORKHOURS) {
+      return new SatWorktimeModel();
     }
     throw new IllegalArgumentException("Schedule does not exist");
   }

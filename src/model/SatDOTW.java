@@ -1,15 +1,16 @@
 package model;
 
 public enum SatDOTW {
-  SATURDAY("Saturday"),
-  SUNDAY("Sunday"),
-  MONDAY("Monday"),
-  TUESDAY("Tuesday"),
-  WEDNESDAY("Wednesday"),
-  THURSDAY("Thursday"),
-  FRIDAY("Friday");
+  SATURDAY("Saturday", 0),
+  SUNDAY("Sunday", 1),
+  MONDAY("Monday", 2),
+  TUESDAY("Tuesday", 3),
+  WEDNESDAY("Wednesday", 4),
+  THURSDAY("Thursday", 5),
+  FRIDAY("Friday", 6);
 
-  private final String day;
+  private String day;
+  private int dayOrder;
 
   /**
    * Represents days of the week to map out events as an enum. Possible days are all the seven days
@@ -18,8 +19,17 @@ public enum SatDOTW {
    *
    * @param day Day of the week as a String value.
    */
+  SatDOTW(String day, int dayOrder) {
+    this.day = day;
+    this.dayOrder = dayOrder;
+  }
+
   SatDOTW(String day) {
     this.day = day;
+  }
+
+  SatDOTW(int dayOrder) {
+    this.dayOrder = dayOrder;
   }
 
   /**
@@ -29,5 +39,9 @@ public enum SatDOTW {
    */
   public String observeDay() {
     return this.day;
+  }
+
+  public int getDayOrder() {
+    return this.dayOrder;
   }
 }

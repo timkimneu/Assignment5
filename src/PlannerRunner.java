@@ -64,7 +64,7 @@ public final class PlannerRunner {
       ScheduleSystem<DaysOfTheWeek> controller = new ScheduleSystemController(view);
       controller.launch(model);
     }
-    else if (schedule.equals("saturday")){
+    else if (schedule.equals("saturdayanytime") | schedule.equals("saturdayworkhours")){
       ScheduleSystemView<SatDOTW> view = new SatScheduleFrame(model);
       ScheduleSystem<SatDOTW> controller = new ScheduleSystemController<>(view);
       controller.launch(model);
