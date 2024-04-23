@@ -55,4 +55,10 @@ public interface IEvent<T> {
    */
   boolean isHost(String user);
 
+  /**
+   *
+   * @param user
+   */
+  void setHost(UserImpl user);
+
 }

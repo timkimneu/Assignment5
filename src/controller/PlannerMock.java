@@ -43,7 +43,7 @@ public class PlannerMock implements IPlannerModel<DaysOfTheWeek> {
   }
 
   @Override
-  public void addEvent(IEvent<DaysOfTheWeek> event) {
+  public void addEvent(IEvent<DaysOfTheWeek> event, UserImpl user) {
     try {
       this.log.append(String.format("name = %s, startDay = %s, endDay = %s, startTime = %s, " +
                       "endTime = %s, online = %s, place = %s", event.name(),

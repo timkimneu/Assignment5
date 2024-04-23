@@ -43,11 +43,12 @@ public class SchedulePlanner implements ISchedule<DaysOfTheWeek> {
 
   @Override
   public void addEvent(int startDay, String startTime, int endDay, String endTime,
-                       LocationImpl loc, List<UserImpl> users, String eventName) {
+                       LocationImpl loc, List<UserImpl> users, String eventName, UserImpl host) {
     TimeImpl newTime = new TimeImpl(DaysOfTheWeek.valueOf(daysOfTheWeek.get(startDay)
             .toUpperCase()), startTime, DaysOfTheWeek.valueOf(daysOfTheWeek.get(endDay)
             .toUpperCase()), endTime);
     EventImpl newEvent = new EventImpl(eventName, newTime, loc, users);
+    newEvent.setHost(host);
     if (this.events().contains(newEvent)) {
       throw new IllegalArgumentException("Schedule already contains given event!");
     } else {

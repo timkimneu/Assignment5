@@ -68,7 +68,7 @@ public class AnytimeStrategy<T> implements SchedulingStrategy<T> {
       try {
         for (ISchedule<T> sch : this.model.schedules()) {
           if (u.name().equals(sch.scheduleID())) {
-            sch.addEvent(startDay, startTime, endDay, endTime, loc, users, eventName);
+            sch.addEvent(startDay, startTime, endDay, endTime, loc, users, eventName, users.get(0));
           }
         }
       } catch (IllegalArgumentException e) {

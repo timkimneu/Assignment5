@@ -135,7 +135,7 @@ public class ControllerAdapter implements Features {
     //builder.setEventTime();
     Event oldEvent = eventBuilder.buildEvent();
     try {
-      system.addEvent(convertEvent(oldEvent));
+      system.addEvent(convertEvent(oldEvent), convertEvent(oldEvent).users().get(0));
       return true;
     } catch (IllegalArgumentException e) {
       return false;

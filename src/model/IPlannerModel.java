@@ -58,8 +58,9 @@ public interface IPlannerModel<T> extends IReadOnlyPlannerModel<T> {
    * event is already scheduled in any attendee's schedule.
    *
    * @param event Event class that represents the event to be added.
+   * @param user
    */
-  void addEvent(IEvent<T> event);
+  void addEvent(IEvent<T> event, UserImpl user);
 
   /**
    * Modifies an existing event by replacing the old event with the new given event. Works by

@@ -53,8 +53,9 @@ public interface ScheduleSystem<T> {
    * Listener for when a user attempts to create an event in the view.
    *
    * @param e Event to be added and passed to be handled in the model.
+   * @param user
    */
-  void addEvent(IEvent<T> e);
+  void addEvent(IEvent<T> e, UserImpl user);
 
   /**
    * Listener for when a user attempts to modify an event in the view.

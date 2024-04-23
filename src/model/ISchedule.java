@@ -43,7 +43,7 @@ public interface ISchedule<T> {
    * @param eventName Name of the event.
    */
   void addEvent(int startDay, String startTime, int endDay, String endTime, LocationImpl loc,
-                List<UserImpl> users, String eventName);
+                List<UserImpl> users, String eventName, UserImpl host);
 
   /**
    * Removes the given event from the current schedule of events if it exists.

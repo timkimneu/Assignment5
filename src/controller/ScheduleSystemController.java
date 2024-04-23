@@ -204,8 +204,8 @@ public class ScheduleSystemController<T> implements ScheduleSystem<T> {
   }
 
   @Override
-  public void addEvent(IEvent<T> e) {
-    this.model.addEvent(e);
+  public void addEvent(IEvent<T> e, UserImpl user) {
+    this.model.addEvent(e, user);
     view.refresh();
   }
 
@@ -215,7 +215,7 @@ public class ScheduleSystemController<T> implements ScheduleSystem<T> {
       throw new IllegalArgumentException("Cannot replace old event with same event!");
     }
     this.model.removeEvent(oldEvent, user);
-    this.model.addEvent(newEvent);
+    this.model.addEvent(newEvent, user);
     view.refresh();
   }
 

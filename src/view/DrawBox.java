@@ -1,7 +1,6 @@
 package view;
 
 import model.DaysOfTheWeek;
-import model.EventImpl;
 import model.IEvent;
 import model.IReadOnlyPlannerModel;
 import model.ISchedule;

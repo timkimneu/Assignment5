@@ -42,7 +42,7 @@ public class SatSchedulePlanner implements ISchedule<SatDOTW> {
 
   @Override
   public void addEvent(int startDay, String startTime, int endDay, String endTime,
-                       LocationImpl loc, List<UserImpl> users, String eventName) {
+                       LocationImpl loc, List<UserImpl> users, String eventName, UserImpl user) {
     SatTimeImpl newTime = new SatTimeImpl(SatDOTW.valueOf(daysOfTheWeek.get(startDay)
             .toUpperCase()), startTime, SatDOTW.valueOf(daysOfTheWeek.get(endDay)
             .toUpperCase()), endTime);

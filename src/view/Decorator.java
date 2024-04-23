@@ -3,7 +3,6 @@ package view;
 import model.DaysOfTheWeek;
 import model.IEvent;
 import model.IReadOnlyPlannerModel;
-import model.IReadOnlyPlannerModel;
 
 import java.awt.*;
 import java.util.ArrayList;

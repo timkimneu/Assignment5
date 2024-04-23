@@ -30,6 +30,7 @@ public class DrawHostBox extends DrawBox {
 
           if (currEvent.host().name().replaceAll("\"", "")
             .equals(this.id.replaceAll("\"", ""))) {
+            System.out.println(currEvent.host().name());
           //if (currSch.scheduleID() == this.id) {
             System.out.println(currSch.getFirstDay());
             fillSquares(g2d, currTime.startTime(), currTime.endTime(), currTime.startDay(),

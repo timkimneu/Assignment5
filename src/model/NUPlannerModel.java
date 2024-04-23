@@ -91,14 +91,15 @@ public class NUPlannerModel implements IPlannerModel<DaysOfTheWeek> {
   }
 
   @Override
-  public void addEvent(IEvent<DaysOfTheWeek> event) {
+  public void addEvent(IEvent<DaysOfTheWeek> event, UserImpl user) {
     for (UserImpl u : event.users()) {
       for (ISchedule<DaysOfTheWeek> sch : this.schedules()) {
         String scheduleID = sch.scheduleID();
         if (u.name().equals(scheduleID)) {
           sch.addEvent(event.time().startDay().getDayOrder(), event.time().startTime(),
                   event.time().endDay().getDayOrder(), event.time().endTime(), event.location(),
-                  event.users(), event.name());
+                  event.users(), event.name(), user);
+          //event.setHost(user);
         }
       }
     }
@@ -119,7 +120,7 @@ public class NUPlannerModel implements IPlannerModel<DaysOfTheWeek> {
                   event.users(), event.name());
           sch.addEvent(newEvent.time().startDay().getDayOrder(), newEvent.time().startTime(),
                   newEvent.time().endDay().getDayOrder(), newEvent.time().endTime(),
-                  newEvent.location(), newEvent.users(), newEvent.name());
+                  newEvent.location(), newEvent.users(), newEvent.name(), user);
         }
       }
     }

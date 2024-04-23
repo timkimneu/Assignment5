@@ -132,6 +132,6 @@ In order to implement the Saturday starting time models, two new command line ar
 possible run configurations: saturdayanytime and saturdayworkhours. The decorator pattern was implemented, which
 added a Decorator class that implemented the IDrawBox interface. Two other classes implemented the IDrawBox interface,
 which provide different colors according to whether the host is hosting the event or not. The decorator class was called
-in the SchedulePanel, which is activated once
+in the SchedulePanel, which is activated once a user is selected.
 
 New classes were added, and the enu

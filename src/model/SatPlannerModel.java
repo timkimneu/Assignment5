@@ -83,14 +83,15 @@ public class SatPlannerModel implements IPlannerModel<SatDOTW> {
   }
 
   @Override
-  public void addEvent(IEvent<SatDOTW> event) {
+  public void addEvent(IEvent<SatDOTW> event, UserImpl user) {
     for (UserImpl u : event.users()) {
       for (ISchedule<SatDOTW> sch : this.schedules()) {
         String scheduleID = sch.scheduleID();
         if (u.name().equals(scheduleID)) {
           sch.addEvent(event.time().startDay().getDayOrder(), event.time().startTime(),
                   event.time().endDay().getDayOrder(), event.time().endTime(), event.location(),
-                  event.users(), event.name());
+                  event.users(), event.name(), user);
+          event.setHost(user);
         }
       }
     }
@@ -117,7 +118,7 @@ public class SatPlannerModel implements IPlannerModel<SatDOTW> {
                   event.users(), event.name());
           sch.addEvent(newEvent.time().startDay().getDayOrder(), newEvent.time().startTime(),
                   newEvent.time().endDay().getDayOrder(), newEvent.time().endTime(),
-                  newEvent.location(), newEvent.users(), newEvent.name());
+                  newEvent.location(), newEvent.users(), newEvent.name(), user);
         }
       }
     }

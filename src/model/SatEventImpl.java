@@ -84,4 +84,9 @@ public class SatEventImpl implements IEvent<SatDOTW> {
   public int hashCode() {
     return Objects.hash(this.name, this.time, this.location);
   }
+
+  @Override
+  public void setHost(UserImpl user) {
+    this.host = user;
+  }
 }

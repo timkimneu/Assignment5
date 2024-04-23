@@ -565,7 +565,7 @@ public class ScheduleControllerTests {
     ScheduleSystemView<DaysOfTheWeek> ssView = new ScheduleFrame(mtModel);
     ScheduleSystemController<DaysOfTheWeek> schSysCon = new ScheduleSystemController<>(ssView);
     schSysCon.launch(mtModel);
-    schSysCon.addEvent(this.mondayAfternoonJog);
+    schSysCon.addEvent(this.mondayAfternoonJog, this.mondayAfternoonJog.users().get(0));
     Assert.assertTrue(mtModel.schedules().get(0).events().contains(this.mondayAfternoonJog));
   }
 
@@ -577,7 +577,7 @@ public class ScheduleControllerTests {
     ScheduleSystemView<DaysOfTheWeek> ssView = new ScheduleFrame(mtModel);
     ScheduleSystemController<DaysOfTheWeek> schSysCon = new ScheduleSystemController<>(ssView);
     schSysCon.launch(mtModel);
-    schSysCon.addEvent(this.mondayAfternoonJog);
+    schSysCon.addEvent(this.mondayAfternoonJog, this.mondayAfternoonJog.users().get(0));
     Assert.assertTrue(mtModel.schedules().get(0).events().contains(this.mondayAfternoonJog));
     schSysCon.removeEvent(this.mondayAfternoonJog, this.user1);
     Assert.assertFalse(mtModel.schedules().get(0).events().contains(this.mondayAfternoonJog));
@@ -591,7 +591,7 @@ public class ScheduleControllerTests {
     ScheduleSystemView<DaysOfTheWeek> ssView = new ScheduleFrame(mtModel);
     ScheduleSystemController<DaysOfTheWeek> schSysCon = new ScheduleSystemController<>(ssView);
     schSysCon.launch(mtModel);
-    schSysCon.addEvent(this.mondayAfternoonJog);
+    schSysCon.addEvent(this.mondayAfternoonJog, this.mondayAfternoonJog.users().get(0));
     schSysCon.modifyEvent(this.mondayAfternoonJog, this.church, this.user1);
     Assert.assertTrue(mtModel.schedules().get(0).events().contains(this.church));
   }
@@ -628,7 +628,7 @@ public class ScheduleControllerTests {
   public void testMockAddEvent() {
     this.initData();
     this.initAppendable();
-    ssc.addEvent(this.church);
+    ssc.addEvent(this.church, this.church.users().get(0));
     Assert.assertEquals("name = Church, startDay = SUNDAY, endDay = SUNDAY, " +
             "startTime = 1000, endTime = 1300, online = false, place = Mulberry Street",
             strOut.toString());

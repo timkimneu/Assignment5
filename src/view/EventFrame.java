@@ -116,7 +116,7 @@ public class EventFrame extends JFrame implements ScheduleSystemView<DaysOfTheWe
   public void addListener(ScheduleSystem<DaysOfTheWeek> listener) {
     createEvent.addActionListener(e -> {
       try {
-        listener.addEvent(createEvent());
+        listener.addEvent(createEvent(), user);
         this.hidePanel();
       } catch (IllegalArgumentException ex) {
         JOptionPane.showMessageDialog(null, "Cannot create event");
