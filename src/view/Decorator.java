@@ -4,34 +4,38 @@ import model.DaysOfTheWeek;
 import model.IEvent;
 import model.IReadOnlyPlannerModel;
 
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Decorator to fill boxes with a color to indicate the presence of an event.
+ */
 public class Decorator implements IDrawBox {
-
-  private IDrawBox drawBox;
   private boolean isHost;
-  private final IReadOnlyPlannerModel model;
   protected Map<ArrayList<Double>,IEvent<DaysOfTheWeek>> eventCoords;
-
   private final DrawHostBox drawHostBox;
-
   private final DrawBox drawNonToggleBox;
-
-  private final String id;
   private EventFrame eventFrame;
 
-
-  public Decorator(IDrawBox drawBox, boolean isHost, IReadOnlyPlannerModel model, String id, Map<ArrayList<Double>, IEvent<DaysOfTheWeek>> eventCoords, int width, int height) {
-    this.drawBox = drawBox;
+  /**
+   * Decorator to fill boxes with a color to indicate the presence of an event.
+   *
+   * @param drawBox generic draw box class to draw boxes.
+   * @param isHost boolean to indicate if selected user is host.
+   * @param model model type for schedule structure.
+   * @param id string id of selected user.
+   * @param eventCoords event to be drawn.
+   * @param width width of screen.
+   * @param height height of screen.
+   */
+  public Decorator(IDrawBox drawBox, boolean isHost, IReadOnlyPlannerModel model, String id,
+                   Map<ArrayList<Double>, IEvent<DaysOfTheWeek>> eventCoords, int width,
+                   int height) {
     this.isHost = isHost;
-    this.model = model;
-    //this.eventCoords = eventCoords;
     this.drawHostBox = new DrawHostBox(model, id, width, height, eventCoords);
     this.drawNonToggleBox = new DrawBox(model, id, width, height, eventCoords);
-    this.id = id;
     this.eventCoords = new HashMap<>();
   }
 

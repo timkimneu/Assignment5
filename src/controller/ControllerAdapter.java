@@ -62,7 +62,8 @@ public class ControllerAdapter implements Features {
   public boolean scheduleEvent(EventBuilder builder, int duration) {
     try {
       EventImpl event = convertEvent(builder.buildEvent());
-      system.scheduleEvent(event.name(), event.location(), duration, event.users());
+      system.scheduleEvent(event.name(), event.location(), duration, event.users(),
+              event.users().get(0));
       return true;
     } catch (IllegalArgumentException e) {
       return false;

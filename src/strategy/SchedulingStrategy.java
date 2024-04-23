@@ -28,6 +28,8 @@ public interface SchedulingStrategy<T> {
    * @param location Location class that represents the place and whether event is online.
    * @param duration How long the event is in minutes.
    * @param users    List of users that are attending the event.
+   * @param user     User to be set as host.
    */
-  void scheduleEvent(String name, LocationImpl location, int duration, List<UserImpl> users);
+  void scheduleEvent(String name, LocationImpl location, int duration, List<UserImpl> users,
+                     UserImpl user);
 }

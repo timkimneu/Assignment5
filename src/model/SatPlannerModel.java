@@ -99,9 +99,9 @@ public class SatPlannerModel implements IPlannerModel<SatDOTW> {
 
   @Override
   public void scheduleEvent(String name, LocationImpl location, int duration,
-                            List<UserImpl> users) {
+                            List<UserImpl> users, UserImpl user) {
     AnytimeStrategy<SatDOTW> anytimeStrategy = new AnytimeStrategy<>(this);
-    anytimeStrategy.scheduleEvent(name, location, duration, users);
+    anytimeStrategy.scheduleEvent(name, location, duration, users, user);
   }
 
   @Override

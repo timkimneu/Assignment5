@@ -38,7 +38,7 @@ public class AnytimeStrategy<T> implements SchedulingStrategy<T> {
 
   @Override
   public void scheduleEvent(String name, LocationImpl location, int duration,
-                            List<UserImpl> users) {
+                            List<UserImpl> users, UserImpl user) {
     int mins = duration % 60;
     int hours = ((duration - mins) / 60) % 24;
     int days = (((duration - mins) / 60) - hours) / 24;
@@ -53,7 +53,8 @@ public class AnytimeStrategy<T> implements SchedulingStrategy<T> {
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
           endTime = entry.getKey();
         }
-        if (attemptEvent(day, startTime, getNextDOTW(day, days), endTime, location, users, name)) {
+        if (attemptEvent(day, startTime, getNextDOTW(day, days), endTime, location, users, name,
+                user)) {
           return;
         }
       }
@@ -63,12 +64,13 @@ public class AnytimeStrategy<T> implements SchedulingStrategy<T> {
 
   // helper method to attempt to add an event and check for exceptions
   private boolean attemptEvent(int startDay, String startTime, int endDay, String endTime,
-                               LocationImpl loc, List<UserImpl> users, String eventName) {
+                               LocationImpl loc, List<UserImpl> users, String eventName,
+                               UserImpl user) {
     for (UserImpl u : users) {
       try {
         for (ISchedule<T> sch : this.model.schedules()) {
           if (u.name().equals(sch.scheduleID())) {
-            sch.addEvent(startDay, startTime, endDay, endTime, loc, users, eventName, users.get(0));
+            sch.addEvent(startDay, startTime, endDay, endTime, loc, users, eventName, user);
           }
         }
       } catch (IllegalArgumentException e) {

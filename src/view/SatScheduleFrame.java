@@ -169,10 +169,9 @@ public class SatScheduleFrame extends JFrame implements
     saveCalendar.addActionListener(e -> listener.writeXML(""));
     createEvent.addActionListener(e -> eventFrame.resetFrame());
     schEvent.addActionListener(e -> getDurationFrame().resetFrame());
-    toggleEvent.addActionListener(e ->
-        System.out.println("TOGGLE"));
-        host = !host;
-        panel.drawDates(userStr, host);
+    toggleEvent.addActionListener(e -> System.out.println("TOGGLE"));
+    host = !host;
+    panel.drawDates(userStr, host);
   }
 
   private SatEventDurationFrame getDurationFrame() {

@@ -56,8 +56,9 @@ public interface IEvent<T> {
   boolean isHost(String user);
 
   /**
+   * Set the given user as the host for this event.
    *
-   * @param user
+   * @param user to be host of this event.
    */
   void setHost(UserImpl user);
 

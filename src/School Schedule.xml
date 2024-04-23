@@ -13,7 +13,6 @@
 			<place>Mulberry Street</place>
 		</time>
 		<users>
-			<uid>"School Schedule"</uid>
 			<uid>"Me"</uid>
 			<uid>"Mom"</uid>
 			<uid>"Dad"</uid>
@@ -32,7 +31,6 @@
 			<place>Northeastern University</place>
 		</time>
 		<users>
-			<uid>"School Schedule"</uid>
 			<uid>"Me"</uid>
 			<uid>"Classmate"</uid>
 			<uid>"Best Friend"</uid>

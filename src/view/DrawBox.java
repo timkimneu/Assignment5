@@ -6,8 +6,9 @@ import model.IReadOnlyPlannerModel;
 import model.ISchedule;
 import model.ITime;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Graphics2D;
+import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Class that fills boxes with a color to indicate the presence of an event.
+ */
 public class DrawBox extends JPanel implements IDrawBox {
 
   protected final IReadOnlyPlannerModel<DaysOfTheWeek> model;
@@ -27,7 +31,17 @@ public class DrawBox extends JPanel implements IDrawBox {
   private int width;
   private int height;
 
-  public DrawBox(IReadOnlyPlannerModel<DaysOfTheWeek> model, String id, int width, int height, Map<ArrayList<Double>, IEvent<DaysOfTheWeek>> eventCoords) {
+  /**
+   * Class that fills boxes with a color to indicate the presence of an event.
+   *
+   * @param model model to structure calendar on.
+   * @param id String id of the owner of a schedule.
+   * @param width width of screen.
+   * @param height height of screen.
+   * @param eventCoords Event to be drawn.
+   */
+  public DrawBox(IReadOnlyPlannerModel<DaysOfTheWeek> model, String id, int width, int height,
+                 Map<ArrayList<Double>, IEvent<DaysOfTheWeek>> eventCoords) {
     this.model = model;
     this.id = id;
     this.eventCoords = eventCoords;
@@ -53,7 +67,8 @@ public class DrawBox extends JPanel implements IDrawBox {
 
   // searches through the start days and calls helper methods in order
   protected void fillSquares(Graphics2D g2d, String startTime, String endTime,
-                             DaysOfTheWeek startDay, DaysOfTheWeek endDay, IEvent<DaysOfTheWeek> event, Color color) {
+                             DaysOfTheWeek startDay, DaysOfTheWeek endDay,
+                             IEvent<DaysOfTheWeek> event, Color color) {
     g2d.setColor(color);
     switch (startDay) {
       case SUNDAY:
@@ -107,7 +122,8 @@ public class DrawBox extends JPanel implements IDrawBox {
   }
 
   protected void fillRemainingDays(Graphics2D g2d, int col, String startTime, String endTime,
-                                   DaysOfTheWeek startDay, DaysOfTheWeek endDay, IEvent<DaysOfTheWeek> event, Color color) {
+                                   DaysOfTheWeek startDay, DaysOfTheWeek endDay,
+                                   IEvent<DaysOfTheWeek> event, Color color) {
     if (startDay == endDay) {
       fillRectSameDay(g2d, col, startTime, endTime, event);
       return;

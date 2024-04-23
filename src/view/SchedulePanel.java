@@ -4,8 +4,6 @@ import controller.ScheduleSystem;
 import model.DaysOfTheWeek;
 import model.IEvent;
 import model.IReadOnlyPlannerModel;
-import model.ISchedule;
-import model.ITime;
 
 import javax.swing.JPanel;
 
@@ -16,13 +14,9 @@ import java.awt.BasicStroke;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Creates a GUI to visualize the individual schedules planner model and users'
@@ -41,11 +35,6 @@ public class SchedulePanel extends JPanel implements SchPanel<DaysOfTheWeek> {
   private final EventFrame eventFrame;
   private Map<ArrayList<Double>, IEvent<DaysOfTheWeek>> eventCoords;
 
-  private IDrawBox drawEvent;
-  private Decorator decorator;
-
-  private String eventHost;
-
   /**
    * Initializes the GUI and paints the screen with lines to organize the schedule into
    * 7 days of the week represented by 7 columns and 24 hours represented by 24 boxes
@@ -59,8 +48,10 @@ public class SchedulePanel extends JPanel implements SchPanel<DaysOfTheWeek> {
     this.eventFrame = eventFrame;
     this.userSelected = false;
     this.eventCoords = new HashMap<>();
-    drawEvent= new DrawBox(model, this.id, this.getWidth(), this.getHeight(), eventCoords);
-    decorator = new Decorator(drawEvent, host, this.model, this.id, eventCoords, this.getWidth(), this.getHeight());
+    IDrawBox drawEvent = new DrawBox(model, this.id, this.getWidth(), this.getHeight(),
+            eventCoords);
+    Decorator decorator = new Decorator(drawEvent, host, this.model, this.id, eventCoords,
+            this.getWidth(), this.getHeight());
   }
 
   @Override
@@ -68,7 +59,8 @@ public class SchedulePanel extends JPanel implements SchPanel<DaysOfTheWeek> {
     super.paintComponent(g);
     Graphics2D g2d = (Graphics2D) g;
     DrawBox drawBox = new DrawBox(model, this.id, this.getWidth(), this.getHeight(), eventCoords);
-    Decorator decorator = new Decorator(drawBox, host, model, this.id, eventCoords, this.getWidth(), this.getHeight());
+    Decorator decorator = new Decorator(drawBox, host, model, this.id, eventCoords,
+            this.getWidth(), this.getHeight());
 
     if (this.userSelected) {
       //drawScheduleState(g2d);
@@ -104,11 +96,9 @@ public class SchedulePanel extends JPanel implements SchPanel<DaysOfTheWeek> {
 
   @Override
   public void drawDates(String user, boolean host) {
-    System.out.println("Schedule draw");
     this.userSelected = true;
     this.id = user;
     this.host = host;
-    this.eventHost = user;
     repaint();
   }
 

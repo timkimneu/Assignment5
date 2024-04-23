@@ -110,6 +110,7 @@ public class ScheduleFrame extends JFrame implements
         JComboBox<String> user = (JComboBox<String>) e.getSource();
         userStr = (String) user.getSelectedItem();
         eventFrame.addSelectedUser(new UserImpl(userStr));
+        durationFrame.addSelectedUser(new UserImpl(userStr));
         panel.drawDates(userStr, host);
       }
     }

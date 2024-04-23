@@ -36,8 +36,8 @@ public class WorkTimePlannerModel extends NUPlannerModel {
 
   @Override
   public void scheduleEvent(String name, LocationImpl location, int duration,
-                            List<UserImpl> users) {
+                            List<UserImpl> users, UserImpl user) {
     WorkTimeStrategy<DaysOfTheWeek> workTimeStrategy = new WorkTimeStrategy<>(this);
-    workTimeStrategy.scheduleEvent(name, location, duration, users);
+    workTimeStrategy.scheduleEvent(name, location, duration, users, user);
   }
 }

@@ -85,9 +85,9 @@ public class NUPlannerModel implements IPlannerModel<DaysOfTheWeek> {
 
   @Override
   public void scheduleEvent(String name, LocationImpl location, int duration,
-                            List<UserImpl> users) {
+                            List<UserImpl> users, UserImpl user) {
     AnytimeStrategy<DaysOfTheWeek> anytimeStrategy = new AnytimeStrategy<>(this);
-    anytimeStrategy.scheduleEvent(name, location, duration, users);
+    anytimeStrategy.scheduleEvent(name, location, duration, users, user);
   }
 
   @Override

@@ -125,13 +125,21 @@ their Builder class takes in no arguments in their constructor. This was a resul
 in their code, and therefore, we were not able to schedule an event through the buttons.
 
 Changes for Homework 9:
-In order to implement the toggle host, a new class Decorator was created, which implements the IDrawBox interface.
-This interface
+In order to implement the toggle host, a new class Decorator was created, which implements the
+IDrawBox interface. This interface includes the method that draws an event schedule. It checks to
+see whether the toggle host button was called and calls the correct implementations of the interface
+according to that boolean.
 
-In order to implement the Saturday starting time models, two new command line arguments were added to the
-possible run configurations: saturdayanytime and saturdayworkhours. The decorator pattern was implemented, which
-added a Decorator class that implemented the IDrawBox interface. Two other classes implemented the IDrawBox interface,
-which provide different colors according to whether the host is hosting the event or not. The decorator class was called
-in the SchedulePanel, which is activated once a user is selected.
+In order to implement the Saturday starting time models, two new command line arguments were added
+to the possible run configurations: saturdayanytime and saturdayworkhours. The decorator pattern
+was implemented, which added a Decorator class that implemented the IDrawBox interface. Two other
+classes implemented the IDrawBox interface, which provide different colors according to whether the
+host is hosting the event or not. The decorator class was called in the SchedulePanel, which is
+activated once a user is selected.
 
-New classes were added, and the enu
+New classes were added and the enums were parameterized in order to make our enums more flexible
+with the classes that use them. A new SatDOTW enum was created in order to change the order of what
+the first day was in our model. This same logic was applied to the view, where the days of the week
+were multiples based on which first day it is. The Saturday model and view implements the same
+interfaces as our NUPlannerModel, and the methods in which the order of the days of the week are
+calculated was overriden.

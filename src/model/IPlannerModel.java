@@ -47,8 +47,10 @@ public interface IPlannerModel<T> extends IReadOnlyPlannerModel<T> {
    * @param location Location class that represents the place and whether event is online.
    * @param duration How long the event is in minutes.
    * @param users    List of users that are attending the event.
+   * @param user     User to be set as host.
    */
-  void scheduleEvent(String name, LocationImpl location, int duration, List<UserImpl> users);
+  void scheduleEvent(String name, LocationImpl location, int duration, List<UserImpl> users,
+                     UserImpl user);
 
   /**
    * Adds the given event to all users in the planner system provided by the list of users
@@ -58,7 +60,7 @@ public interface IPlannerModel<T> extends IReadOnlyPlannerModel<T> {
    * event is already scheduled in any attendee's schedule.
    *
    * @param event Event class that represents the event to be added.
-   * @param user
+   * @param user to be host of the given event.
    */
   void addEvent(IEvent<T> event, UserImpl user);
 

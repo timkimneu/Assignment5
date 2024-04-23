@@ -31,7 +31,7 @@ public class WorkTimeStrategy<T> implements SchedulingStrategy<T> {
 
   @Override
   public void scheduleEvent(String name, LocationImpl location, int duration,
-                            List<UserImpl> users) {
+                            List<UserImpl> users, UserImpl user) {
     List<String> daysOfTheWeek = Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday",
             "Friday");
     int mins = duration % 60;
@@ -50,7 +50,7 @@ public class WorkTimeStrategy<T> implements SchedulingStrategy<T> {
           endTime = entry.getKey();
         }
         if (attemptEvent(day + model.getFirstDay(), startTime, day + model.getFirstDay(), endTime,
-                location, users, name)) {
+                location, users, name, user)) {
           return;
         }
       }
@@ -67,12 +67,13 @@ public class WorkTimeStrategy<T> implements SchedulingStrategy<T> {
 
   // determines if event is valid
   private boolean attemptEvent(int startDay, String startTime, int endDay, String endTime,
-                               LocationImpl loc, List<UserImpl> users, String eventName) {
+                               LocationImpl loc, List<UserImpl> users, String eventName,
+                               UserImpl user) {
     for (UserImpl u : users) {
       try {
         for (ISchedule<T> sch : model.schedules()) {
           if (u.name().equals(sch.scheduleID())) {
-            sch.addEvent(startDay, startTime, endDay, endTime, loc, users, eventName, users.get(0));
+            sch.addEvent(startDay, startTime, endDay, endTime, loc, users, eventName, user);
           }
         }
       } catch (IllegalArgumentException e) {

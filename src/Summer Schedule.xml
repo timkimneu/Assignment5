@@ -13,7 +13,6 @@
 			<place>Cancun Resort</place>
 		</time>
 		<users>
-			<uid>"School Schedule"</uid>
 			<uid>"Me"</uid>
 			<uid>"Friend"</uid>
 			<uid>"Best Friend"</uid>
@@ -32,7 +31,6 @@
 			<place>Outside</place>
 		</time>
 		<users>
-			<uid>"School Schedule"</uid>
 			<uid>"Me"</uid>
 		</users>
 	</event>

@@ -605,7 +605,7 @@ public class ScheduleControllerTests {
     ScheduleSystemController<DaysOfTheWeek> schSysCon = new ScheduleSystemController<>(ssView);
     schSysCon.launch(mtModel);
     Assert.assertEquals(0, mtModel.schedules().get(0).events().size());
-    schSysCon.scheduleEvent("Neat event", this.loc1, 120, this.users1);
+    schSysCon.scheduleEvent("Neat event", this.loc1, 120, this.users1, this.users1.get(0));
     Assert.assertEquals(1, mtModel.schedules().get(0).events().size());
   }
 
@@ -648,7 +648,8 @@ public class ScheduleControllerTests {
   public void testMockScheduleEvent() {
     this.initData();
     this.initAppendable();
-    ssc.scheduleEvent("Evt Name", new LocationImpl(true, "home"), 1234, this.users1);
+    ssc.scheduleEvent("Evt Name", new LocationImpl(true, "home"), 1234, this.users1,
+            this.users1.get(0));
     Assert.assertEquals("name = Evt Name, online = true, place = home, duration = 1234",
             strOut.toString());
   }
@@ -681,7 +682,7 @@ public class ScheduleControllerTests {
     LocationImpl loc = new LocationImpl(true, "school");
     int duration = 1500;
 
-    anytimeModel.scheduleEvent(eventName, loc, duration, listUsers);
+    anytimeModel.scheduleEvent(eventName, loc, duration, listUsers, listUsers.get(0));
 
     ISchedule<DaysOfTheWeek> curr = anytimeModel.schedules().get(0);
     assertEquals("Hi", curr.events().get(1).name());
@@ -711,8 +712,8 @@ public class ScheduleControllerTests {
     int duration = 1500;
     int duration2 = 2300;
 
-    anytimeModel.scheduleEvent(eventName, loc, duration, listUsers);
-    anytimeModel.scheduleEvent(eventName2, loc2, duration2, listUsers);
+    anytimeModel.scheduleEvent(eventName, loc, duration, listUsers, listUsers.get(0));
+    anytimeModel.scheduleEvent(eventName2, loc2, duration2, listUsers, listUsers.get(0));
 
     ISchedule<DaysOfTheWeek> curr = anytimeModel.schedules().get(0);
     assertEquals("Hi", curr.events().get(1).name());
@@ -762,8 +763,8 @@ public class ScheduleControllerTests {
     int duration = 120;
     int duration2 = 240;
 
-    workModel.scheduleEvent(eventName, loc, duration, listUsers);
-    workModel.scheduleEvent(eventName2, loc2, duration2, listUsers);
+    workModel.scheduleEvent(eventName, loc, duration, listUsers, listUsers.get(0));
+    workModel.scheduleEvent(eventName2, loc2, duration2, listUsers, listUsers.get(0));
 
     ISchedule<DaysOfTheWeek> curr = workModel.schedules().get(0);
     assertEquals("Hi", curr.events().get(1).name());
@@ -812,8 +813,8 @@ public class ScheduleControllerTests {
     int duration = 1500;
     int duration2 = 2300;
 
-    anytimeModel.scheduleEvent(eventName, loc, duration, listUsers);
-    anytimeModel.scheduleEvent(eventName2, loc2, duration2, listUsers);
+    anytimeModel.scheduleEvent(eventName, loc, duration, listUsers, listUsers.get(0));
+    anytimeModel.scheduleEvent(eventName2, loc2, duration2, listUsers, listUsers.get(0));
 
     ISchedule<SatDOTW> curr = anytimeModel.schedules().get(0);
     assertEquals("Hi", curr.events().get(1).name());
@@ -863,8 +864,8 @@ public class ScheduleControllerTests {
     int duration = 120;
     int duration2 = 240;
 
-    workModel.scheduleEvent(eventName, loc, duration, listUsers);
-    workModel.scheduleEvent(eventName2, loc2, duration2, listUsers);
+    workModel.scheduleEvent(eventName, loc, duration, listUsers, listUsers.get(0));
+    workModel.scheduleEvent(eventName2, loc2, duration2, listUsers, listUsers.get(0));
 
     ISchedule<SatDOTW> curr = workModel.schedules().get(0);
     assertEquals("Hi", curr.events().get(1).name());
@@ -909,7 +910,7 @@ public class ScheduleControllerTests {
     LocationImpl loc = new LocationImpl(true, "school");
     int duration = 1500;
 
-    anytimeModel.scheduleEvent(eventName, loc, duration, listUsers);
+    anytimeModel.scheduleEvent(eventName, loc, duration, listUsers, listUsers.get(0));
 
     ISchedule<SatDOTW> curr = anytimeModel.schedules().get(0);
     assertEquals("Hi", curr.events().get(1).name());

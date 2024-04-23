@@ -57,7 +57,7 @@ public class PlannerMock implements IPlannerModel<DaysOfTheWeek> {
 
   @Override
   public void scheduleEvent(String name, LocationImpl location, int duration,
-                            List<UserImpl> users) {
+                            List<UserImpl> users, UserImpl user) {
     try {
       this.log.append(String.format("name = %s, online = %s, place = %s, duration = %d",
               name, getOnlineBool(location.online()), location.place(), duration));

@@ -6,15 +6,29 @@ import model.IReadOnlyPlannerModel;
 import model.ISchedule;
 import model.ITime;
 
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Class that fills boxes with a color to indicate the presence of an event for a host.
+ */
 public class DrawHostBox extends DrawBox {
 
-  public DrawHostBox(IReadOnlyPlannerModel<DaysOfTheWeek> model, String id, int width, int height, Map<ArrayList<Double>, IEvent<DaysOfTheWeek>> eventCoords) {
+  /**
+   * Class that fills boxes with a color to indicate the presence of an event for a host.
+   *
+   * @param model Model to structure calendar on.
+   * @param id String id of owner of a schedule
+   * @param width Width of screen.
+   * @param height Height of screen.
+   * @param eventCoords Event to be drawn.
+   */
+  public DrawHostBox(IReadOnlyPlannerModel<DaysOfTheWeek> model, String id, int width, int height,
+                     Map<ArrayList<Double>, IEvent<DaysOfTheWeek>> eventCoords) {
     super(model, id, width, height, eventCoords);
   }
 
@@ -29,10 +43,7 @@ public class DrawHostBox extends DrawBox {
           ITime<DaysOfTheWeek> currTime = currEvent.time();
 
           if (currEvent.host().name().replaceAll("\"", "")
-            .equals(this.id.replaceAll("\"", ""))) {
-            System.out.println(currEvent.host().name());
-          //if (currSch.scheduleID() == this.id) {
-            System.out.println(currSch.getFirstDay());
+                  .equals(this.id.replaceAll("\"", ""))) {
             fillSquares(g2d, currTime.startTime(), currTime.endTime(), currTime.startDay(),
                 currTime.endDay(), currEvent, Color.BLUE);
           }
@@ -41,7 +52,7 @@ public class DrawHostBox extends DrawBox {
                 currTime.endDay(), currEvent, Color.PINK);
           }
         }
-        }
       }
     }
+  }
 }

@@ -44,6 +44,7 @@ public class EventDurationFrame extends JFrame implements EvtFrame<DaysOfTheWeek
   private JLabel availUsers;// = new JLabel("\tAvailable Users: ");
   private GridLayout gridLayout;// = new GridLayout(0, 1);
   private JScrollPane scrollPane;// = new JScrollPane();
+  private UserImpl user;
 
 
   /**
@@ -165,7 +166,7 @@ public class EventDurationFrame extends JFrame implements EvtFrame<DaysOfTheWeek
                 onlineBox.getSelectedItem())), place.getText());
         int duration = Integer.parseInt(durTime.getText());
         List<UserImpl> listUsers = getUsers(usersBox.getSelectedValuesList());
-        listener.scheduleEvent(eventName, loc, duration, listUsers);
+        listener.scheduleEvent(eventName, loc, duration, listUsers, user);
         this.hidePanel();
       } catch (IllegalArgumentException ex) {
         JOptionPane.showMessageDialog(null, "Cannot schedule event");
@@ -213,7 +214,7 @@ public class EventDurationFrame extends JFrame implements EvtFrame<DaysOfTheWeek
 
   @Override
   public void addSelectedUser(UserImpl user) {
-    //
+    this.user = user;
   }
 
   @Override

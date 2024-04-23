@@ -53,7 +53,7 @@ public interface ScheduleSystem<T> {
    * Listener for when a user attempts to create an event in the view.
    *
    * @param e Event to be added and passed to be handled in the model.
-   * @param user
+   * @param user User to be set as host for event.
    */
   void addEvent(IEvent<T> e, UserImpl user);
 
@@ -81,6 +81,8 @@ public interface ScheduleSystem<T> {
    * @param location Location to be passed into the model.
    * @param duration Integer duration to be passed into the model.
    * @param users    List of users to be passed into the model.
+   * @param user     User to be set as host.
    */
-  void scheduleEvent(String name, LocationImpl location, int duration, List<UserImpl> users);
+  void scheduleEvent(String name, LocationImpl location, int duration, List<UserImpl> users,
+                     UserImpl user);
 }

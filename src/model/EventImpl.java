@@ -88,6 +88,5 @@ public class EventImpl implements IEvent<DaysOfTheWeek> {
   @Override
   public void setHost(UserImpl user) {
     this.host = user;
-    System.out.println("HOSTTT " + this.host.toString());
   }
 }
