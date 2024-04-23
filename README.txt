@@ -124,4 +124,14 @@ when trying to create an event and schedule an event, we received a Null Pointer
 their Builder class takes in no arguments in their constructor. This was a result of tight coupling
 in their code, and therefore, we were not able to schedule an event through the buttons.
 
+Changes for Homework 9:
+In order to implement the toggle host, a new class Decorator was created, which implements the IDrawBox interface.
+This interface
 
+In order to implement the Saturday starting time models, two new command line arguments were added to the
+possible run configurations: saturdayanytime and saturdayworkhours. The decorator pattern was implemented, which
+added a Decorator class that implemented the IDrawBox interface. Two other classes implemented the IDrawBox interface,
+which provide different colors according to whether the host is hosting the event or not. The decorator class was called
+in the SchedulePanel, which is activated once
+
+New classes were added, and the enu

@@ -47,4 +47,9 @@ public class UserImpl implements IUser {
   public int hashCode() {
     return Objects.hashCode(this.name);
   }
+
+  @Override
+  public String toString() {
+    return this.name;
+  }
 }

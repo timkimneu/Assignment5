@@ -64,7 +64,7 @@ public class EventImpl implements IEvent<DaysOfTheWeek> {
 
   @Override
   public boolean isHost(String user) {
-    return this.host.toString().equals(user);
+    return this.host.name().equals(user);
   }
 
   @Override

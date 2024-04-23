@@ -40,6 +40,7 @@ public class ScheduleFrame extends JFrame implements
   private JButton toggleEvent;
   private JComboBox<String> userBox;
   private String userStr;
+  private boolean host = false;
 
 
   /**
@@ -109,7 +110,7 @@ public class ScheduleFrame extends JFrame implements
         JComboBox<String> user = (JComboBox<String>) e.getSource();
         userStr = (String) user.getSelectedItem();
         eventFrame.addSelectedUser(new UserImpl(userStr));
-        panel.drawDates(userStr);
+        panel.drawDates(userStr, host);
       }
     }
     );
@@ -168,7 +169,13 @@ public class ScheduleFrame extends JFrame implements
     saveCalendar.addActionListener(e -> listener.writeXML(""));
     createEvent.addActionListener(e -> eventFrame.resetFrame());
     schEvent.addActionListener(e -> getDurationFrame().resetFrame());
-    toggleEvent.addActionListener(e -> System.out.println("TOGGLE"));
+    toggleEvent.addActionListener(
+        e -> {
+          host = !host;
+          panel.drawDates(userStr, host);
+        });
+
+
   }
 
   private EventDurationFrame getDurationFrame() {

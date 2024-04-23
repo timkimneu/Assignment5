@@ -24,7 +24,7 @@ public interface SchPanel<T> {
    *
    * @param user Schedule designated by the user to draw the schedule of.
    */
-  void drawDates(String user);
+  void drawDates(String user, boolean host);
 
   /**
    * Adds controller to listen to the view to then communicate changes to model.

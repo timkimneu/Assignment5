@@ -35,6 +35,7 @@ public class SatSchedulePanel extends JPanel implements SchPanel<SatDOTW> {
   protected String id;
   private final SatEventFrame eventFrame;
   private final Map<ArrayList<Double>, IEvent<SatDOTW>> eventCoords;
+  private boolean host;
 
 
   /**
@@ -214,10 +215,11 @@ public class SatSchedulePanel extends JPanel implements SchPanel<SatDOTW> {
   }
 
   @Override
-  public void drawDates(String user) {
+  public void drawDates(String user, boolean host) {
     System.out.println("Schedule draw");
     this.userSelected = true;
     this.id = user;
+    this.host = host;
     repaint();
   }
 
