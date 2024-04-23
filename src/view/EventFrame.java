@@ -21,7 +21,6 @@ import controller.ScheduleSystem;
 import model.DaysOfTheWeek;
 import model.EventImpl;
 import model.IEvent;
-import model.ISchedule;
 import model.LocationImpl;
 import model.IReadOnlyPlannerModel;
 import model.TimeImpl;
@@ -33,16 +32,17 @@ import model.UserImpl;
  * asks a user to input the name of the event, a location, starting day, starting time,
  * ending day, ending time, and a list of users.
  */
-public class EventFrame extends JFrame implements ScheduleSystemView<DaysOfTheWeek>, EvtFrame {
+public class EventFrame extends JFrame implements ScheduleSystemView<DaysOfTheWeek>,
+        EvtFrame<DaysOfTheWeek> {
   private final JPanel mainPanel;
   private final IReadOnlyPlannerModel<DaysOfTheWeek> model;
   private JComboBox<String> onlineBox;
-  private JComboBox<String> startDOTW;
-  private JComboBox<String> endDOTW;
+  private final JComboBox<String> startDOTW;
+  private final JComboBox<String> endDOTW;
   private JTextField place;
-  private JTextField eventText;
-  private JTextField startTimeTxt;
-  private JTextField endTimeTxt;
+  private final JTextField eventText;
+  private final JTextField startTimeTxt;
+  private final JTextField endTimeTxt;
   private JList<String> usersBox;
   private JButton createEvent;
   private JButton modEvent;
@@ -50,9 +50,9 @@ public class EventFrame extends JFrame implements ScheduleSystemView<DaysOfTheWe
   private IEvent<DaysOfTheWeek> originalEvent;
   private IEvent<DaysOfTheWeek> unmodifiedEvent;
   private final JPanel usersTag;// = new JPanel();
-  private JLabel availUsers;// = new JLabel("\tAvailable Users: ");
-  private GridLayout gridLayout;// = new GridLayout(0, 1);
-  private JScrollPane scrollPane;// = new JScrollPane();
+  private final JLabel availUsers;// = new JLabel("\tAvailable Users: ");
+  private final GridLayout gridLayout;// = new GridLayout(0, 1);
+  private final JScrollPane scrollPane;// = new JScrollPane();
   private UserImpl user;
 
   /**
@@ -145,14 +145,13 @@ public class EventFrame extends JFrame implements ScheduleSystemView<DaysOfTheWe
   }
 
   private EventImpl createEvent() {
-    EventImpl newEvent = new EventImpl(eventText.getText(),
+    return new EventImpl(eventText.getText(),
             new TimeImpl(DaysOfTheWeek.valueOf(startDOTW.getSelectedItem().toString()
                     .toUpperCase()), startTimeTxt.getText(),
                     (DaysOfTheWeek.valueOf(endDOTW.getSelectedItem().toString().toUpperCase())),
                     endTimeTxt.getText()),
             new LocationImpl(getOnlineBool(Objects.requireNonNull(onlineBox.getSelectedItem())),
                     place.getText()), getUsers(usersBox.getSelectedValuesList()));
-    return newEvent;
   }
 
   private List<UserImpl> getUsers(List<String> strUsers) {

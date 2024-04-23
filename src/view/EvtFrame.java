@@ -13,21 +13,21 @@ import model.UserImpl;
  * of the event, a location, starting day, starting time, ending day,
  * ending time, and a list of users.
  */
-public interface EvtFrame {
+public interface EvtFrame<T> {
 
   /**
    * Adds the controller to the frame to allow communication between the view and the model.
    *
    * @param listener Controller to connect to view.
    */
-  void addListener(ScheduleSystem<DaysOfTheWeek> listener);
+  void addListener(ScheduleSystem<T> listener);
 
   /**
    * Event to be autofilled for a selected event.
    *
    * @param event Event to be autofilled in for.
    */
-  void addDefaultEvent(IEvent<DaysOfTheWeek> event);
+  void addDefaultEvent(IEvent<T> event);
 
   /**
    * Adds the selected user to the drop-down list in the event panel.
@@ -41,5 +41,5 @@ public interface EvtFrame {
    *
    * @param event Event to pass back.
    */
-  void getUnmodifiedEvent(IEvent<DaysOfTheWeek> event);
+  void getUnmodifiedEvent(IEvent<T> event);
 }

@@ -33,6 +33,10 @@ public class PlannerMock implements IPlannerModel<DaysOfTheWeek> {
   }
 
   @Override
+  public int getFirstDay() {
+    return 0;
+  }
+  @Override
   public void addSchedule(List<String> startDay, List<String> endDay, List<String> startTime,
                           List<String> endTime, List<LocationImpl> loc, List<List<UserImpl>> users,
                           List<String> eventName, String id) {

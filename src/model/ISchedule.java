@@ -6,6 +6,13 @@ import java.util.List;
  * Represents a list of events for a single user with an identification number.
  */
 public interface ISchedule<T> {
+
+  /**
+   *
+   * @return
+   */
+  int getFirstDay();
+
   /**
    * Observes the state of the id.
    *
@@ -25,15 +32,29 @@ public interface ISchedule<T> {
    * Adds the given event to the current schedule of events. Checks if the new added event
    * overlaps with any existing event in the current list of events.
    *
-   * @param e Event to be added.
+   * @param startDay
+   * @param startTime
+   * @param endDay
+   * @param endTime
+   * @param loc
+   * @param users
+   * @param eventName
    */
-  void addEvent(IEvent<T> e);
+  void addEvent(int startDay, String startTime, int endDay, String endTime, LocationImpl loc,
+                List<UserImpl> users, String eventName);
 
   /**
    * Removes the given event from the current schedule of events if it exists.
    * If given event is not in schedule throw IllegalArgumentException.
    *
-   * @param e Event to be removed.
+   * @param startDay
+   * @param startTime
+   * @param endDay
+   * @param endTime
+   * @param loc
+   * @param users
+   * @param eventName
    */
-  void removeEvent(IEvent<T> e);
+  void removeEvent(int startDay, String startTime, int endDay, String endTime,
+                   LocationImpl loc, List<UserImpl> users, String eventName);
 }

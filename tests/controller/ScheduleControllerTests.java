@@ -7,6 +7,12 @@ import model.ISchedule;
 import model.LocationImpl;
 import model.NUPlannerModel;
 import model.IPlannerModel;
+import model.SatDOTW;
+import model.SatEventImpl;
+import model.SatPlannerModel;
+import model.SatSchedulePlanner;
+import model.SatTimeImpl;
+import model.SatWorktimeModel;
 import model.SchedulePlanner;
 import model.TimeImpl;
 import model.UserImpl;
@@ -20,6 +26,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import view.SatScheduleFrame;
 import view.ScheduleFrame;
 import view.ScheduleSystemTextView;
 import view.ScheduleSystemView;
@@ -47,11 +54,23 @@ public class ScheduleControllerTests {
   DaysOfTheWeek thursday;
   DaysOfTheWeek friday;
   DaysOfTheWeek saturday;
+  SatDOTW satSaturday;
+  SatDOTW satSunday;
+  SatDOTW satMonday;
+  SatDOTW satTuesday;
+  SatDOTW satWednesday;
+  SatDOTW satThursday;
+  SatDOTW satFriday;
   ITime<DaysOfTheWeek> time1;
   ITime<DaysOfTheWeek> time2;
   ITime<DaysOfTheWeek> time3;
   ITime<DaysOfTheWeek> time4;
   ITime<DaysOfTheWeek> time5;
+  ITime<SatDOTW> satTime1;
+  ITime<SatDOTW> satTime2;
+  ITime<SatDOTW> satTime3;
+  ITime<SatDOTW> satTime4;
+  ITime<SatDOTW> satTime5;
   LocationImpl loc1;
   LocationImpl loc2;
   LocationImpl loc3;
@@ -71,16 +90,31 @@ public class ScheduleControllerTests {
   IEvent<DaysOfTheWeek> vacation;
   IEvent<DaysOfTheWeek> mondayAfternoonJog;
   IEvent<DaysOfTheWeek> wednesdayDinner;
+  IEvent<SatDOTW> satChurch;
+  IEvent<SatDOTW> satSchool;
+  IEvent<SatDOTW> satVacation;
+  IEvent<SatDOTW> satMondayAfternoonJog;
+  IEvent<SatDOTW> satWednesdayDinner;
   List<IEvent<DaysOfTheWeek>> mtEvents;
   List<IEvent<DaysOfTheWeek>> events1;
   List<IEvent<DaysOfTheWeek>> events2;
+  List<IEvent<SatDOTW>> satMtEvents;
+  List<IEvent<SatDOTW>> satEvents1;
+  List<IEvent<SatDOTW>> satEvents2;
   ISchedule<DaysOfTheWeek> sch1;
   ISchedule<DaysOfTheWeek> sch2;
   ISchedule<DaysOfTheWeek> sch3;
   ISchedule<DaysOfTheWeek> sch4;
+  ISchedule<SatDOTW> satSch1;
+  ISchedule<SatDOTW> satSch2;
+  ISchedule<SatDOTW> satSch3;
+  ISchedule<SatDOTW> satSch4;
   ScheduleSystemController<DaysOfTheWeek> schSysMod;
   ScheduleSystemController<DaysOfTheWeek> ssc;
   IPlannerModel<DaysOfTheWeek> model1;
+  ScheduleSystemController<SatDOTW> satSchSysMod;
+  ScheduleSystemController<SatDOTW> satSsc;
+  IPlannerModel<SatDOTW> satModel1;
   Appendable strOut;
 
   private void initData() {
@@ -130,6 +164,55 @@ public class ScheduleControllerTests {
     ScheduleSystemView<DaysOfTheWeek> view = new ScheduleFrame(this.model1);
     this.schSysMod = new ScheduleSystemController<>(view);
     this.schSysMod.launch(model1);
+  }
+
+  private void initDataSat() {
+    this.satSaturday = SatDOTW.SATURDAY;
+    this.satSunday = SatDOTW.SUNDAY;
+    this.satMonday = SatDOTW.MONDAY;
+    this.satTuesday = SatDOTW.TUESDAY;
+    this.satWednesday = SatDOTW.WEDNESDAY;
+    this.satThursday = SatDOTW.THURSDAY;
+    this.satFriday = SatDOTW.FRIDAY;
+    this.satTime1 = new SatTimeImpl(this.satSunday, "1000", this.satSunday, "1300");
+    this.satTime2 = new SatTimeImpl(this.satMonday, "0800", this.satFriday, "1500");
+    this.satTime3 = new SatTimeImpl(this.satThursday, "1700", this.satMonday, "0900");
+    this.satTime4 = new SatTimeImpl(this.satMonday, "1200", this.satMonday, "1245");
+    this.satTime5 = new SatTimeImpl(this.satWednesday, "1800", this.satWednesday, "1830");
+    this.loc1 = new LocationImpl(false, "Mulberry Street");
+    this.loc2 = new LocationImpl(false, "Northeastern University");
+    this.loc3 = new LocationImpl(false, "Cancun Resort");
+    this.loc4 = new LocationImpl(false, "Outside");
+    this.loc5 = new LocationImpl(false, "Home");
+    this.user1 = new UserImpl("Me");
+    this.user2 = new UserImpl("Mom");
+    this.user3 = new UserImpl("Dad");
+    this.classmate = new UserImpl("Classmate");
+    this.friend = new UserImpl("Friend");
+    this.bestFriend = new UserImpl("Best Friend");
+    this.users1 = new ArrayList<>(Arrays.asList(this.user1, this.user2, this.user3));
+    this.users2 = new ArrayList<>(Arrays.asList(this.user1, this.classmate, this.bestFriend));
+    this.users3 = new ArrayList<>(Arrays.asList(this.user1, this.friend, this.bestFriend));
+    this.satChurch = new SatEventImpl("Church", this.satTime1, this.loc1, this.users1);
+    this.satSchool = new SatEventImpl("Classes", this.satTime2, this.loc2, this.users2);
+    this.satVacation = new SatEventImpl("Cancun Trip", this.satTime3, this.loc3, this.users3);
+    this.satMondayAfternoonJog = new SatEventImpl("Afternoon Jog", this.satTime4, this.loc4,
+            new ArrayList<>(Collections.singletonList(this.user1)));
+    this.satWednesdayDinner = new SatEventImpl("Wednesday Dinner", this.satTime5, this.loc5,
+            new ArrayList<>(Collections.singletonList(this.user1)));
+    this.satMtEvents = new ArrayList<>();
+    this.satEvents1 = new ArrayList<>(Arrays.asList(this.satChurch, this.satSchool));
+    this.satEvents2 = new ArrayList<>(Arrays.asList(this.satVacation, this.satMondayAfternoonJog));
+    this.satSch1 = new SatSchedulePlanner(this.satEvents1, "School Schedule");
+    this.satSch2 = new SatSchedulePlanner(this.satEvents2, "Summer Schedule");
+    this.satSch3 = new SatSchedulePlanner(new ArrayList<>(Arrays.asList(this.satChurch,
+            this.satMondayAfternoonJog)), "My Schedule");
+    this.satSch4 = new SatSchedulePlanner(new ArrayList<>(Collections.singletonList(
+            this.satWednesdayDinner)), "Dinner");
+    this.satModel1 = new SatPlannerModel(Arrays.asList(this.satSch1, this.satSch2));
+    ScheduleSystemView<SatDOTW> view = new SatScheduleFrame(this.satModel1);
+    this.satSchSysMod = new ScheduleSystemController<>(view);
+    this.satSchSysMod.launch(satModel1);
   }
 
   @Test
@@ -620,7 +703,7 @@ public class ScheduleControllerTests {
     SchedulePlanner timSch = new SchedulePlanner(new ArrayList<>(Arrays.asList(sixFlags)), "Tim");
     SchedulePlanner katSch = new SchedulePlanner(new ArrayList<>(Arrays.asList(sixFlags)), "Kat");
     IPlannerModel<DaysOfTheWeek> anytimeModel = new NUPlannerModel(
-        new ArrayList<>(Arrays.asList(timSch, katSch)));
+            new ArrayList<>(Arrays.asList(timSch, katSch)));
     String eventName = "Hi";
     String eventName2 = "Hello";
     LocationImpl loc = new LocationImpl(true, "school");
@@ -640,7 +723,7 @@ public class ScheduleControllerTests {
 
     assertEquals("Hello", curr.events().get(2).name());
     assertEquals(DaysOfTheWeek.MONDAY, curr.events().get(2).time().startDay());
-    assertEquals(DaysOfTheWeek.WEDNESDAY, curr.events().get(2).time().endDay());
+    assertEquals(DaysOfTheWeek.TUESDAY, curr.events().get(2).time().endDay());
     assertEquals("1300", curr.events().get(2).time().startTime());
     assertEquals("0320", curr.events().get(2).time().endTime());
 
@@ -653,7 +736,7 @@ public class ScheduleControllerTests {
 
     assertEquals("Hello", curr1.events().get(2).name());
     assertEquals(DaysOfTheWeek.MONDAY, curr1.events().get(2).time().startDay());
-    assertEquals(DaysOfTheWeek.WEDNESDAY, curr1.events().get(2).time().endDay());
+    assertEquals(DaysOfTheWeek.TUESDAY, curr1.events().get(2).time().endDay());
     assertEquals("1300", curr1.events().get(2).time().startTime());
     assertEquals("0320", curr1.events().get(2).time().endTime());
   }
@@ -670,7 +753,7 @@ public class ScheduleControllerTests {
     SchedulePlanner timSch = new SchedulePlanner(new ArrayList<>(List.of(sixFlags)), "Tim");
     SchedulePlanner katSch = new SchedulePlanner(new ArrayList<>(List.of(sixFlags)), "Kat");
     IPlannerModel<DaysOfTheWeek> workModel = new WorkTimePlannerModel(
-        new ArrayList<>((List.of(timSch, katSch))));
+            new ArrayList<>((List.of(timSch, katSch))));
 
     String eventName = "Hi";
     String eventName2 = "Hello";
@@ -709,4 +792,130 @@ public class ScheduleControllerTests {
     assertEquals("1300", curr1.events().get(2).time().endTime());
   }
 
+  @Test
+  public void satTestAnytimeStrategyAddingOneEventToMoreEventsSchedule() {
+    this.initDataSat();
+    List<UserImpl> listUsers = new ArrayList<>();
+    listUsers.add(new UserImpl("Kat"));
+    listUsers.add(new UserImpl("Tim"));
+    SatEventImpl sixFlags = new SatEventImpl("Six Flags", new SatTimeImpl(this.satSunday, "0800",
+            this.satSunday, "1200"), new LocationImpl(false, "California"), listUsers);
+
+    SatSchedulePlanner timSch = new SatSchedulePlanner(new ArrayList<>(List.of(sixFlags)), "Tim");
+    SatSchedulePlanner katSch = new SatSchedulePlanner(new ArrayList<>(List.of(sixFlags)), "Kat");
+    IPlannerModel<SatDOTW> anytimeModel = new SatPlannerModel(
+            new ArrayList<>(Arrays.asList(timSch, katSch)));
+    String eventName = "Hi";
+    String eventName2 = "Hello";
+    LocationImpl loc = new LocationImpl(true, "school");
+    LocationImpl loc2 = new LocationImpl(true, "home");
+    int duration = 1500;
+    int duration2 = 2300;
+
+    anytimeModel.scheduleEvent(eventName, loc, duration, listUsers);
+    anytimeModel.scheduleEvent(eventName2, loc2, duration2, listUsers);
+
+    ISchedule<SatDOTW> curr = anytimeModel.schedules().get(0);
+    assertEquals("Hi", curr.events().get(1).name());
+    assertEquals(SatDOTW.SATURDAY, curr.events().get(1).time().startDay());
+    assertEquals(SatDOTW.SUNDAY, curr.events().get(1).time().endDay());
+    assertEquals("0000", curr.events().get(1).time().startTime());
+    assertEquals("0100", curr.events().get(1).time().endTime());
+
+    assertEquals("Hello", curr.events().get(2).name());
+    assertEquals(SatDOTW.SUNDAY, curr.events().get(2).time().startDay());
+    assertEquals(SatDOTW.MONDAY, curr.events().get(2).time().endDay());
+    assertEquals("1200", curr.events().get(2).time().startTime());
+    assertEquals("0220", curr.events().get(2).time().endTime());
+
+    ISchedule<SatDOTW> curr1 = anytimeModel.schedules().get(1);
+    assertEquals("Hi", curr1.events().get(1).name());
+    assertEquals(SatDOTW.SATURDAY, curr1.events().get(1).time().startDay());
+    assertEquals(SatDOTW.SUNDAY, curr1.events().get(1).time().endDay());
+    assertEquals("0000", curr1.events().get(1).time().startTime());
+    assertEquals("0100", curr1.events().get(1).time().endTime());
+
+    assertEquals("Hello", curr1.events().get(2).name());
+    assertEquals(SatDOTW.SUNDAY, curr1.events().get(2).time().startDay());
+    assertEquals(SatDOTW.MONDAY, curr1.events().get(2).time().endDay());
+    assertEquals("1200", curr1.events().get(2).time().startTime());
+    assertEquals("0220", curr1.events().get(2).time().endTime());
+  }
+
+  @Test
+  public void satTestWorkHoursStrategyAddingOneEventToEmptySchedule() {
+    this.initDataSat();
+    List<UserImpl> listUsers = new ArrayList<>();
+    listUsers.add(new UserImpl("Kat"));
+    listUsers.add(new UserImpl("Tim"));
+    SatEventImpl sixFlags = new SatEventImpl("Six Flags", new SatTimeImpl(this.satMonday, "0900",
+            this.satMonday, "1300"), new LocationImpl(false, "California"), listUsers);
+
+    SatSchedulePlanner timSch = new SatSchedulePlanner(new ArrayList<>(List.of(sixFlags)), "Tim");
+    SatSchedulePlanner katSch = new SatSchedulePlanner(new ArrayList<>(List.of(sixFlags)), "Kat");
+    IPlannerModel<SatDOTW> workModel = new SatWorktimeModel(
+            new ArrayList<>((List.of(timSch, katSch))));
+
+    String eventName = "Hi";
+    String eventName2 = "Hello";
+    LocationImpl loc = new LocationImpl(true, "school");
+    LocationImpl loc2 = new LocationImpl(true, "home");
+    int duration = 120;
+    int duration2 = 240;
+
+    workModel.scheduleEvent(eventName, loc, duration, listUsers);
+    workModel.scheduleEvent(eventName2, loc2, duration2, listUsers);
+
+    ISchedule<SatDOTW> curr = workModel.schedules().get(0);
+    assertEquals("Hi", curr.events().get(1).name());
+    assertEquals(SatDOTW.MONDAY, curr.events().get(1).time().startDay());
+    assertEquals(SatDOTW.MONDAY, curr.events().get(1).time().endDay());
+    assertEquals("1300", curr.events().get(1).time().startTime());
+    assertEquals("1500", curr.events().get(1).time().endTime());
+
+    assertEquals("Hello", curr.events().get(2).name());
+    assertEquals(SatDOTW.TUESDAY, curr.events().get(2).time().startDay());
+    assertEquals(SatDOTW.TUESDAY, curr.events().get(2).time().endDay());
+    assertEquals("0900", curr.events().get(2).time().startTime());
+    assertEquals("1300", curr.events().get(2).time().endTime());
+
+    ISchedule<SatDOTW> curr1 = workModel.schedules().get(1);
+    assertEquals("Hi", curr1.events().get(1).name());
+    assertEquals(SatDOTW.MONDAY, curr1.events().get(1).time().startDay());
+    assertEquals(SatDOTW.MONDAY, curr1.events().get(1).time().endDay());
+    assertEquals("1300", curr1.events().get(1).time().startTime());
+    assertEquals("1500", curr1.events().get(1).time().endTime());
+
+    assertEquals("Hello", curr1.events().get(2).name());
+    assertEquals(SatDOTW.TUESDAY, curr1.events().get(2).time().startDay());
+    assertEquals(SatDOTW.TUESDAY, curr1.events().get(2).time().endDay());
+    assertEquals("0900", curr1.events().get(2).time().startTime());
+    assertEquals("1300", curr1.events().get(2).time().endTime());
+  }
+
+  @Test
+  public void satTestAnytimeStrategyAddingOneEventToEmptySchedule() {
+    this.initDataSat();
+    List<UserImpl> listUsers = new ArrayList<>();
+    listUsers.add(new UserImpl("Kat"));
+    listUsers.add(new UserImpl("Tim"));
+    SatEventImpl sixFlags = new SatEventImpl("Six Flags", new SatTimeImpl(this.satSunday, "0800",
+            this.satSunday, "1200"), new LocationImpl(false, "California"), listUsers);
+
+    SatSchedulePlanner timSch = new SatSchedulePlanner(new ArrayList<>(List.of(sixFlags)), "Tim");
+    IPlannerModel<SatDOTW> anytimeModel = new SatPlannerModel(
+            new ArrayList<>(Arrays.asList(timSch)));
+    String eventName = "Hi";
+    LocationImpl loc = new LocationImpl(true, "school");
+    int duration = 1500;
+
+    anytimeModel.scheduleEvent(eventName, loc, duration, listUsers);
+
+    ISchedule<SatDOTW> curr = anytimeModel.schedules().get(0);
+    assertEquals("Hi", curr.events().get(1).name());
+    assertEquals(SatDOTW.SATURDAY, curr.events().get(1).time().startDay());
+    assertEquals(SatDOTW.SUNDAY, curr.events().get(1).time().endDay());
+    assertEquals("0000", curr.events().get(1).time().startTime());
+    assertEquals("0100", curr.events().get(1).time().endTime());
+  }
 }

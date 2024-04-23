@@ -1,14 +1,11 @@
 package controller;
 
 import model.DaysOfTheWeek;
-import model.EventImpl;
 import model.IEvent;
 import model.ISchedule;
 import model.ITime;
 import model.LocationImpl;
 import model.IPlannerModel;
-import model.SchedulePlanner;
-import model.TimeImpl;
 import model.UserImpl;
 import view.ScheduleSystemView;
 
@@ -27,7 +24,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -92,16 +88,13 @@ public class ScheduleSystemController<T> implements ScheduleSystem<T> {
       Node name = doc.getElementsByTagName("name").item(eventIndx);
 
       Node startDay = doc.getElementsByTagName("start-day").item(eventIndx);
-      startDays.add(startDay.getTextContent());
+      startDays.add(startDay.getTextContent().toUpperCase());
       Node start = doc.getElementsByTagName("start").item(eventIndx);
       startTimes.add(start.getTextContent());
       Node endDay = doc.getElementsByTagName("end-day").item(eventIndx);
-      endDays.add(endDay.getTextContent());
+      endDays.add(endDay.getTextContent().toUpperCase());
       Node end = doc.getElementsByTagName("end").item(eventIndx);
       endTimes.add(end.getTextContent());
-//      TimeImpl time = new TimeImpl(DaysOfTheWeek.valueOf(startDay.getTextContent().toUpperCase()),
-//              start.getTextContent(), DaysOfTheWeek.valueOf(endDay.getTextContent().toUpperCase()),
-//              end.getTextContent());
 
       Node online = doc.getElementsByTagName("online").item(eventIndx);
       Node place = doc.getElementsByTagName("place").item(eventIndx);

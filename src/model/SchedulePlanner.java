@@ -1,13 +1,17 @@
 package model;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Represents a list of events for a single user with an identification number.
  */
 public class SchedulePlanner implements ISchedule<DaysOfTheWeek> {
-  final private List<IEvent<DaysOfTheWeek>> events;
-  final private String id;
+  private final List<IEvent<DaysOfTheWeek>> events;
+  private final String id;
+  private final List<String> daysOfTheWeek = Arrays.asList("Sunday", "Monday", "Tuesday",
+          "Wednesday", "Thursday", "Friday", "Saturday");
+
 
   /**
    * Instantiates the schedule, which includes a list of events, as well
@@ -23,6 +27,11 @@ public class SchedulePlanner implements ISchedule<DaysOfTheWeek> {
   }
 
   @Override
+  public int getFirstDay() {
+    return daysOfTheWeek.indexOf("Monday");
+  }
+
+  @Override
   public String scheduleID() {
     return this.id;
   }
@@ -33,15 +42,20 @@ public class SchedulePlanner implements ISchedule<DaysOfTheWeek> {
   }
 
   @Override
-  public void addEvent(IEvent<DaysOfTheWeek> e) {
-    if (this.events().contains(e)) {
+  public void addEvent(int startDay, String startTime, int endDay, String endTime,
+                       LocationImpl loc, List<UserImpl> users, String eventName) {
+    TimeImpl newTime = new TimeImpl(DaysOfTheWeek.valueOf(daysOfTheWeek.get(startDay)
+            .toUpperCase()), startTime, DaysOfTheWeek.valueOf(daysOfTheWeek.get(endDay)
+            .toUpperCase()), endTime);
+    EventImpl newEvent = new EventImpl(eventName, newTime, loc, users);
+    if (this.events().contains(newEvent)) {
       throw new IllegalArgumentException("Schedule already contains given event!");
     } else {
-      this.events().add(e);
+      this.events().add(newEvent);
       try {
         this.checkAnyOverlap(this.events());
       } catch (IllegalStateException ex) {
-        this.removeEvent(e);
+        this.removeEvent(startDay, startTime, endDay, endTime, loc, users, eventName);
         throw new IllegalArgumentException("Added event overlaps with an existing event!" +
                 " Removing added event.");
       }
@@ -49,13 +63,18 @@ public class SchedulePlanner implements ISchedule<DaysOfTheWeek> {
   }
 
   @Override
-  public void removeEvent(IEvent<DaysOfTheWeek> e) {
-    if (!this.events().contains(e)) {
+  public void removeEvent(int startDay, String startTime, int endDay, String endTime,
+                          LocationImpl loc, List<UserImpl> users, String eventName) {
+    TimeImpl newTime = new TimeImpl(DaysOfTheWeek.valueOf(daysOfTheWeek.get(startDay)
+            .toUpperCase()), startTime, DaysOfTheWeek.valueOf(daysOfTheWeek.get(endDay)
+            .toUpperCase()), endTime);
+    EventImpl newEvent = new EventImpl(eventName, newTime, loc, users);
+    if (!this.events().contains(newEvent)) {
       throw new IllegalArgumentException("Event to be removed not found!");
     } else {
       for (IEvent<DaysOfTheWeek> event : this.events()) {
-        if (e.equals(event)) {
-          this.events().remove(e);
+        if (newEvent.equals(event)) {
+          this.events().remove(newEvent);
           break;
         }
       }

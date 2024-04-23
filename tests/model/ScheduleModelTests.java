@@ -23,12 +23,12 @@ public class ScheduleModelTests {
   DaysOfTheWeek thursday;
   DaysOfTheWeek friday;
   DaysOfTheWeek saturday;
-  TimeImpl invalidTime;
-  TimeImpl time1;
-  TimeImpl time2;
-  TimeImpl time3;
-  TimeImpl time4;
-  TimeImpl time5;
+  ITime<DaysOfTheWeek> invalidTime;
+  ITime<DaysOfTheWeek> time1;
+  ITime<DaysOfTheWeek> time2;
+  ITime<DaysOfTheWeek> time3;
+  ITime<DaysOfTheWeek> time4;
+  ITime<DaysOfTheWeek> time5;
   LocationImpl loc1;
   LocationImpl loc2;
   LocationImpl loc3;
@@ -46,27 +46,27 @@ public class ScheduleModelTests {
   List<UserImpl> users1;
   List<UserImpl> users2;
   List<UserImpl> users3;
-  EventImpl church;
-  EventImpl school;
-  EventImpl vacation;
-  EventImpl mondayAfternoonJog;
-  EventImpl wednesdayDinner;
-  List<EventImpl> mtEvents;
-  List<EventImpl> events1;
-  List<EventImpl> events2;
-  SchedulePlanner mtSch;
-  SchedulePlanner sch1;
-  SchedulePlanner sch2;
-  SchedulePlanner sch3;
-  SchedulePlanner sch4;
-  List<SchedulePlanner> schedules1;
-  List<SchedulePlanner> schedules2;
-  List<SchedulePlanner> schedules3;
-  NUPlannerModel mtModel;
-  NUPlannerModel model1;
-  NUPlannerModel model2;
-  NUPlannerModel model3;
-  NUPlannerModel model4;
+  IEvent<DaysOfTheWeek> church;
+  IEvent<DaysOfTheWeek> school;
+  IEvent<DaysOfTheWeek> vacation;
+  IEvent<DaysOfTheWeek> mondayAfternoonJog;
+  IEvent<DaysOfTheWeek> wednesdayDinner;
+  List<IEvent<DaysOfTheWeek>> mtEvents;
+  List<IEvent<DaysOfTheWeek>> events1;
+  List<IEvent<DaysOfTheWeek>> events2;
+  ISchedule<DaysOfTheWeek> mtSch;
+  ISchedule<DaysOfTheWeek> sch1;
+  ISchedule<DaysOfTheWeek> sch2;
+  ISchedule<DaysOfTheWeek> sch3;
+  ISchedule<DaysOfTheWeek> sch4;
+  List<ISchedule<DaysOfTheWeek>> schedules1;
+  List<ISchedule<DaysOfTheWeek>> schedules2;
+  List<ISchedule<DaysOfTheWeek>> schedules3;
+  IPlannerModel<DaysOfTheWeek> mtModel;
+  IPlannerModel<DaysOfTheWeek> model1;
+  IPlannerModel<DaysOfTheWeek> model2;
+  IPlannerModel<DaysOfTheWeek> model3;
+  IPlannerModel<DaysOfTheWeek> model4;
 
   private void initDOTW() {
     this.sunday = DaysOfTheWeek.SUNDAY;
@@ -398,10 +398,10 @@ public class ScheduleModelTests {
   @Test
   public void testScheduleEventsMethod() {
     this.initData();
-    ISchedule<EventImpl> sch = new SchedulePlanner(this.events1, "My Schedule");
+    ISchedule<DaysOfTheWeek> sch = new SchedulePlanner(this.events1, "My Schedule");
     Assert.assertEquals(new ArrayList<>(Arrays.asList(this.church, this.school)), sch.events());
 
-    ISchedule<EventImpl> sch0 = new SchedulePlanner(this.mtEvents, "New Schedule");
+    ISchedule<DaysOfTheWeek> sch0 = new SchedulePlanner(this.mtEvents, "New Schedule");
     assertTrue(sch0.events().isEmpty());
   }
 
@@ -410,27 +410,41 @@ public class ScheduleModelTests {
   @Test
   public void testAddEventAlreadyContainsEventError() {
     this.initData();
-    ISchedule<EventImpl> sch = new SchedulePlanner(this.mtEvents, "Bad Schedule");
-    sch.addEvent(this.school);
+    ISchedule<DaysOfTheWeek> sch = new SchedulePlanner(this.mtEvents, "Bad Schedule");
+    sch.addEvent(this.school.time().startDay().getDayOrder(), this.school.time().startTime(),
+            this.school.time().endDay().getDayOrder(), this.school.time().endTime(),
+            this.school.location(), this.school.users(), this.school.name());
     try {
-      sch.addEvent(this.school);
+      sch.addEvent(this.school.time().startDay().getDayOrder(), this.school.time().startTime(),
+              this.school.time().endDay().getDayOrder(), this.school.time().endTime(),
+              this.school.location(), this.school.users(), this.school.name());
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Schedule already contains given event!", e.getMessage());
     }
 
-    sch.addEvent(this.church);
+    sch.addEvent(this.church.time().startDay().getDayOrder(), this.church.time().startTime(),
+            this.church.time().endDay().getDayOrder(), this.church.time().endTime(),
+            this.church.location(), this.church.users(), this.church.name());
     try {
-      sch.addEvent(this.church);
+      sch.addEvent(this.church.time().startDay().getDayOrder(), this.church.time().startTime(),
+              this.church.time().endDay().getDayOrder(), this.church.time().endTime(),
+              this.church.location(), this.church.users(), this.church.name());
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Schedule already contains given event!", e.getMessage());
     }
 
-    sch.removeEvent(this.school);
-    sch.addEvent(this.school);
+    sch.removeEvent(this.school.time().startDay().getDayOrder(), this.school.time().startTime(),
+            this.school.time().endDay().getDayOrder(), this.school.time().endTime(),
+            this.school.location(), this.school.users(), this.school.name());
+    sch.addEvent(this.school.time().startDay().getDayOrder(), this.school.time().startTime(),
+            this.school.time().endDay().getDayOrder(), this.school.time().endTime(),
+            this.school.location(), this.school.users(), this.school.name());
     try {
-      sch.addEvent(this.school);
+      sch.addEvent(this.school.time().startDay().getDayOrder(), this.school.time().startTime(),
+              this.school.time().endDay().getDayOrder(), this.school.time().endTime(),
+              this.school.location(), this.school.users(), this.school.name());
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Schedule already contains given event!", e.getMessage());
@@ -442,11 +456,15 @@ public class ScheduleModelTests {
   @Test
   public void testAddEventOverlappingEventsError() {
     this.initData();
-    ISchedule<EventImpl> sch = new SchedulePlanner(this.mtEvents, "Bad Schedule");
-    sch.addEvent(this.church);
+    ISchedule<DaysOfTheWeek> sch = new SchedulePlanner(this.mtEvents, "Bad Schedule");
+    sch.addEvent(this.church.time().startDay().getDayOrder(), this.church.time().startTime(),
+            this.church.time().endDay().getDayOrder(), this.church.time().endTime(),
+            this.church.location(), this.church.users(), this.church.name());
     Assert.assertEquals(1, sch.events().size());
     try {
-      sch.addEvent(this.vacation);
+      sch.addEvent(this.vacation.time().startDay().getDayOrder(), this.vacation.time().startTime(),
+              this.vacation.time().endDay().getDayOrder(), this.vacation.time().endTime(),
+              this.vacation.location(), this.vacation.users(), this.vacation.name());
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Added event overlaps with an existing event!" +
@@ -455,11 +473,17 @@ public class ScheduleModelTests {
     // confirm that vacation event has not been added to schedule
     Assert.assertEquals(1, sch.events().size());
 
-    sch.removeEvent(this.church);
-    sch.addEvent(this.vacation);
+    sch.removeEvent(this.church.time().startDay().getDayOrder(), this.church.time().startTime(),
+            this.church.time().endDay().getDayOrder(), this.church.time().endTime(),
+            this.church.location(), this.church.users(), this.church.name());
+    sch.addEvent(this.vacation.time().startDay().getDayOrder(), this.vacation.time().startTime(),
+            this.vacation.time().endDay().getDayOrder(), this.vacation.time().endTime(),
+            this.vacation.location(), this.vacation.users(), this.vacation.name());
     Assert.assertEquals(1, sch.events().size());
     try {
-      sch.addEvent(this.school);
+      sch.addEvent(this.school.time().startDay().getDayOrder(), this.school.time().startTime(),
+              this.school.time().endDay().getDayOrder(), this.school.time().endTime(),
+              this.school.location(), this.school.users(), this.school.name());
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Added event overlaps with an existing event!" +
@@ -473,19 +497,23 @@ public class ScheduleModelTests {
   @Test
   public void testAddEvent() {
     this.initData();
-    ISchedule<EventImpl> sch = new SchedulePlanner(this.mtEvents, "My Schedule");
+    ISchedule<DaysOfTheWeek> sch = new SchedulePlanner(this.mtEvents, "My Schedule");
     // check that schedule is empty
     assertFalse(sch.events().contains(this.school));
     assertTrue(sch.events().isEmpty());
     Assert.assertEquals(0, sch.events().size());
     // check that schedule added school event
-    sch.addEvent(this.school);
+    sch.addEvent(this.school.time().startDay().getDayOrder(), this.school.time().startTime(),
+            this.school.time().endDay().getDayOrder(), this.school.time().endTime(),
+            this.school.location(), this.school.users(), this.school.name());
     assertFalse(sch.events().isEmpty());
     assertTrue(sch.events().contains(this.school));
     Assert.assertEquals(new ArrayList<>(Collections.singletonList(this.school)), sch.events());
     Assert.assertEquals(1, sch.events().size());
 
-    sch.addEvent(this.church);
+    sch.addEvent(this.church.time().startDay().getDayOrder(), this.church.time().startTime(),
+            this.church.time().endDay().getDayOrder(), this.church.time().endTime(),
+            this.church.location(), this.church.users(), this.church.name());
     Assert.assertEquals(2, sch.events().size());
     Assert.assertEquals(new ArrayList<>(Arrays.asList(this.school, this.church)), sch.events());
   }
@@ -495,19 +523,26 @@ public class ScheduleModelTests {
   @Test
   public void testRemoveEventEventDoesNotExist() {
     this.initData();
-    ISchedule<EventImpl> sch = new SchedulePlanner(this.events1, "My Schedule");
+    ISchedule<DaysOfTheWeek> sch = new SchedulePlanner(this.events1, "My Schedule");
     Assert.assertEquals(2, sch.events().size());
     try {
-      sch.removeEvent(this.vacation);
+      sch.removeEvent(this.vacation.time().startDay().getDayOrder(),
+              this.vacation.time().startTime(), this.vacation.time().endDay().getDayOrder(),
+              this.vacation.time().endTime(), this.vacation.location(), this.vacation.users(),
+              this.vacation.name());
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Event to be removed not found!", e.getMessage());
     }
 
     // try removing event again after being removed from list
-    sch.removeEvent(this.church);
+    sch.removeEvent(this.church.time().startDay().getDayOrder(), this.church.time().startTime(),
+            this.church.time().endDay().getDayOrder(), this.church.time().endTime(),
+            this.church.location(), this.church.users(), this.church.name());
     try {
-      sch.removeEvent(this.church);
+      sch.removeEvent(this.church.time().startDay().getDayOrder(), this.church.time().startTime(),
+              this.church.time().endDay().getDayOrder(), this.church.time().endTime(),
+              this.church.location(), this.church.users(), this.church.name());
       Assert.fail("Failed to catch error");
     } catch (IllegalArgumentException e) {
       Assert.assertEquals("Event to be removed not found!", e.getMessage());
@@ -518,15 +553,19 @@ public class ScheduleModelTests {
   @Test
   public void testRemoveEvent() {
     this.initData();
-    ISchedule<EventImpl> sch = new SchedulePlanner(this.events1, "My Schedule");
+    ISchedule<DaysOfTheWeek> sch = new SchedulePlanner(this.events1, "My Schedule");
     Assert.assertEquals(2, sch.events().size());
     Assert.assertEquals(new ArrayList<>(Arrays.asList(this.church, this.school)), sch.events());
 
-    sch.removeEvent(this.church);
+    sch.removeEvent(this.church.time().startDay().getDayOrder(), this.church.time().startTime(),
+            this.church.time().endDay().getDayOrder(), this.church.time().endTime(),
+            this.church.location(), this.church.users(), this.church.name());
     Assert.assertEquals(new ArrayList<>(Collections.singletonList(this.school)), sch.events());
     Assert.assertEquals(1, sch.events().size());
 
-    sch.removeEvent(this.school);
+    sch.removeEvent(this.school.time().startDay().getDayOrder(), this.school.time().startTime(),
+            this.school.time().endDay().getDayOrder(), this.school.time().endTime(),
+            this.school.location(), this.school.users(), this.school.name());
     Assert.assertEquals(this.mtEvents, sch.events());
     assertTrue(sch.events().isEmpty());
   }
@@ -535,8 +574,10 @@ public class ScheduleModelTests {
   @Test
   public void testPlannerSchedules() {
     this.initData();
-    List<ISchedule<EventImpl>> schedules0 = new ArrayList<>(Collections.singletonList(this.mtSch));
-    List<ISchedule<EventImpl>> schedules1 = new ArrayList<>(Arrays.asList(this.sch1, this.sch2));
+    List<ISchedule<DaysOfTheWeek>> schedules0 = new ArrayList<>(
+            Collections.singletonList(this.mtSch));
+    List<ISchedule<DaysOfTheWeek>> schedules1 = new ArrayList<>(
+            Arrays.asList(this.sch1, this.sch2));
     Assert.assertEquals(new ArrayList<>(), this.mtModel.schedules());
     Assert.assertEquals(schedules0, this.model1.schedules());
     Assert.assertEquals(schedules1, this.model2.schedules());
@@ -744,8 +785,10 @@ public class ScheduleModelTests {
 
   @Test
   public void testOverlappingTimes3() {
-    TimeImpl time1 = new TimeImpl(DaysOfTheWeek.TUESDAY, "0950", DaysOfTheWeek.TUESDAY, "1130");
-    TimeImpl time2 = new TimeImpl(DaysOfTheWeek.TUESDAY, "1315", DaysOfTheWeek.TUESDAY, "1515");
+    ITime<DaysOfTheWeek> time1 = new TimeImpl(DaysOfTheWeek.TUESDAY, "0950", DaysOfTheWeek.TUESDAY,
+            "1130");
+    ITime<DaysOfTheWeek> time2 = new TimeImpl(DaysOfTheWeek.TUESDAY, "1315", DaysOfTheWeek.TUESDAY,
+            "1515");
 
     boolean overlap = time1.anyOverlap(time2);
     assertFalse(overlap);

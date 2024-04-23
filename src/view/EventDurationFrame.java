@@ -2,7 +2,6 @@ package view;
 
 import controller.ScheduleSystem;
 import model.DaysOfTheWeek;
-import model.EventImpl;
 import model.IEvent;
 import model.LocationImpl;
 import model.IReadOnlyPlannerModel;
@@ -31,7 +30,8 @@ import java.util.Objects;
  * asks a user to input the name of the event, a location, starting day, starting time,
  * ending day, ending time, and a list of users.
  */
-public class EventDurationFrame extends JFrame implements EvtFrame, ScheduleSystemView<DaysOfTheWeek> {
+public class EventDurationFrame extends JFrame implements EvtFrame<DaysOfTheWeek>,
+        ScheduleSystemView<DaysOfTheWeek> {
   private final IReadOnlyPlannerModel<DaysOfTheWeek> model;
   private final JPanel mainPanel;
   private JTextField eventText;

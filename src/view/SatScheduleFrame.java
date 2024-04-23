@@ -3,8 +3,6 @@ package view;
 import controller.ScheduleSystem;
 import model.IReadOnlyPlannerModel;
 import model.SatDOTW;
-import model.SatEventImpl;
-import model.SatSchedulePlanner;
 import model.UserImpl;
 
 import javax.swing.*;
@@ -17,15 +15,15 @@ public class SatScheduleFrame extends JFrame implements
     ScheduleSystemView<SatDOTW>, SchFrame {
   private final IReadOnlyPlannerModel<SatDOTW> model;
   private final SatSchedulePanel panel;
-  private EventFrame eventFrame;
-  private EventDurationFrame durationFrame;
-  private JFileChooser fchooser = new JFileChooser(".");
-  private JMenuItem addCalendar;
-  private JMenuItem saveCalendar;
-  private JButton createEvent;
-  private JButton schEvent;
-  private JButton toggleEvent;
-  private JComboBox<String> userBox;
+  private final SatEventFrame eventFrame;
+  private final SatEventDurationFrame durationFrame;
+  private final JFileChooser fchooser = new JFileChooser(".");
+  private final JMenuItem addCalendar;
+  private final JMenuItem saveCalendar;
+  private final JButton createEvent;
+  private final JButton schEvent;
+  private final JButton toggleEvent;
+  private final JComboBox<String> userBox;
   private String userStr;
 
 
@@ -39,8 +37,8 @@ public class SatScheduleFrame extends JFrame implements
   public SatScheduleFrame(IReadOnlyPlannerModel<SatDOTW> model) {
     super();
     this.model = model;
-    this.eventFrame = new EventFrame(model);
-    this.durationFrame = new EventDurationFrame(model);
+    this.eventFrame = new SatEventFrame(model);
+    this.durationFrame = new SatEventDurationFrame(model);
     this.setSize(550, 610);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.panel = new SatSchedulePanel(model, this.eventFrame);
@@ -158,7 +156,7 @@ public class SatScheduleFrame extends JFrame implements
     toggleEvent.addActionListener(e -> System.out.println("TOGGLE"));
   }
 
-  private EventDurationFrame getDurationFrame() {
+  private SatEventDurationFrame getDurationFrame() {
     return durationFrame;
   }
 

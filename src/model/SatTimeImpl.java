@@ -65,26 +65,18 @@ public class SatTimeImpl implements ITime<SatDOTW>{
   @Override
   public boolean hasOverlapContainedWeek(ITime<SatDOTW> t) {
     // check if start day of other Time object is before the ending day of this Time object
-    int firstStartHr = this.getHours(this.startTime());
     int firstEndingHr = this.getHours(this.endTime());
     int secondStartHr = t.getHours(t.startTime());
-    int secondEndHr = t.getHours(t.endTime());
 
-    int firstStartMin = this.getMinutes(this.startTime());
     int firstEndMin = this.getMinutes(this.endTime());
     int secondStartMin = this.getMinutes(t.startTime());
-    int secondEndMin = this.getMinutes(t.endTime());
 
     if (this.endDay().compareTo(t.startDay()) > 0) {
       return true;
     } else if (this.endDay().compareTo(t.startDay()) == 0) {
-      if (firstEndingHr > secondStartHr) {
-        return true;
-      }
+      return firstEndingHr > secondStartHr;
     } else if (firstEndingHr == secondStartHr) {
-      if (firstEndMin > secondStartMin) {
-        return true;
-      }
+      return firstEndMin > secondStartMin;
     }
 
     // otherwise return false
@@ -94,19 +86,6 @@ public class SatTimeImpl implements ITime<SatDOTW>{
   // checks for any overlaps that may occur between 2 Time
   // objects when one or both roll over into a new week
   private boolean hasOverlapCrossWeek(ITime<SatDOTW> t) {
-    // check that if both time objects roll over to next week (both roll over = overlap)
-    if (this.startDay().compareTo(this.endDay()) > 0 && t.startDay().compareTo(t.endDay()) > 0) {
-      return true;
-      // check that if this Time object rolls over to next week, check the end day of this
-      // Time object to the start day of the other Time object.
-    } else if (this.startDay().compareTo(this.endDay()) > 0) {
-      return this.endDay().compareTo(t.startDay()) > 0;
-      // check that if the other Time object rolls over to next week, check the end day of
-      // the other Time object to the start of this Time object.
-    } else if (t.startDay().compareTo(t.endDay()) > 0) {
-      return t.endDay().compareTo(this.startDay()) > 0;
-    }
-    // Otherwise return false.
     return false;
   }
 

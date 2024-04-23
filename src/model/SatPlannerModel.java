@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import strategy.AnytimeStrategy;
+
 public class SatPlannerModel implements IPlannerModel<SatDOTW> {
   private final List<ISchedule<SatDOTW>> schedules;
 
@@ -25,6 +27,11 @@ public class SatPlannerModel implements IPlannerModel<SatDOTW> {
    */
   public SatPlannerModel(List<ISchedule<SatDOTW>> schedules) {
     this.schedules = schedules;
+  }
+
+  @Override
+  public int getFirstDay() {
+    return this.schedules.get(0).getFirstDay();
   }
 
   @Override
@@ -74,7 +81,9 @@ public class SatPlannerModel implements IPlannerModel<SatDOTW> {
       for (ISchedule<SatDOTW> sch : this.schedules()) {
         String scheduleID = sch.scheduleID();
         if (u.name().equals(scheduleID)) {
-          sch.addEvent(event);
+          sch.addEvent(event.time().startDay().getDayOrder(), event.time().startTime(),
+                  event.time().endDay().getDayOrder(), event.time().endTime(), event.location(),
+                  event.users(), event.name());
         }
       }
     }
@@ -83,100 +92,8 @@ public class SatPlannerModel implements IPlannerModel<SatDOTW> {
   @Override
   public void scheduleEvent(String name, LocationImpl location, int duration,
                             List<UserImpl> users) {
-    List<String> daysOfTheWeek = Arrays.asList("Saturday", "Sunday", "Monday", "Tuesday",
-        "Wednesday", "Thursday", "Friday");
-    int mins = duration % 60;
-    int hours = ((duration - mins) / 60) % 24;
-    int days = (((duration - mins) / 60) - hours) / 24;
-    String endTime = null;
-    int value = 0;
-
-    for (int day = 0; day < 7; day++) {
-      for (int min = 0; min < 1440; min++) {
-        int startMins = min % 60;
-        int startHours = (min - startMins) / 60;
-        String startTime = this.getTimeString(startHours, startMins);
-        Map<String, Integer> map = getEndingTime(startTime, hours, mins);
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-          endTime = entry.getKey();
-          value = entry.getValue();
-        }
-        SatDOTW startingDay = SatDOTW.valueOf(daysOfTheWeek.get(day).toUpperCase());
-        SatTimeImpl potentialTime = new SatTimeImpl(startingDay, startTime,
-            getNextDOTW(startingDay, days + value), endTime);
-        SatEventImpl potentialEvent = new SatEventImpl(name, potentialTime, location, users);
-        if (attemptEvent(potentialEvent, users)) {
-          return;
-        }
-      }
-    }
-    throw new IllegalArgumentException("Cannot schedule");
-  }
-
-  // helper method to attempt to add an event and check for exceptions
-  private boolean attemptEvent(IEvent<SatDOTW> event, List<UserImpl> users) {
-    for (UserImpl u : users) {
-      try {
-        for (ISchedule<SatDOTW> sch : this.schedules()) {
-          if (u.name().equals(sch.scheduleID())) {
-            sch.addEvent(event);
-          }
-        }
-      } catch (IllegalArgumentException e) {
-        for (ISchedule<SatDOTW> sch : this.schedules()) {
-          try {
-            sch.removeEvent(event);
-          } catch (IllegalArgumentException ex) {
-            // ignore
-          }
-        }
-        return false;
-      }
-    }
-    return true;
-  }
-
-  // returns a map of the string days and integer of the day index of the list
-  private Map<String, Integer> getEndingTime(String start, int hours, int mins) {
-    int startTimeInt = Integer.parseInt(start);
-    int startMin = startTimeInt % 100;
-    int startHr = (startTimeInt - startMin) / 100;
-    int days = 0;
-
-    int endMin = mins + startMin;
-    int endHr = hours + startHr;
-    while (endMin > 59) {
-      endMin -= 60;
-      endHr += 1;
-    }
-    while (endHr > 23) {
-      endHr -= 24;
-      days += 1;
-    }
-    Map<String, Integer> result = new HashMap<>();
-    result.put(getTimeString(endHr, endMin), days);
-    return result;
-  }
-
-  // retrieves the next day of the week if an incrememt is necessary
-  private SatDOTW getNextDOTW(SatDOTW start, int days) {
-    List<String> daysOfTheWeek = Arrays.asList("Saturday", "Sunday", "Monday", "Tuesday",
-        "Wednesday", "Thursday", "Friday");
-    String startStrDOTW = start.observeDay();
-    int startIndexDOTW = daysOfTheWeek.indexOf(startStrDOTW);
-    int endIndexDOTW = startIndexDOTW + days;
-    if (endIndexDOTW > 6) {
-      endIndexDOTW -= 7;
-    }
-    String endStrDOTW = daysOfTheWeek.get(endIndexDOTW);
-    return SatDOTW.valueOf(endStrDOTW.toUpperCase());
-  }
-
-  // retrieves the time string in hours and minutes
-  private String getTimeString(int hours, int mins) {
-    String hrsString = String.format("%02d", hours);
-    String minsString = String.format("%02d", mins);
-    return hrsString + minsString;
+    AnytimeStrategy<SatDOTW> anytimeStrategy = new AnytimeStrategy<>(this);
+    anytimeStrategy.scheduleEvent(name, location, duration, users);
   }
 
   @Override
@@ -188,8 +105,12 @@ public class SatPlannerModel implements IPlannerModel<SatDOTW> {
       for (ISchedule<SatDOTW> sch : this.schedules) {
         String schID = sch.scheduleID();
         if (u.name().equals(schID)) {
-          sch.removeEvent(event);
-          sch.addEvent(newEvent);
+          sch.removeEvent(event.time().startDay().getDayOrder(), event.time().startTime(),
+                  event.time().endDay().getDayOrder(), event.time().endTime(), event.location(),
+                  event.users(), event.name());
+          sch.addEvent(newEvent.time().startDay().getDayOrder(), newEvent.time().startTime(),
+                  newEvent.time().endDay().getDayOrder(), newEvent.time().endTime(),
+                  newEvent.location(), newEvent.users(), newEvent.name());
         }
       }
     }
@@ -201,14 +122,18 @@ public class SatPlannerModel implements IPlannerModel<SatDOTW> {
       for (UserImpl u : event.users()) {
         for (ISchedule<SatDOTW> sch : this.schedules()) {
           if (u.name().equals(sch.scheduleID())) {
-            sch.removeEvent(event);
+            sch.removeEvent(event.time().startDay().getDayOrder(), event.time().startTime(),
+                    event.time().endDay().getDayOrder(), event.time().endTime(), event.location(),
+                    event.users(), event.name());
           }
         }
       }
     } else {
       for (ISchedule<SatDOTW> sch : this.schedules()) {
         if (user.name().equals(sch.scheduleID())) {
-          sch.removeEvent(event);
+          sch.removeEvent(event.time().startDay().getDayOrder(), event.time().startTime(),
+                  event.time().endDay().getDayOrder(), event.time().endTime(), event.location(),
+                  event.users(), event.name());
         }
       }
     }
